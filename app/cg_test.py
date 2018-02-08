@@ -18,29 +18,4 @@ def test_index(client):
 def test_content(client):
     r = client.get('/content')
     data = json.loads(r.get_data(as_text=True))
-    assert data == {}
-
-def test_get_items(client):
-    r = client.get('/items')
-    data = json.loads(r.get_data(as_text=True))
-    assert data == {}
-
-def test_get_item(client):
-    r = client.get('/items/item_to_get')
-    data = json.loads(r.get_data(as_text=True))
-    assert data == {'item_to_get':{}}
-
-def test_del_item(client):
-    r = client.delete('/items/item_to_del')
-    data = json.loads(r.get_data(as_text=True))
-    assert data == {'deleted': 'item_to_del'}
-
-def test_add_item(client):
-    r = client.post('/items', data={}, content_type='application/json')
-    data = json.loads(r.get_data(as_text=True))
-    assert data == {'added':{}}
-
-def test_patch_item(client):
-    r = client.patch('/items/item_to_patch')
-    data = json.loads(r.get_data(as_text=True))
-    assert data == {'patched':'item_to_patch'}
+    assert all([data == {},r.status_code == 200])
