@@ -1,10 +1,12 @@
 """API is run from here, access at localhost:5000. To run queries from browser, visit the `localhost:5000/content`
 endpoint and add parameters like so `/content?limit=5`."""
+
 from SPARQLWrapper.SPARQLExceptions import QueryBadFormed
 from flask import Flask, jsonify, request, logging
 
 from app import contentgraph
 from exceptions.clientexceptions import DBClientResponseError
+from exceptions.helpers import log_last_exception, format_traceback_as_html
 from exceptions.queryexceptions import InvalidInputQuery
 from app.utils.processquery import process_query_params
 
@@ -47,13 +49,13 @@ def server_error(e):
         err (string)
         err_code (int)
     """
-    logger.error(e)
-    if type(e) == DBClientResponseError:
-        return str(e), 502
+    log_last_exception()
+    if isinstance(e, DBClientResponseError):
+        return format_traceback_as_html(), 502
     if type(e) in (InvalidInputQuery, QueryBadFormed):
-        return str(e), 400
+        return format_traceback_as_html(), 400
     else:
-        return str(e), 500
+        return format_traceback_as_html(), 500
 
 
 if __name__ == '__main__':

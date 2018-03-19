@@ -12,28 +12,28 @@ from app.utils.validation import ParamValidator
 def get_single_query_parameter_test_mappings_restricted():
     single_query_parameter_test_mappings_restricted = {
         'string': ParamValidator(
-            name='string',
+            snake_case_name='string',
             param_type=Literal,
             is_list=False,
             datatype=XSD.string,
             allowed_values=['string1', 'string2', 'string3']
         ),
         'duration': ParamValidator(
-            name='duration',
+            snake_case_name='duration',
             param_type=Literal,
             is_list=False,
             datatype=XSD.duration,
             allowed_values=['0.1', '0.2', '0.3']
         ),
         'datetime': ParamValidator(
-            name='datetime',
+            snake_case_name='datetime',
             param_type=Literal,
             is_list=False,
             datatype=XSD.datetime,
             allowed_values=['2018-01-01T00:00:00', '2018-01-02T00:00:00', '2018-01-03T00:00:00', ]
         ),
         'uri': ParamValidator(
-            name='uri',
+            snake_case_name='uri',
             param_type=URIRef,
             is_list=False,
             allowed_values=['http://purl.org/bbcrd/mango/tag1', 'http://purl.org/bbcrd/mango/tag2',

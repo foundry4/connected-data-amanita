@@ -5,6 +5,7 @@ import pytest
 from app import contentgraph
 from app.clients.stardogclient import StardogClient
 from app.clients import sparqlclient
+from app.utils import misc
 from tests.testdata import cgdata
 
 

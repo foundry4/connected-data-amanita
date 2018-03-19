@@ -8,18 +8,18 @@ logger.setLevel(logging.DEBUG)
 
 
 class ParamValidator:
-    def __init__(self, name, param_type, allowed_values=None, is_list=False, **kwargs):
+    def __init__(self, snake_case_name, param_type, allowed_values=None, is_list=False, **kwargs):
         """
         Class for storing and validating input query parameters defined in the api spec
 
         Arguments:
-            name (string): the name of the parameter based on the spec
+            snake_case_name (string): the name of the parameter based on the spec
             param_type (type): the expected type of the parameter, eg Literal or URIRef
             allowed_values (list): allowed values, 'None' for no restrictions
             is_list (bool): if multiple values are expected for this parameter, eg tags
             kwargs (dict): keyword args passed to type on casting eg Literal('example', datatype=XSD.string)
         """
-        self.name = name
+        self.snake_case_name = snake_case_name
         assert type(param_type) == type
         self.param_type = param_type
         self.allowed_values = allowed_values
@@ -46,7 +46,7 @@ class ParamValidator:
         """Check multiple values not passed to parameter that only expects one."""
         if isinstance(v, list) and not self.is_list:
             raise InvalidInputParameterValue(
-                f'{len(v)} values given to parameter {self.name} when single value expected.')
+                f'{len(v)} values given to parameter {self.snake_case_name} when single value expected.')
 
     def _cast_vals(self, v):
         """Cast value to type defined in apiparams.py"""

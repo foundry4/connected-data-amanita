@@ -1,78 +1,75 @@
 from rdflib import Literal, URIRef
 from rdflib.namespace import XSD
+from app.utils.namespaces import namespaces as NS
 
 from app.utils.validation import ParamValidator
-
-
-# TODO: DATALAB-150: stardog content needs to be re-ingested, changes to be reflected here to mirror latest api spec
-# TODO implement sort
-# todo: fix duration on ingest
-# todo: need things like embargoes on filter?
-# todo: implement date on translator
-
-#
-# class ValidatedSortLiteral():
-#     def __init__(self, sort_string, datatype):
-#         if sort_string[0] not in ['+', '-']:
-#             raise InvalidInputParameterValue('The first character of the sort value must be either "+" (ASC) or "-" '
-#                                              f'(DESC), given value is {sort_string[0]}.')
-#         if sort_string[1:] not in response_fields:
-#             raise InvalidInputParameterValue(f'The given field, "{sort_string[1:]}", cannot be sorted by. Allowed fields are {response_fields}.')
 
 response_fields = ['programme', 'medium', 'duration', 'publicationDate', 'masterbrand', 'genre']
 
 
+class MediaLiteral():
+    def __init__(self, media_str):
+        if media_str == 'video':
+            media_lit = URIRef(NS['dct'].MovingImage)
+        elif media_str == 'audio':
+            media_lit = URIRef(NS['dct'].Sound)
+        else:
+            raise ValueError('Invalid media type.')
+        self.media_lit = media_lit
+
+    def n3(self):
+        return self.media_lit.n3()
+
+
 query_parameter_validators = {
     'media': ParamValidator(
-        name='media',
-        param_type=Literal,
-        allowed_values=['Video', 'Audio', 'Text'],
+        snake_case_name='media',
+        param_type=MediaLiteral,
+        allowed_values=['video', 'audio'],
         is_list=True,
-        datatype=XSD.string
     ),
     'sort': ParamValidator(
-        name='sort',
+        snake_case_name='sort',
         param_type=str,
         is_list=False,
-        allowed_values=['+'+f for f in response_fields] + ['-'+f for f in response_fields]
+        allowed_values=response_fields + [f'-{field}' for field in response_fields]
     ),
     'maxDuration': ParamValidator(
-        name='maxDuration',
+        snake_case_name='max_duration',
         param_type=Literal,
         is_list=False,
         datatype=XSD.duration
     ),
     'region': ParamValidator(
-        name='region',
+        snake_case_name='region',
         param_type=Literal,
         is_list=False,
         allowed_values=['uk', 'ex-uk'],
         datatype=XSD.string
     ),
     'publishedAfter': ParamValidator(
-        name='publishedAfter',
+        snake_case_name='published_after',
         param_type=Literal,
         is_list=False,
         datatype=XSD.datetime
     ),
     'categories': ParamValidator(
-        name='categories',
+        snake_case_name='categories',
         param_type=Literal,
         is_list=True,
-        datatype=XSD.string
     ),
     'tags': ParamValidator(
-        name='tags',
+        snake_case_name='tags',
         param_type=URIRef,
-        is_list=True,
+        is_list=True
     ),
     'limit': ParamValidator(
-        name='limit',
+        snake_case_name='limit',
         param_type=int,
         is_list=False
     ),
     'offset': ParamValidator(
-        name='offset',
+        snake_case_name='offset',
         param_type=int,
         is_list=False
     )

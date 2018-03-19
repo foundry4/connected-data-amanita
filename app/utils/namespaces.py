@@ -21,10 +21,5 @@ namespaces = {
     'potags': Namespace('http://www.holygoat.co.uk/owl/redwood/0.1/tags/'),
     'tl': Namespace('http://purl.org/NET/c4dm/timeline.owl#'),
     'vs': Namespace('http://www.w3.org/2003/06/sw-vocab-status/ns#'),
-    'mango': Namespace('urn:bbc:mango:'),
-    'starfruit': Namespace('urn:bbc:starfruit:'),
-    'rdtags': Namespace('http://purl.org/bbcrd/tag_creator/'),
     'schema': Namespace('http://schema.org/'),
-    'pid': Namespace('urn:bbc:pid:'),
-    'datalab': Namespace('http://bbc.co.uk/ontologies/datalab/')
-}
+    'datalab': Namespace('datalab:bbc.co.uk,2018/FIXME/')}

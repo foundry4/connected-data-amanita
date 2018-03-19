@@ -20,10 +20,10 @@ real_params = {
     'tags': [Literal('tag1', datatype=XSD.string)],
     'limit': 20,
     'offset': 0,
-    # 'sort': Literal('maxDuration', datatype=XSD.string),
+    'sort': 'duration',
     'region': Literal('uk', datatype=XSD.string),
-    'publishedAfter': Literal('2012-02-17T13:00:10', datatype=XSD.datetime),
-    'categories': Literal('category', datatype=XSD.string)
+    'published_after': Literal('2012-02-17T13:00:10', datatype=XSD.datetime),
+    'categories': [Literal('genre1', datatype=XSD.string), Literal('genre2', datatype=XSD.string)]
 }
 
 

@@ -24,7 +24,8 @@ def _cast_params_to_rdflib(param_dict):
     validated_typed_params, exceptions = {}, []
     for param, val in param_dict.items():
         try:
-            validated_typed_params[param] = _cast_param_to_rdflib(param, val)
+            snake_case_name, validated_param = _cast_param_to_rdflib(param, val)
+            validated_typed_params[snake_case_name] = validated_param
         except (InvalidInputParameter, InvalidInputParameterValue) as e:
             exceptions.append(f'{type(e).__name__}: {str(e)}')
 
@@ -42,6 +43,7 @@ def _cast_param_to_rdflib(param_name, param_val):
         raise InvalidInputParameter(
             f'Parameter `{param_name}` is not included in the defined parameters {list(query_parameter_validators)}')
 
+    snake_case_name = validator.snake_case_name
     typed_param_val = validator.validate(param_val)
 
-    return typed_param_val
+    return snake_case_name, typed_param_val
