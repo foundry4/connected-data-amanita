@@ -27,3 +27,4 @@ class SPARQLClient(GraphClient):
         ns_manager = NamespaceManager(Graph(self.store))
         for namespace in ns.items():
             ns_manager.bind(*namespace)
+

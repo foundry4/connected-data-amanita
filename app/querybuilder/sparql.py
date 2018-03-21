@@ -1,8 +1,10 @@
 from app.utils import constants
+from exceptions.queryexceptions import InvalidInputParameterCombination
 
 
 def build_get_content_query(media=None, tags=None, sort=None, max_duration=None, published_after=None, categories=None,
-                            region=None, limit=constants.DEFAULT_QUERY_LIMIT, offset=constants.DEFAULT_QUERY_OFFSET):
+                            region=None, random=False, similar_to=None, limit=constants.DEFAULT_QUERY_LIMIT,
+                            offset=constants.DEFAULT_QUERY_OFFSET):
     """
     Construct a SPARQL query to retrieve content from the content graph. Filter by query_params
 
@@ -38,9 +40,11 @@ def build_get_content_query(media=None, tags=None, sort=None, max_duration=None,
     )
 
     if published_after is not None:
-        raise NotImplementedError('The parameter`publishedAfter` is not yet implemented')
+        raise NotImplementedError('The parameter `publishedAfter` is not yet implemented')
     if region is not None:
-        raise NotImplementedError('The parameter`region` is not yet implemented')
+        raise NotImplementedError('The parameter `region` is not yet implemented')
+    if sort is not None and random:
+        raise InvalidInputParameterCombination('Cannot specify both sort and random.')
 
     regular_fields = '?programme ?pid ?media ?duration ?publicationDate ?masterBrand'
     query_string = f"""
@@ -67,6 +71,8 @@ def build_get_content_query(media=None, tags=None, sort=None, max_duration=None,
             (GROUP_CONCAT(?thirdLevelGenreKey;separator="{constants.TAG_SEPARATOR}") as ?thirdLevelGenreKeys)
 
         WHERE {{
+            {_build_similar_to_statement(similar_to, 'po:masterbrand', 'masterBrand')}
+            
             ?programme 
                 a po:Programme ;
                 datalab:pid ?pid ;
@@ -116,7 +122,7 @@ def build_get_content_query(media=None, tags=None, sort=None, max_duration=None,
             {genre_bindings_statement}      
         }}
         GROUP BY {regular_fields} 
-        {_build_sort_statement(sort)}
+        {'ORDER BY RAND()' if random else _build_sort_statement(sort)}
         LIMIT {limit}
         OFFSET {offset}
     """
@@ -178,4 +184,16 @@ def _build_filter_statement(binding, filter_operation, object_literal):
     if object_literal is None:
         return ''
     stmt = f"FILTER (?{binding} {filter_operation} {object_literal.n3()}) .\n"
+    return stmt
+
+
+def _build_similar_to_statement(pid, field, varname):
+    if pid is None:
+        return ''
+    stmt = f"""
+            ?programmeSimilar 
+                a po:Programme ;
+                datalab:pid {pid.n3()} ;
+                {field} ?{varname} .
+    """
     return stmt
