@@ -4,10 +4,10 @@ from app.utils.namespaces import namespaces as NS
 
 from app.utils.validation import ParamValidator
 
-response_fields = ['programme', 'medium', 'duration', 'publicationDate', 'masterbrand', 'genre']
+response_fields = ['programme', 'media', 'duration', 'publicationDate', 'masterBrand']
 
 
-class MediaLiteral():
+class MediaLiteral:
     def __init__(self, media_str):
         if media_str == 'video':
             media_lit = URIRef(NS['dct'].MovingImage)
@@ -19,6 +19,22 @@ class MediaLiteral():
 
     def n3(self):
         return self.media_lit.n3()
+
+
+class LowercaseLiteral:
+    def __init__(self, str_lit):
+        self.str_lit = Literal(str_lit.lower())
+
+    def n3(self):
+        return self.str_lit.n3()
+
+
+class BoolFromString:
+    def __init__(self, bool_str):
+        self.bool = True if bool_str in ['true', 'True'] else False
+
+    def __bool__(self):
+        return self.bool
 
 
 query_parameter_validators = {
@@ -55,7 +71,7 @@ query_parameter_validators = {
     ),
     'categories': ParamValidator(
         snake_case_name='categories',
-        param_type=Literal,
+        param_type=LowercaseLiteral,
         is_list=True,
     ),
     'tags': ParamValidator(
@@ -72,5 +88,16 @@ query_parameter_validators = {
         snake_case_name='offset',
         param_type=int,
         is_list=False
-    )
+    ),
+    'random': ParamValidator(
+        snake_case_name='random',
+        param_type=BoolFromString,
+        is_list=False,
+        allowed_values=['true', 'false']
+    ),
+    'similarTo': ParamValidator(
+        snake_case_name='similar_to',
+        param_type=Literal,
+        is_list=False,
+    ),
 }

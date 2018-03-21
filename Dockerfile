@@ -10,7 +10,8 @@ RUN apt-get install -y python python-pip python-virtualenv gunicorn
 RUN mkdir -p /deploy/app
 COPY gunicorn_config.py /deploy/gunicorn_config.py
 COPY app /deploy/app
-RUN pip install -r /deploy/app/requirements.txt
+COPY requirements.txt /deploy/requirements.txt
+RUN pip install -r /deploy/requirements.txt
 WORKDIR /deploy/app
 
 EXPOSE 5000

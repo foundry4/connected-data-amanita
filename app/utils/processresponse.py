@@ -45,40 +45,44 @@ def transform_bindings(bindings):
     return results
 
 
-def generate_tag_list(tags, taguris, sources, confidences):
+def generate_tag_list(tag_names, tag_uris, tag_sources, tag_confidences):
+    """Given lists of tags & properties, represent the tags/properties in the structure defined in the API
+    specifications."""
     tags_by_source = []
-    for source in set(sources):
+    for source in sorted(set(tag_sources)):
         tags_by_source.append({
             'Source': source,
-            'TagList': remove_duplicates_from_results([{
+            'TagList': remove_duplicates_from_results_and_sort([{
                 'Tag': taguri,
                 'HumanReadable': tag,
                 'Confidence': float(conf)
-            } for tag, taguri, sourceiter, conf in zip(tags, taguris, sources, confidences) if sourceiter == source])
+            } for tag, taguri, sourceiter, conf in zip(tag_names, tag_uris, tag_sources, tag_confidences)
+                if sourceiter == source])
         })
     return tags_by_source
 
 
-def generate_genre_dict(top_uris, second_uris, third_uris, tops, seconds, thirds, top_keys, second_keys, third_keys):
+def generate_genre_dict(uris_1, uris_2, uris_3, names_1, names_2, names_3, keys_1, keys_2, keys_3):
+    """Given lists of genres and properties, represent them in the structure defined in the API specifications."""
     genres = {}
-    if top_uris is not None:
-        genres['TopLevel'] = remove_duplicates_from_results([{
-            'Genre': topuri,
-            'HumanReadable': top,
-            'Key':key
-        } for topuri, top, key in zip(top_uris, tops, top_keys)])
-    if second_uris is not None:
-        genres['SecondLevel'] = remove_duplicates_from_results([{
-            'Genre': seconduri,
-            'HumanReadable': second,
-            'Key':key
-        } for seconduri, second, key in zip(second_uris, seconds, second_keys)])
-    if third_uris is not None:
-        genres['ThirdLevel'] = remove_duplicates_from_results([{
-            'Genre': thirduri,
-            'HumanReadable': third,
-            'Key':key
-        } for thirduri, third, key in zip(third_uris, thirds, third_keys)])
+    if uris_1 is not None:
+        genres['TopLevel'] = remove_duplicates_from_results_and_sort([{
+            'Genre': uri,
+            'HumanReadable': name,
+            'Key': key
+        } for uri, name, key in zip(uris_1, names_1, keys_1)])
+    if uris_2 is not None:
+        genres['SecondLevel'] = remove_duplicates_from_results_and_sort([{
+            'Genre': uri,
+            'HumanReadable': name,
+            'Key': key
+        } for uri, name, key in zip(uris_2, names_2, keys_2)])
+    if uris_3 is not None:
+        genres['ThirdLevel'] = remove_duplicates_from_results_and_sort([{
+            'Genre': uri,
+            'HumanReadable': name,
+            'Key': key
+        } for uri, name, key in zip(uris_3, names_3, keys_3)])
     return genres
 
 
@@ -105,18 +109,23 @@ def is_result_set_empty(sparql_result):
     return is_empty
 
 
-def remove_duplicates_from_results(results):
+def remove_duplicates_from_results_and_sort(results):
     """
-    The `GROUP_CONCAT` SPARQL operator returns duplicates that are not present in the CG, remove them.
+    The `GROUP_CONCAT` SPARQL operator returns duplicates that are not present in the CG, remove them. Sort the results
+    too as otherwise the order is unpredictable and tests fail.
+    """
 
-    NB: I have tried refactoring the query to use multiple subqueries but I couldn't get UNION to return the correct
-    results.
-    In addition, using `distinct` in group concat has two issues:
-    1) it will remove the tag source info which will contain valid duplicates eg ['mango',' mango', 'starfruit']
-    2) it messes with the ordering of results
-    """
+    # I have tried refactoring the query to use multiple subqueries but I couldn't get UNION to return the correct
+    # results.
+    # In addition, using `distinct` in group concat has two issues:
+    # 1) it will remove the tag source info which will contain valid duplicates eg ['mango',' mango', 'starfruit']
+    # 2) it messes with the ordering of results
+
+    # As content of dicts in list are unknown, sort by all values cast to a string. Expensive but ensures flexibility.
     if isinstance(results[0], dict):
         dupes_rm = [dict(t) for t in set([tuple(d.items()) for d in results])]
+        res_sorted = sorted(dupes_rm, key=lambda x: str(x.values()))
     else:
         dupes_rm = list(set(results))
-    return dupes_rm
+        res_sorted = sorted(dupes_rm)
+    return res_sorted
