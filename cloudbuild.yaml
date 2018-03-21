@@ -1,6 +1,6 @@
 steps:
   - name: 'gcr.io/cloud-builders/git'
-    args: ['clone', 'https://github.com/$_REPO_NAME']
+    args: ['clone', 'https://github.com/bbc/$_REPO_NAME']
   - name: 'gcr.io/cloud-builders/docker'
     args: ["build", "-t", "gcr.io/$PROJECT_ID/$_REPO_NAME:$REVISION_ID", "-f", "Dockerfile", "."]
 images:
