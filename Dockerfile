@@ -1,20 +1,12 @@
-FROM ubuntu:latest
-MAINTAINER Beth Anderson <beth.anderson@bbc.co.uk>
+FROM bbc-connected-data/microservice-base
 
-ENV DEBIAN_FRONTEND noninteractive
+# Copy the application over into the container.
+ADD . $APP_PATH
 
-RUN apt-get update
-RUN apt-get install -y python python-pip python-virtualenv gunicorn
+# Install  the application's dependencies.
+RUN pip3 install -r $APP_PATH/requirements.txt
 
-# Setup flask application
-RUN mkdir -p /deploy/app
-COPY gunicorn_config.py /deploy/gunicorn_config.py
-COPY app /deploy/app
-COPY requirements.txt /deploy/requirements.txt
-RUN pip install -r /deploy/requirements.txt
-WORKDIR /deploy/app
-
-EXPOSE 5000
-
-# Start gunicorn
-CMD ["/usr/bin/gunicorn", "--config", "/deploy/gunicorn_config.py", "cg:app"]
+#set env vars
+ENV GUNICORN_MODULE=app.api
+ENV GUNICORN_CALLABLE=app
+ENV GUNICORN_PORT=5000
