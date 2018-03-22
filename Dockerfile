@@ -1,4 +1,4 @@
-FROM bbc-connected-data/microservice-base
+FROM gcr.io/bbc-connected-data/microservice-base
 
 # Copy the application over into the container.
 ADD . $APP_PATH
