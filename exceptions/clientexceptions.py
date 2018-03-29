@@ -3,3 +3,6 @@ class DBClientResponseError(Exception):
     pass
 
 
+class NoResultsFoundError(Exception):
+    """Error when no results found"""
+    pass

@@ -46,10 +46,29 @@ class GraphClient(ABC):
         pass
 
     @abstractmethod
-    def get_content(self, query_params):
+    def get_content(self, validated_query_params):
         """
         Get list of content from graph and filter based on `query_params`.
         Args:
-            query_params (dict): _validated_ query parameters for filtering results
+            validated_query_params (dict): _validated_ query parameters for filtering results
+        """
+        pass
+
+    @abstractmethod
+    def get_item(self, validated_item_uri):
+        """
+        Get list of content from graph and filter based on `query_params`.
+        Args:
+            validated_item_uri (rdflib.URIRef): _validated_ uri of item to get data for
+        """
+        pass
+
+    @abstractmethod
+    def get_similar(self, validated_item_uri, validated_query_params):
+        """
+        Get list of content related to given item uri and filter based on `query_params`.
+        Args:
+            validated_query_params: _validated_ query parameters for filtering results
+            validated_item_uri (rdflib.URIRef): _validated_ uri of item to get data for
         """
         pass

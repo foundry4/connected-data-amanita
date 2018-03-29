@@ -8,8 +8,8 @@ from tests.testdata import cgdata as cg
 
 
 def test_get_bindings_from_response():
-    valid_resp = get_bindings_from_response(cg.graph_response)
-    assert valid_resp == cg.graph_response['results']['bindings']
+    valid_resp = get_bindings_from_response(cg.multi_item_graph_response)
+    assert valid_resp == cg.multi_item_graph_response['results']['bindings']
 
     assert get_bindings_from_response({'results': {'bindings': []}}) == []
 
@@ -24,7 +24,7 @@ def test_get_bindings_from_response():
 
 
 def test_transform_bindings():
-    transformed = transform_bindings(cg.graph_response['results']['bindings'])
-    assert transformed == cg.content_graph_api_response['Results']
+    transformed = transform_bindings(cg.multi_item_graph_response['results']['bindings'])
+    assert transformed == cg.multi_item_api_response['Results']
 
     assert transform_bindings([]) == []

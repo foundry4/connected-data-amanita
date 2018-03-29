@@ -13,7 +13,7 @@ class ParamValidator:
         Class for storing and validating input query parameters defined in the api spec
 
         Arguments:
-            snake_case_name (string): the name of the parameter based on the spec
+            snake_case_name (string): the name of the parameter
             param_type (type): the expected type of the parameter, eg Literal or URIRef
             allowed_values (list): allowed values, 'None' for no restrictions
             is_list (bool): if multiple values are expected for this parameter, eg tags
@@ -34,7 +34,7 @@ class ParamValidator:
         return v_cast
 
     def _check_values_allowed(self, v):
-        """Check value of parameter against optional list of allowed values specified in apiparams.py"""
+        """Check value of parameter against optional list of allowed values specified in types.py"""
         if self.allowed_values is not None:
             v_list = [v] if not isinstance(v, list) else v
             invalid_values = [i for i in v_list if i not in self.allowed_values]
@@ -49,7 +49,7 @@ class ParamValidator:
                 f'{len(v)} values given to parameter {self.snake_case_name} when single value expected.')
 
     def _cast_vals(self, v):
-        """Cast value to type defined in apiparams.py"""
+        """Cast value to type defined in types.py"""
         if self.is_list:
             v = [v] if not isinstance(v, list) else v
             v_cast = [self.param_type(i, **self.kwargs) for i in v]

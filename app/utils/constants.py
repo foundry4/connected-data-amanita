@@ -7,5 +7,5 @@ DEFAULT_STARDOG_ENDPOINT = 'http://localhost:5820/content-graph/query'
 DEFAULT_STARDOG_USER = 'admin'
 DEFAULT_STARDOG_PASS = 'admin'
 
-TAG_SEPARATOR = '^'  # separating char to use when converting string of tags to python list - cant use comma as some
+TAG_SEPARATOR = '^'  # separating char to use when converting string of tags in results to python list - cant use comma as some
 # tags have a comma in

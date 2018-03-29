@@ -53,8 +53,8 @@ def generate_tag_list(tag_names, tag_uris, tag_sources, tag_confidences):
         tags_by_source.append({
             'Source': source,
             'TagList': remove_duplicates_from_results_and_sort([{
-                'Tag': taguri,
-                'HumanReadable': tag,
+                'Uri': taguri,
+                'Label': tag,
                 'Confidence': float(conf)
             } for tag, taguri, sourceiter, conf in zip(tag_names, tag_uris, tag_sources, tag_confidences)
                 if sourceiter == source])
@@ -67,20 +67,20 @@ def generate_genre_dict(uris_1, uris_2, uris_3, names_1, names_2, names_3, keys_
     genres = {}
     if uris_1 is not None:
         genres['TopLevel'] = remove_duplicates_from_results_and_sort([{
-            'Genre': uri,
-            'HumanReadable': name,
+            'Uri': uri,
+            'Label': name,
             'Key': key
         } for uri, name, key in zip(uris_1, names_1, keys_1)])
     if uris_2 is not None:
         genres['SecondLevel'] = remove_duplicates_from_results_and_sort([{
-            'Genre': uri,
-            'HumanReadable': name,
+            'Uri': uri,
+            'Label': name,
             'Key': key
         } for uri, name, key in zip(uris_2, names_2, keys_2)])
     if uris_3 is not None:
         genres['ThirdLevel'] = remove_duplicates_from_results_and_sort([{
-            'Genre': uri,
-            'HumanReadable': name,
+            'Uri': uri,
+            'Label': name,
             'Key': key
         } for uri, name, key in zip(uris_3, names_3, keys_3)])
     return genres
@@ -129,3 +129,4 @@ def remove_duplicates_from_results_and_sort(results):
         dupes_rm = list(set(results))
         res_sorted = sorted(dupes_rm)
     return res_sorted
+
