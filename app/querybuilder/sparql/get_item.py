@@ -13,7 +13,7 @@ def build_query(item_uri):
     Returns:
         query_string (string): SPARQL query
     """
-    regular_fields = '?pid ?media ?duration ?publicationDate ?masterBrand'
+    regular_fields = '?title ?image ?version ?pid ?media ?duration ?publicationDate ?masterBrand'
     query_string = f"""
         SELECT 
             {regular_fields}

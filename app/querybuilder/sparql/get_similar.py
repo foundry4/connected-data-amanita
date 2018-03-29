@@ -34,7 +34,7 @@ def build_query(item_uri=None, media_type=None, sort=None, max_duration=None, pu
     if region is not None:
         raise NotImplementedError('The parameter `region` is not yet implemented')
 
-    regular_fields = '?programme ?pid ?media ?duration ?publicationDate ?masterBrand'
+    regular_fields = '?title ?image ?version ?programme ?pid ?media ?duration ?publicationDate ?masterBrand'
     query_string = f"""
         SELECT 
             {regular_fields}

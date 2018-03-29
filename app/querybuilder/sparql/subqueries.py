@@ -103,6 +103,9 @@ def build_regular_fields_pattern_statement(prog_uri="?programme"):
     """
     stmt = f"""
     {prog_uri} a po:Programme ;
+        rdfs:label ?title ;
+        schema:image ?image ;
+        po:version ?version ;
         datalab:pid ?pid ;
         dct:type ?media ;
         xsd:duration ?duration ;

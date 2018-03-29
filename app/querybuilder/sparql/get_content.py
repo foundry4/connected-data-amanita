@@ -39,7 +39,7 @@ def build_query(media_type=None, tags=None, sort=None, max_duration=None, publis
     if sort is not None and random:
         raise InvalidInputParameterCombination('Cannot specify both `sort` and `random`.')
 
-    regular_fields = '?programme ?pid ?media ?duration ?publicationDate ?masterBrand'
+    regular_fields = '?title ?image ?version ?programme ?pid ?media ?duration ?publicationDate ?masterBrand'
     query_string = f"""
         SELECT 
             {regular_fields}
