@@ -1,8 +1,10 @@
 """API is run from here, access at localhost:5000. To run queries from browser, visit the `localhost:5000/content`
 endpoint and add parameters like so `/content?limit=5`."""
+from urllib.request import url2pathname
 
 from SPARQLWrapper.SPARQLExceptions import QueryBadFormed
-from flask import Flask, jsonify, request, logging
+from flask import Flask, jsonify, request
+import logging
 
 from app import contentgraph
 from exceptions.clientexceptions import DBClientResponseError, NoResultsFoundError
@@ -12,7 +14,7 @@ from app.utils.processquery import process_list_content_query_params, process_it
     process_list_similar_query_params
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 app = Flask(__name__)
 
@@ -63,7 +65,7 @@ def list_similar_content(item_uri):
     """
     query_params = request.args
     validated_query_params = process_list_similar_query_params(query_params)
-    validated_uri = process_item_query_uri(item_uri)
+    validated_uri = process_item_query_uri(url2pathname(item_uri))
     res = contentgraph.get_similar_items_from_graph(validated_uri, validated_query_params)
     return jsonify(res), 200
 

@@ -18,10 +18,17 @@ python3 app/hello.py
 
 3. Visit the application at http://localhost:5000.
 
+## Style
+
+Check if your code is PEP8 compliant:
+```
+pycodestyle app --max-line-length=119
+```
+
 ## Tests
 Run tests using:
 ```
-pytest
+py.test --cov-report term-missing --cov=app tests/ --cov-branch -vv
 ```
 
 ## Building & Deployment

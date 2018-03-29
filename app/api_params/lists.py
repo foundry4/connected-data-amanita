@@ -1,9 +1,9 @@
 """Lists of API Parameters for particular endpoints."""
-from app.api_params.definitions import media_type, sort, max_duration, region, published_after, categories, tags, limit, \
-    offset, random, similarity_method
+from app.api_params.definitions import media_type, sort, max_duration, region, published_after, categories, tags, \
+    limit, offset, random, similarity_method
 
 list_content_query_parameter_validators = {
-    'media': media_type,
+    'mediaType': media_type,
     'sort': sort,
     'maxDuration': max_duration,
     'region': region,
