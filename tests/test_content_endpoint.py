@@ -31,7 +31,7 @@ class FakeStardog:
         pass
 
 
-raw_query_params = ['media=video', 'maxDuration=PT30M', 'region=uk', 'publishedAfter=2012-05-30T09:00:00',
+raw_query_params = ['mediaType=video', 'maxDuration=PT30M', 'region=uk', 'publishedAfter=2012-05-30T09:00:00',
                     'categories=genre', 'tags=tag', 'limit=10', 'offset=1', 'sort=-duration']
 
 
@@ -44,7 +44,7 @@ def test_parameters(flask_app, monkeypatch, params):
     assert r.status_code == 200
 
 
-raw_query_params_multi_val = ['media=audio', 'media=video', 'categories=genre1', 'categories=genre2', 'tags=tag1',
+raw_query_params_multi_val = ['mediaType=audio', 'mediaType=video', 'categories=genre1', 'categories=genre2', 'tags=tag1',
                               'tags=tag2']
 
 
@@ -57,7 +57,7 @@ def test_parameters_multi_val(flask_app, monkeypatch, params):
     assert r.status_code == 200
 
 
-raw_query_params_bad_values = ['media=wrong', 'region=france']
+raw_query_params_bad_values = ['mediaType=wrong', 'region=france']
 
 
 @pytest.mark.parametrize('params', raw_query_params_bad_values)
