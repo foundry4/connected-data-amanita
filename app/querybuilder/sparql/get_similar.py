@@ -36,7 +36,7 @@ def build_query(item_uri=None, media_type=None, sort=None, max_duration=None, pu
 
     regular_fields = '?title ?image ?version ?programme ?pid ?media ?duration ?publicationDate ?masterBrand'
     query_string = f"""
-        SELECT 
+        SELECT
             {regular_fields}
             {build_similar_to_select_statement()}
             {build_tags_select_statement()}
@@ -46,12 +46,12 @@ def build_query(item_uri=None, media_type=None, sort=None, max_duration=None, pu
             {build_similar_to_pattern_statement('?programme', item_uri, similarity_method)}
             {build_regular_fields_pattern_statement('?programme')}
             {build_tags_pattern_statement('?programme')}
-            {build_genres_pattern_statement('?programme')}  
+            {build_genres_pattern_statement('?programme')}
 
 
             {build_values_oring_statement('media', media_type)}
             {build_filter_statement('duration', '<', max_duration)}
-            {build_filter_statement('published_date', '>', published_after)}    
+            {build_filter_statement('published_date', '>', published_after)}
         }}
         GROUP BY {regular_fields}
         ORDER BY DESC(?similarity) {build_sort_statement(sort)}
@@ -60,5 +60,3 @@ def build_query(item_uri=None, media_type=None, sort=None, max_duration=None, pu
     """
 
     return query_string
-
-

@@ -170,23 +170,23 @@ def build_genres_pattern_statement(prog_uri='?programme'):
         prog_uri (str): sparql variable or programme URI
     """
     stmt = f"""
-    OPTIONAL {{            
+    OPTIONAL {{
         {prog_uri} po:genre ?topLevelGenreUri .
-        ?topLevelGenreUri 
+        ?topLevelGenreUri
             a datalab:topLevelGenre ;
             dct:title ?topLevelGenre ;
             datalab:genreKey ?topLevelGenreKey .
     }}
     OPTIONAL {{
         {prog_uri} po:genre ?secondLevelGenreUri .
-        ?secondLevelGenreUri 
+        ?secondLevelGenreUri
             a datalab:secondLevelGenre ;
             dct:title ?secondLevelGenre ;
             datalab:genreKey ?secondLevelGenreKey .
     }}
     OPTIONAL {{
         {prog_uri} po:genre ?thirdLevelGenreUri .
-        ?thirdLevelGenreUri 
+        ?thirdLevelGenreUri
             a datalab:thirdLevelGenre ;
             dct:title ?thirdLevelGenre ;
             datalab:genreKey ?thirdLevelGenreKey .

@@ -129,4 +129,3 @@ def remove_duplicates_from_results_and_sort(results):
         dupes_rm = list(set(results))
         res_sorted = sorted(dupes_rm)
     return res_sorted
-

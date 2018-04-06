@@ -41,16 +41,16 @@ def build_query(media_type=None, tags=None, sort=None, max_duration=None, publis
 
     regular_fields = '?title ?image ?version ?programme ?pid ?media ?duration ?publicationDate ?masterBrand'
     query_string = f"""
-        SELECT 
+        SELECT
             {regular_fields}
             {build_tags_select_statement()}
             {build_genres_select_statement()}
-            
+
         WHERE {{
             {build_regular_fields_pattern_statement()}
             {build_tags_pattern_statement()}
-            {build_genres_pattern_statement()}  
-            
+            {build_genres_pattern_statement()}
+
             {build_sparql_anding_statement(
                 object_list=tags,
                 predicate_str='datalab:tag/datalab:tagValue',
@@ -63,9 +63,9 @@ def build_query(media_type=None, tags=None, sort=None, max_duration=None, publis
                 object_list=categories,
                 predicate_str='po:genre/datalab:genreKey',
                 object_binding='programme'
-            )}      
+            )}
         }}
-        GROUP BY {regular_fields} 
+        GROUP BY {regular_fields}
         {'ORDER BY RAND()' if random else 'ORDER BY ' + build_sort_statement(sort) if sort is not None else ''}
         LIMIT {limit}
         OFFSET {offset}

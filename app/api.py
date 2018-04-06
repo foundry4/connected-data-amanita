@@ -3,7 +3,8 @@ endpoint and add parameters like so `/content?limit=5`."""
 from urllib.request import url2pathname
 
 from SPARQLWrapper.SPARQLExceptions import QueryBadFormed
-from flask import Flask, jsonify, request, logging
+from flask import Flask, jsonify, request
+import logging
 
 from app import contentgraph
 from exceptions.clientexceptions import DBClientResponseError, NoResultsFoundError
@@ -13,7 +14,7 @@ from app.utils.processquery import process_list_content_query_params, process_it
     process_list_similar_query_params
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 app = Flask(__name__)
 
