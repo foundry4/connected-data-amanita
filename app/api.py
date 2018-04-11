@@ -4,6 +4,7 @@ from urllib.request import url2pathname
 
 from SPARQLWrapper.SPARQLExceptions import QueryBadFormed
 from flask import Flask, jsonify, request
+import os
 import logging
 
 from app import contentgraph
@@ -15,6 +16,9 @@ from app.utils.processquery import process_list_content_query_params, process_it
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
+DEFAULT_HTTP_PORT = "5001"
+PORT = int(os.getenv("PORT", DEFAULT_HTTP_PORT))
 
 app = Flask(__name__)
 
@@ -93,4 +97,4 @@ def server_error(e):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=PORT, debug=True)

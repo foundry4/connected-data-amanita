@@ -5,18 +5,28 @@ API for the content graph. Implemented with the Python 2
 [Green Unicorn](http://gunicorn.org/) Python WSGI HTTP Server.
 
 ## Run Locally
-1. Create a virtualenv, install dependencies:
+### 1. Create a virtualenv, install dependencies:
 ```
-virtualenv env
-source env/bin/activate
+python3 -m venv env
+. env/bin/activate
 pip3 install -r requirements.txt
 ```
-2. Run the service:
+
+## 1. Set up location of Stardog instance
 ```
-python3 app/hello.py
+export STARDOG_ENDPOINT=http://$SERVER:$PORT/content-graph-test/query
+export STARDOG_USER=$USERNAME
+export STARDOG_PASS=$PASSWORD
 ```
 
-3. Visit the application at http://localhost:5000.
+### 2. Run the service:
+```
+PORT=5001 \
+PYTHONPATH=.:$PYTHONPATH \
+python -m app.api
+```
+
+### 3. Visit the application at http://localhost:5000.
 
 ## Style
 
