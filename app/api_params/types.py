@@ -1,4 +1,5 @@
 """Classes to verify and convert special parameter values."""
+import dateutil as dateutil
 from rdflib import Literal, URIRef
 
 from app.utils.namespaces import namespaces as NS
@@ -32,3 +33,11 @@ class BoolFromString:
 
     def __bool__(self):
         return self.bool
+
+
+class ValidatedDatetime:
+    def __init__(self, datetime_str):
+        self.datetime = dateutil.parser.parse(datetime_str)
+
+    def __str__(self):
+        return str(self.datetime)

@@ -1,26 +1,36 @@
 """Lists of API Parameters for particular endpoints."""
-from app.api_params.definitions import media_type, sort, max_duration, region, published_after, categories, tags, \
-    limit, offset, random, similarity_method
+import os
+
+from app.api_params import rdf_definitions, es_definitions
+from app.utils import constants
+
+DB_CLIENT = os.getenv('DB_CLIENT', constants.DEFAULT_DB_CLIENT)
+if DB_CLIENT == 'stardog':
+    defs = rdf_definitions
+elif DB_CLIENT == 'elasticsearch':
+    defs = es_definitions
+else:
+    raise ValueError(f"No such database: {DB_CLIENT}.")
 
 list_content_query_parameter_validators = {
-    'mediaType': media_type,
-    'sort': sort,
-    'maxDuration': max_duration,
-    'region': region,
-    'publishedAfter': published_after,
-    'categories': categories,
-    'tags': tags,
-    'limit': limit,
-    'offset': offset,
-    'random': random
+    'mediaType': defs.media_type,
+    'sort': defs.sort,
+    'maxDuration': defs.max_duration,
+    'region': defs.region,
+    'publishedAfter': defs.published_after,
+    'categories': defs.categories,
+    'tags': defs.tags,
+    'limit': defs.limit,
+    'offset': defs.offset,
+    'random': defs.random
 }
 list_similar_query_parameter_validators = {
-    'mediaType': media_type,
-    'sort': sort,
-    'maxDuration': max_duration,
-    'region': region,
-    'publishedAfter': published_after,
-    'limit': limit,
-    'offset': offset,
-    'similarityMethod': similarity_method,
+    'mediaType': defs.media_type,
+    'sort': defs.sort,
+    'maxDuration': defs.max_duration,
+    'region': defs.region,
+    'publishedAfter': defs.published_after,
+    'limit': defs.limit,
+    'offset': defs.offset,
+    'similarityMethod': defs.similarity_method,
 }

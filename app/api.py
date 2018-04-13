@@ -19,8 +19,8 @@ from app.utils.processquery import process_list_content_query_params, process_it
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 db_clients = {
-    'stardog':SPARQLClient,
-    'elasticsearch':ESClient
+    'stardog': SPARQLClient,
+    'elasticsearch': ESClient
 }
 
 PORT = int(os.getenv("PORT", constants.DEFAULT_HTTP_PORT))

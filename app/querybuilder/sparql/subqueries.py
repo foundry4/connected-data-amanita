@@ -27,7 +27,7 @@ def build_values_oring_statement(binding, object_list):
     return f"VALUES (?{binding}) {{ {object_bindings} }} .\n"
 
 
-def build_sort_statement(sort_string):
+def build_sort_statement(sort_fields):
     """
     Build terms that follow a SPARQL `ORDER BY` statement, assume sort_string is valid.
 
@@ -35,14 +35,15 @@ def build_sort_statement(sort_string):
         'ORDER BY ASC (?duration)'
     """
     stmt = ''
-    if sort_string is not None:
-        if sort_string[0] == '-':
-            order = 'DESC'
-            field = sort_string[1:]
-        else:
-            order = 'ASC'
-            field = sort_string
-        stmt = f'{order}(?{field})'
+    if sort_fields:
+        for field in sort_fields:
+            if field[0] == '-':
+                order = 'DESC'
+                field = field[1:]
+            else:
+                order = 'ASC'
+                field = field
+            stmt += f' {order}(?{field})'
     return stmt
 
 

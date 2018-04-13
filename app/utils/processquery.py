@@ -1,5 +1,5 @@
 import app.api_params.lists as api_validator_lists
-import app.api_params.definitions as api_validators
+import app.api_params.rdf_definitions as api_validators
 from app.utils.conversions import map_multidict_to_dict
 from exceptions.queryexceptions import InvalidInputParameter, InvalidInputParameterValue, InvalidInputQuery
 
