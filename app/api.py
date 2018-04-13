@@ -7,6 +7,7 @@ from SPARQLWrapper.SPARQLExceptions import QueryBadFormed
 from flask import Flask, jsonify, request, g
 import os
 
+from app.clients.elasticsearch import ESClient
 from app.clients.sparql import SPARQLClient
 from app.utils import constants
 from exceptions.clientexceptions import NoResultsFoundError
@@ -17,12 +18,16 @@ from app.utils.processquery import process_list_content_query_params, process_it
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
+db_clients = {
+    'stardog':SPARQLClient,
+    'elasticsearch':ESClient
+}
 
-DEFAULT_HTTP_PORT = "5001"
-PORT = int(os.getenv("PORT", DEFAULT_HTTP_PORT))
+PORT = int(os.getenv("PORT", constants.DEFAULT_HTTP_PORT))
 DB_ENDPOINT = os.getenv('DB_ENDPOINT', constants.DEFAULT_DB_ENDPOINT)
 DB_USER = os.getenv('DB_USER', constants.DEFAULT_DB_USER)
 DB_PASS = os.getenv('DB_PASS', constants.DEFAULT_DB_PASS)
+DB_CLIENT = db_clients[os.getenv('DB_CLIENT', constants.DEFAULT_DB_CLIENT)]
 logger.info(f'Using credentials:\n endpoint: {DB_ENDPOINT}\n user: {DB_USER}\n pass: {DB_PASS}')
 
 app = Flask(__name__)
@@ -30,7 +35,7 @@ app = Flask(__name__)
 
 def get_db():
     if not hasattr(g, 'database'):
-        sd = SPARQLClient(DB_ENDPOINT, DB_USER, DB_PASS)
+        sd = DB_CLIENT(DB_ENDPOINT, DB_USER, DB_PASS)
         g.database = sd
     return g.database
 

@@ -4,11 +4,10 @@ import json
 
 import pytest
 
-from app import contentgraph
 from app.clients import sparql
 from tests.testdata import cgdata
 from tests.testdata.cgdata import multi_item_api_response
-from app.clients.stardog import StardogClient
+from app.clients.sparql import SPARQLClient
 
 
 def test_content_endpoint_status(monkeypatch, flask_app):
