@@ -4,8 +4,8 @@ import pytest
 from rdflib import URIRef
 
 from app import contentgraph
-from app.clients import sparqlclient
-from app.clients.stardogclient import StardogClient
+from app.clients import sparql
+from app.clients.stardog import StardogClient
 from exceptions.clientexceptions import NoResultsFoundError
 from tests.testdata import cgdata
 from tests.testdata.cgdata import multi_item_api_response
@@ -69,7 +69,7 @@ def test_get_item_from_graph(monkeypatch):
         def initialise_namespaces(*_):
             pass
 
-    monkeypatch.setattr(sparqlclient, 'is_result_set_empty', lambda _: False)
+    monkeypatch.setattr(sparql, 'is_result_set_empty', lambda _: False)
     monkeypatch.setattr(contentgraph, 'StardogClient', FakeStardog)
     ex_uri = URIRef('http://exampleuri.com/example')
     monkeypatch.setitem(cgdata.single_item_api_response, 'Programme', str(ex_uri))
@@ -89,7 +89,7 @@ def test_get_item_none_found(monkeypatch):
         def initialise_namespaces(*_):
             pass
 
-    monkeypatch.setattr(sparqlclient, 'is_result_set_empty', lambda _: True)
+    monkeypatch.setattr(sparql, 'is_result_set_empty', lambda _: True)
     monkeypatch.setattr(contentgraph, 'StardogClient', FakeStardog)
     ex_uri = URIRef('http://exampleuri.com/example')
     with pytest.raises(NoResultsFoundError):
@@ -108,7 +108,7 @@ def test_item_endpoint_404(monkeypatch, flask_app):
         def initialise_namespaces(*_):
             pass
 
-    monkeypatch.setattr(sparqlclient, 'is_result_set_empty', lambda _: True)
+    monkeypatch.setattr(sparql, 'is_result_set_empty', lambda _: True)
     monkeypatch.setattr(contentgraph, 'StardogClient', FakeStardog)
     r = flask_app.get(example_endpoint_call)
     assert r.status_code == 404

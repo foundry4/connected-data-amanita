@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class GraphClient(ABC):
+class DBClient(ABC):
     """
     """
 
@@ -26,12 +26,16 @@ class GraphClient(ABC):
         self.endpoint = endpoint
         self.user = user
         self.passwd = passwd
-        self.store = self.setup_connection()
+        self.store = None
+        self.setup_connection()
 
     @abstractmethod
     def setup_connection(self):
         """Uses authentication credentials to open connection to SPARQL store."""
-        pass
+
+    @abstractmethod
+    def close_connection(self):
+        """Close connection to database."""
 
     @staticmethod
     @abstractmethod
@@ -43,7 +47,6 @@ class GraphClient(ABC):
             query (string): SPARQL query to send to endpoint
             params (dict): any additional arguments to be passed to query function
         """
-        pass
 
     @abstractmethod
     def get_content(self, validated_query_params):
@@ -52,7 +55,6 @@ class GraphClient(ABC):
         Args:
             validated_query_params (dict): _validated_ query parameters for filtering results
         """
-        pass
 
     @abstractmethod
     def get_item(self, validated_item_uri):
@@ -61,7 +63,6 @@ class GraphClient(ABC):
         Args:
             validated_item_uri (rdflib.URIRef): _validated_ uri of item to get data for
         """
-        pass
 
     @abstractmethod
     def get_similar(self, validated_item_uri, validated_query_params):
@@ -71,4 +72,3 @@ class GraphClient(ABC):
             validated_query_params: _validated_ query parameters for filtering results
             validated_item_uri (rdflib.URIRef): _validated_ uri of item to get data for
         """
-        pass

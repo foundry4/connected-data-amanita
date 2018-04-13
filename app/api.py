@@ -1,26 +1,44 @@
 """API is run from here, access at localhost:5000. To run queries from browser, visit the `localhost:5000/content`
 endpoint and add parameters like so `/content?limit=5`."""
+import logging
 from urllib.request import url2pathname
 
 from SPARQLWrapper.SPARQLExceptions import QueryBadFormed
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, g
 import os
-import logging
 
-from app import contentgraph
-from exceptions.clientexceptions import DBClientResponseError, NoResultsFoundError
+from app.clients.sparql import SPARQLClient
+from app.utils import constants
+from exceptions.clientexceptions import NoResultsFoundError
 from exceptions.helpers import log_last_exception, format_traceback_as_html
 from exceptions.queryexceptions import InvalidInputQuery
 from app.utils.processquery import process_list_content_query_params, process_item_query_uri, \
     process_list_similar_query_params
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger()
 
 DEFAULT_HTTP_PORT = "5001"
 PORT = int(os.getenv("PORT", DEFAULT_HTTP_PORT))
+DB_ENDPOINT = os.getenv('DB_ENDPOINT', constants.DEFAULT_DB_ENDPOINT)
+DB_USER = os.getenv('DB_USER', constants.DEFAULT_DB_USER)
+DB_PASS = os.getenv('DB_PASS', constants.DEFAULT_DB_PASS)
+logger.info(f'Using credentials:\n endpoint: {DB_ENDPOINT}\n user: {DB_USER}\n pass: {DB_PASS}')
 
 app = Flask(__name__)
+
+
+def get_db():
+    if not hasattr(g, 'database'):
+        sd = SPARQLClient(DB_ENDPOINT, DB_USER, DB_PASS)
+        g.database = sd
+    return g.database
+
+
+@app.teardown_appcontext
+def close_db(error):
+    if hasattr(g, 'database'):
+        g.database.close_connection()
 
 
 @app.route('/', methods=['GET'])
@@ -40,7 +58,8 @@ def list_content():
     """
     query_params = request.args
     validated_query_params = process_list_content_query_params(query_params)
-    res = contentgraph.get_content_from_graph(validated_query_params)
+    db = get_db()
+    res = db.get_content(validated_query_params)
     return jsonify(res), 200
 
 
@@ -54,7 +73,8 @@ def item(item_uri):
         200 (int): success status code
     """
     validated_uri = process_item_query_uri(item_uri)
-    res = contentgraph.get_item_from_graph(validated_uri)
+    db = get_db()
+    res = db.get_item(validated_uri)
     return jsonify(res), 200
 
 
@@ -70,7 +90,8 @@ def list_similar_content(item_uri):
     query_params = request.args
     validated_query_params = process_list_similar_query_params(query_params)
     validated_uri = process_item_query_uri(url2pathname(item_uri))
-    res = contentgraph.get_similar_items_from_graph(validated_uri, validated_query_params)
+    db = get_db()
+    res = db.get_similar(validated_uri, validated_query_params)
     return jsonify(res), 200
 
 

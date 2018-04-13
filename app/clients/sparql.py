@@ -1,18 +1,28 @@
 import json
+from urllib.error import HTTPError, URLError
 
+from flask import logging
 from rdflib import Graph
 from rdflib.namespace import NamespaceManager
+from rdflib.plugins.stores import sparqlstore
 
-from app.clients.graphclient import GraphClient
+from app.clients.db_interface import DBClient
 from app.querybuilder.sparql import get_content, get_item, get_similar
 from app.utils.namespaces import namespaces as ns
 from app.utils.processresponse import get_bindings_from_response, transform_bindings, is_result_set_empty
-from exceptions.clientexceptions import NoResultsFoundError
+from exceptions.clientexceptions import NoResultsFoundError, DBClientResponseError
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 
-# noinspection PyAbstractClass
-
-class SPARQLClient(GraphClient):
+class SPARQLClient(DBClient):
+    def setup_connection(self):
+        store = sparqlstore.SPARQLUpdateStore()
+        store.setCredentials(self.user, self.passwd)
+        store.open((self.endpoint, self.endpoint))
+        self.store = store
+        self._initialise_namespaces()
 
     def get_content(self, validated_query_params):
         query_string = get_content.build_query(**validated_query_params)
@@ -49,7 +59,18 @@ class SPARQLClient(GraphClient):
         content_list = transform_bindings(bindings)
         return content_list
 
-    def initialise_namespaces(self):
+    def close_connection(self):
+        self.store.close()
+
+    def query(self, query, **params):
+        try:
+            return self.store.query(query, **params)
+        except (HTTPError, URLError) as e:
+            logger.error(e)
+            logger.debug(f"Query string sent:\n{query}")
+            raise DBClientResponseError("Error querying upstream graph store")
+
+    def _initialise_namespaces(self):
         ns_manager = NamespaceManager(Graph(self.store))
         for namespace in ns.items():
             ns_manager.bind(*namespace)

@@ -5,10 +5,10 @@ import json
 import pytest
 
 from app import contentgraph
-from app.clients import sparqlclient
+from app.clients import sparql
 from tests.testdata import cgdata
 from tests.testdata.cgdata import multi_item_api_response
-from app.clients.stardogclient import StardogClient
+from app.clients.stardog import StardogClient
 
 
 def test_content_endpoint_status(monkeypatch, flask_app):
@@ -127,7 +127,7 @@ def test_get_content_from_graph(monkeypatch, test_data):
         def initialise_namespaces(*_):
             pass
 
-    monkeypatch.setattr(sparqlclient, 'is_result_set_empty', lambda _: False)
+    monkeypatch.setattr(sparql, 'is_result_set_empty', lambda _: False)
     monkeypatch.setattr(contentgraph, 'StardogClient', FakeStardog)
     returned_content = contentgraph.get_content_from_graph({})
     assert returned_content == test_data[1]
