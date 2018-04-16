@@ -1,6 +1,9 @@
-from app.clients.elastic.querybuilder.subqueries import build_sort_statement, update_dict_recursively, build_bool_queries
+from app.clients.elastic.querybuilder.subqueries import build_sort_statement, update_dict_recursively, \
+    build_bool_queries
 from app.utils import constants
 from exceptions.queryexceptions import InvalidInputParameterCombination
+
+from elasticsearch_dsl import Search, Q
 
 
 def build_query_body(media_type=None, sort=None, max_duration=None, published_after=None, categories=None,
@@ -13,30 +16,19 @@ def build_query_body(media_type=None, sort=None, max_duration=None, published_af
     if sort is not None and random:
         raise InvalidInputParameterCombination('Cannot specify both `sort` and `random`.')
 
-    body = {
-        'size': limit,
-        'from': offset,
-        'sort': build_sort_statement(sort)
-    }
-
+    search = Search(index='pips')
+    search = search[offset:offset+limit]
+    if sort:
+        search = search.sort(*sort)
     if media_type:
-        # todo: reingest data to make Video->video in es db
-        media_query = build_bool_queries([('term', 'mediaType', media.title()) for media in media_type])
-        update_dict_recursively(body, ['query', 'bool', 'should'], media_query)
+        for media in media_type:
+            search = search.filter('term', mediaType=media)
 
     if max_duration:
-        duration_query = build_bool_queries([('range', 'duration', max_duration)])
-        update_dict_recursively(body, ['query', 'bool', 'filter'], duration_query)
+        search = search.filter('range', duration={'lte': max_duration})
 
     if categories:
-        update_dict_recursively(body, ['query', 'nested'], {
-            'path': 'genres',
-            'score_mode': 'avg',
-            'query': {
-                'bool': {
-                    'must': build_bool_queries([('match', 'genres.key', cat) for cat in categories])
-                }
-            }
-        })
+        for cat in categories:
+            search = search.filter('nested', path='genres', query=Q('match', genres__key=cat).to_dict())
 
-    return body
+    return search.to_dict()

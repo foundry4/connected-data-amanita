@@ -1,4 +1,4 @@
-import dateutil as dateutil
+from dateutil import parser
 from rdflib import URIRef, Literal
 
 from app.clients.sparql.namespaces import namespaces as NS
@@ -36,7 +36,7 @@ class LowercaseLiteral:
 
 class ValidatedDatetime:
     def __init__(self, datetime_str):
-        self.datetime = dateutil.parser.parse(datetime_str)
+        self.datetime = parser.parse(datetime_str)
 
     def __str__(self):
         return str(self.datetime)

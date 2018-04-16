@@ -5,7 +5,7 @@ from app.apiparams.validation.validator import ParamValidator
 
 sortable_fields = ['duration', 'publicationDate', 'masterBrand']
 
-item_uri_parameter_validator = ParamValidator(
+item_uri = ParamValidator(
     snake_case_name='item_uri',
     param_type=str,
     is_list=False
@@ -24,7 +24,7 @@ sort = ParamValidator(
 )
 max_duration = ParamValidator(
     snake_case_name='max_duration',
-    param_type=ValidatedDatetime,
+    param_type=int,
     is_list=False,
 )
 region = ParamValidator(
@@ -42,11 +42,6 @@ categories = ParamValidator(
     snake_case_name='categories',
     param_type=str,
     is_list=True,
-)
-tags = ParamValidator(
-    snake_case_name='tags',
-    param_type=str,
-    is_list=True
 )
 limit = ParamValidator(
     snake_case_name='limit',
@@ -70,3 +65,4 @@ similarity_method = ParamValidator(
     is_list=False,
     allowed_values=['genre', 'masterBrand']
 )
+
