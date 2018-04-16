@@ -1,3 +1,5 @@
+from random import randint
+
 from app.clients.elastic.querybuilder.subqueries import build_sort_statement, update_dict_recursively, \
     build_bool_queries
 from app.utils import constants
@@ -29,6 +31,8 @@ def build_query_body(media_type=None, sort=None, max_duration=None, published_af
 
     if categories:
         for cat in categories:
-            search = search.filter('nested', path='genres', query=Q('match', genres__key=cat).to_dict())
+            search = search.filter('nested', path='genres', query=Q('match', genres__key=cat))
 
+    if random:
+        search = search.query('function_score', functions=[{'random_score': {'seed':randint(0, 999)}}])
     return search.to_dict()

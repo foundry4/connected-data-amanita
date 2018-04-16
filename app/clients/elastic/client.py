@@ -3,7 +3,6 @@ from elasticsearch5 import Elasticsearch
 from app.clients.db_interface import DBClient
 from app.clients.elastic.process_response import transform_hits
 from app.clients.elastic.querybuilder import get_content
-from app.utils.conversions import lower_camel_case_to_upper
 
 
 class ESClient(DBClient):
