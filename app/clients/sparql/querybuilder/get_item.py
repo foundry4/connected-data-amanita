@@ -1,4 +1,4 @@
-from app.querybuilder.sparql.subqueries import build_regular_fields_pattern_statement, \
+from app.clients.sparql.querybuilder.subqueries import build_regular_fields_pattern_statement, \
     build_tags_pattern_statement, build_genres_pattern_statement, build_tags_select_statement, \
     build_genres_select_statement
 

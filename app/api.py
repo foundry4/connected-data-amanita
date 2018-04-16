@@ -7,13 +7,13 @@ from SPARQLWrapper.SPARQLExceptions import QueryBadFormed
 from flask import Flask, jsonify, request, g
 import os
 
-from app.clients.elasticsearch import ESClient
-from app.clients.sparql import SPARQLClient
+from app.clients.elastic.client import ESClient
+from app.clients.sparql.client import SPARQLClient
 from app.utils import constants
 from exceptions.clientexceptions import NoResultsFoundError
 from exceptions.helpers import log_last_exception, format_traceback_as_html
 from exceptions.queryexceptions import InvalidInputQuery
-from app.utils.processquery import process_list_content_query_params, process_item_query_uri, \
+from app.apiparams.validation.processing import process_list_content_query_params, process_item_query_uri, \
     process_list_similar_query_params
 
 logging.basicConfig(level=logging.INFO)

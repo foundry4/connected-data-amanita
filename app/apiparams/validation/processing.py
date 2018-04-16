@@ -1,7 +1,13 @@
-import app.api_params.lists as api_validator_lists
-import app.api_params.rdf_definitions as api_validators
+"""Code for validating and converting input query parameters so they are usable with a SPARQL endpoint."""
+from flask import logging
+
+from app.apiparams import lists as api_validator_lists
 from app.utils.conversions import map_multidict_to_dict
-from exceptions.queryexceptions import InvalidInputParameter, InvalidInputParameterValue, InvalidInputQuery
+
+from exceptions.queryexceptions import InvalidInputParameterValue, InvalidInputParameter, InvalidInputQuery
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 
 def process_list_content_query_params(query_params):
@@ -22,7 +28,7 @@ def process_list_content_query_params(query_params):
 
 def process_item_query_uri(uri):
     """Convert URI into format compatible with rdflib."""
-    validated_typed_uri = api_validators.item_uri_parameter_validator.validate(uri)
+    validated_typed_uri = _validate_param('item_uri', uri, validator_set='get_item_query_parameter_validator')
     return validated_typed_uri
 
 

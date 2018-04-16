@@ -1,4 +1,4 @@
-from app.querybuilder.sparql.subqueries import build_values_oring_statement, \
+from app.clients.sparql.querybuilder.subqueries import build_values_oring_statement, \
     build_filter_statement, build_sort_statement, build_regular_fields_pattern_statement, \
     build_tags_pattern_statement, build_genres_pattern_statement, build_tags_select_statement, \
     build_genres_select_statement, build_similar_to_select_statement, build_similar_to_pattern_statement

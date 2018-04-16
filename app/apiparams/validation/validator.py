@@ -1,10 +1,4 @@
-"""Code for validating and converting input query parameters so they are usable with a SPARQL endpoint."""
-from flask import logging
-
 from exceptions.queryexceptions import InvalidInputParameterValue
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
 
 
 class ParamValidator:

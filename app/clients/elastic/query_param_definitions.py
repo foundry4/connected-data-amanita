@@ -1,19 +1,18 @@
 """Definitions of API parameters for all endpoints."""
-from rdflib import URIRef, Literal, XSD
 
-from app.api_params.types import MediaLiteral, LowercaseLiteral, BoolFromString
-from app.api_params.validation import ParamValidator
+from app.apiparams.types import BoolFromString, ValidatedDatetime
+from app.apiparams.validation.validator import ParamValidator
 
 sortable_fields = ['duration', 'publicationDate', 'masterBrand']
 
 item_uri_parameter_validator = ParamValidator(
     snake_case_name='item_uri',
-    param_type=URIRef,
+    param_type=str,
     is_list=False
 )
 media_type = ParamValidator(
     snake_case_name='media_type',
-    param_type=MediaLiteral,
+    param_type=str,
     allowed_values=['video', 'audio'],
     is_list=True,
 )
@@ -25,31 +24,28 @@ sort = ParamValidator(
 )
 max_duration = ParamValidator(
     snake_case_name='max_duration',
-    param_type=Literal,
+    param_type=ValidatedDatetime,
     is_list=False,
-    datatype=XSD.duration
 )
 region = ParamValidator(
     snake_case_name='region',
-    param_type=Literal,
+    param_type=str,
     is_list=False,
     allowed_values=['uk', 'ex-uk'],
-    datatype=XSD.string
 )
 published_after = ParamValidator(
     snake_case_name='published_after',
-    param_type=Literal,
+    param_type=ValidatedDatetime,
     is_list=False,
-    datatype=XSD.datetime
 )
 categories = ParamValidator(
     snake_case_name='categories',
-    param_type=LowercaseLiteral,
+    param_type=str,
     is_list=True,
 )
 tags = ParamValidator(
     snake_case_name='tags',
-    param_type=URIRef,
+    param_type=str,
     is_list=True
 )
 limit = ParamValidator(
@@ -72,5 +68,5 @@ similarity_method = ParamValidator(
     snake_case_name='similarity_method',
     param_type=str,
     is_list=False,
-    allowed_values=['genre', 'tag', 'masterBrand']
+    allowed_values=['genre', 'masterBrand']
 )

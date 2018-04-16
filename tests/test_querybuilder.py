@@ -3,8 +3,8 @@ import pytest
 from pyparsing import ParseException
 from rdflib import Graph, Literal, XSD
 
-from app.querybuilder.sparql.get_content import build_query
-from app.utils.namespaces import namespaces
+from app.clients.sparql.querybuilder import build_query
+from app.clients.sparql.namespaces import namespaces
 from exceptions.queryexceptions import InvalidInputParameterCombination
 
 

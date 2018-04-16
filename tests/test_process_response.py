@@ -2,7 +2,7 @@
 
 import pytest
 
-from app.utils.processresponse import get_bindings_from_response, transform_bindings
+from app.clients.sparql.process_response import get_bindings_from_response, transform_bindings
 from exceptions.queryexceptions import InvalidQueryResponse
 from tests.testdata import cgdata as cg
 

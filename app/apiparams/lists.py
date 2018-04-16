@@ -1,14 +1,15 @@
 """Lists of API Parameters for particular endpoints."""
 import os
 
-from app.api_params import rdf_definitions, es_definitions
+from app.clients.elastic import query_param_definitions
+from app.clients.sparql import query_param_definitions
 from app.utils import constants
 
 DB_CLIENT = os.getenv('DB_CLIENT', constants.DEFAULT_DB_CLIENT)
 if DB_CLIENT == 'stardog':
-    defs = rdf_definitions
+    defs = query_param_definitions
 elif DB_CLIENT == 'elasticsearch':
-    defs = es_definitions
+    defs = query_param_definitions
 else:
     raise ValueError(f"No such database: {DB_CLIENT}.")
 
@@ -33,4 +34,7 @@ list_similar_query_parameter_validators = {
     'limit': defs.limit,
     'offset': defs.offset,
     'similarityMethod': defs.similarity_method,
+}
+get_item_query_parameter_validator = {
+    'uri': defs.item_uri
 }

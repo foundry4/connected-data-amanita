@@ -1,3 +1,6 @@
+# TODO: HAVE GENERAL TEST FOR PARAMETERS WHERE THERE IS A DICT SHOWING WHICH PARAMETERS WHERE AND TESTED FOR EACH CLIENT
+# dict also contains other forms of parameter and example values both pre processing and post processing
+
 def test_api_root_status(flask_app):
     """Requests to the root should return 200"""
     r = flask_app.get('/')

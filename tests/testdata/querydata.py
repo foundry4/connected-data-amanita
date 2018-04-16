@@ -4,7 +4,7 @@ from rdflib import URIRef, Literal
 from rdflib.namespace import XSD
 from werkzeug.datastructures import MultiDict
 
-from app.api_params.validation import ParamValidator
+from app.apiparams.validation import ParamValidator
 
 
 # test all rdf datatypes in both single and list form

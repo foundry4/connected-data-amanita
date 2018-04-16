@@ -1,8 +1,15 @@
-"""Classes to verify and convert special parameter values."""
 import dateutil as dateutil
-from rdflib import Literal, URIRef
+from rdflib import URIRef, Literal
 
-from app.utils.namespaces import namespaces as NS
+from app.clients.sparql.namespaces import namespaces as NS
+
+
+class BoolFromString:
+    def __init__(self, bool_str):
+        self.bool = True if bool_str in ['true', 'True'] else False
+
+    def __bool__(self):
+        return self.bool
 
 
 class MediaLiteral:
@@ -25,14 +32,6 @@ class LowercaseLiteral:
 
     def n3(self):
         return self.str_lit.n3()
-
-
-class BoolFromString:
-    def __init__(self, bool_str):
-        self.bool = True if bool_str in ['true', 'True'] else False
-
-    def __bool__(self):
-        return self.bool
 
 
 class ValidatedDatetime:

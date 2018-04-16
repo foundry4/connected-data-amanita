@@ -1,5 +1,4 @@
-from app.querybuilder.elastic.subqueries import build_sort_statement, update_dict_recursively, build_filter_body, \
-    build_must_body, build_bool_queries
+from app.clients.elastic.querybuilder.subqueries import build_sort_statement, update_dict_recursively, build_bool_queries
 from app.utils import constants
 from exceptions.queryexceptions import InvalidInputParameterCombination
 

@@ -100,7 +100,7 @@ def build_regular_fields_pattern_statement(prog_uri="?programme"):
     Build a pattern statement for matching fields that need no extra processing.
 
     Arguments:
-        prog_uri (str): sparql variable or programme URI
+        prog_uri (str): querybuilder variable or programme URI
     """
     stmt = f"""
     {prog_uri} a po:Programme ;
@@ -131,7 +131,7 @@ def build_tags_pattern_statement(prog_uri="?programme"):
     Build a pattern statement for matching tags and tag details.
 
     Arguments:
-        prog_uri (str): sparql variable or programme URI
+        prog_uri (str): querybuilder variable or programme URI
     """
     stmt = f"""
     {prog_uri} datalab:tag ?tagRelation .
@@ -168,7 +168,7 @@ def build_genres_pattern_statement(prog_uri='?programme'):
     Build a pattern statement for matching genres and genre details.
 
     Arguments:
-        prog_uri (str): sparql variable or programme URI
+        prog_uri (str): querybuilder variable or programme URI
     """
     stmt = f"""
     OPTIONAL {{

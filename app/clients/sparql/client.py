@@ -7,9 +7,10 @@ from rdflib.namespace import NamespaceManager
 from rdflib.plugins.stores import sparqlstore
 
 from app.clients.db_interface import DBClient
-from app.querybuilder.sparql import get_content, get_item, get_similar
-from app.utils.namespaces import namespaces as ns
-from app.utils.processresponse import get_bindings_from_response, transform_bindings, is_result_set_empty
+from app.clients.sparql.querybuilder import get_content, get_similar
+from app.clients.sparql.querybuilder import get_item
+from app.clients.sparql.namespaces import namespaces as ns
+from app.clients.sparql.process_response import get_bindings_from_response, transform_bindings, is_result_set_empty
 from exceptions.clientexceptions import NoResultsFoundError, DBClientResponseError
 
 logger = logging.getLogger(__name__)
