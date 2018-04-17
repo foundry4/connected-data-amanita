@@ -1,8 +1,8 @@
 from elasticsearch5 import Elasticsearch
 
-from app.clients.db_interface import DBClient
+from app.clients.client_interface import DBClient
 from app.clients.elastic.process_response import transform_hits
-from app.clients.elastic.querybuilder import get_content, get_item
+from app.clients.elastic.querybuilder import get_content, get_item, get_similar
 from exceptions.clientexceptions import NoResultsFoundError
 
 
@@ -26,7 +26,10 @@ class ESClient(DBClient):
         return hits[0]
 
     def get_similar(self, validated_item_uri, validated_query_params):
-        pass
+        query_body = get_similar.build_query_body(item_uri=validated_item_uri, **validated_query_params)
+        es_res = self.store.search(index='pips', doc_type='clip', body=query_body, scroll='1m')
+        clips = transform_hits(es_res)
+        return {'Results': clips}
 
     @staticmethod
     def query(query, **params):

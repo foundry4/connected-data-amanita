@@ -6,7 +6,7 @@ from rdflib import Graph
 from rdflib.namespace import NamespaceManager
 from rdflib.plugins.stores import sparqlstore
 
-from app.clients.db_interface import DBClient
+from app.clients.client_interface import DBClient
 from app.clients.sparql.querybuilder import get_content, get_similar
 from app.clients.sparql.querybuilder import get_item
 from app.clients.sparql.namespaces import namespaces as ns
