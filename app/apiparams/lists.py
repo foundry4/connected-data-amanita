@@ -35,5 +35,5 @@ list_similar_query_parameter_validators = {
     'similarityMethod': defs.similarity_method,
 }
 get_item_query_parameter_validator = {
-    'uri': defs.item_uri
+    'item_uri': defs.item_uri
 }

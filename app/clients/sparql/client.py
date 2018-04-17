@@ -46,7 +46,7 @@ class SPARQLClient(DBClient):
             bindings = get_bindings_from_response(result_serialized)
         item_list = transform_bindings(bindings)
         item = item_list[0]
-        item['Programme'] = str(validated_item_uri)
+        item['Uri'] = str(validated_item_uri)
         return item
 
     def get_similar(self, validated_item_uri, validated_query_params):

@@ -24,7 +24,8 @@ def transform_bindings(bindings):
     for item in bindings:
         item_processed = {}
 
-        item['uri'] = item.pop('programme')
+        if 'programme' in item:
+            item['uri'] = item.pop('programme')
 
         tag_fields = ['tags', 'taguris', 'tagsources', 'tagconfs']
         genre_fields = ['topLevelGenreUris', 'secondLevelGenreUris', 'thirdLevelGenreUris', 'topLevelGenres',

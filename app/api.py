@@ -113,13 +113,14 @@ def server_error(e):
         err_code (int)
     """
     log_last_exception()
-    html_traceback = format_traceback_as_html()
+    # html_traceback = format_traceback_as_html()
     if type(e) in (InvalidInputQuery, QueryBadFormed):
-        return html_traceback, 400
+        code = 400
     if isinstance(e, NoResultsFoundError):
-        return html_traceback, 404
+        code = 404
     else:
-        return html_traceback, 500
+        code = 500
+    return f'<h1>Error {code}</h1>{str(e)}', code
 
 
 if __name__ == '__main__':

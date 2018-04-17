@@ -28,7 +28,7 @@ def process_list_content_query_params(query_params):
 
 def process_item_query_uri(uri):
     """Convert URI into format compatible with rdflib."""
-    validated_typed_uri = _validate_param('item_uri', uri, validator_set='get_item_query_parameter_validator')
+    _, validated_typed_uri = _validate_param('item_uri', uri, validator_set='get_item_query_parameter_validator')
     # todo: THIS PROBABL BROKEN
     return validated_typed_uri
 
