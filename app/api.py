@@ -13,8 +13,6 @@ from app.utils import constants
 from exceptions.clientexceptions import NoResultsFoundError
 from exceptions.helpers import log_last_exception, format_traceback_as_html
 from exceptions.queryexceptions import InvalidInputQuery
-from app.apiparams.validation.processing import process_list_content_query_params, process_item_query_uri, \
-    process_list_similar_query_params
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
@@ -33,7 +31,7 @@ logger.info(f'Using credentials:\n endpoint: {DB_ENDPOINT}\n user: {DB_USER}\n p
 app = Flask(__name__)
 
 
-def get_db():
+def get_client():
     if not hasattr(g, 'database'):
         sd = DB_CLIENT(DB_ENDPOINT, DB_USER, DB_PASS)
         g.database = sd
@@ -62,9 +60,10 @@ def list_content():
         200 (int): success status code
     """
     query_params = request.args
-    validated_query_params = process_list_content_query_params(query_params)
-    db = get_db()
-    res = db.get_content(validated_query_params)
+
+    client = get_client()
+    validated_query_params = client.process_list_content_query_params(query_params)
+    res = client.get_content(validated_query_params)
     return jsonify(res), 200
 
 
@@ -77,9 +76,9 @@ def item(item_uri):
         res (string): results encoded in json
         200 (int): success status code
     """
-    validated_uri = process_item_query_uri(item_uri)
-    db = get_db()
-    res = db.get_item(validated_uri)
+    client = get_client()
+    validated_uri = client.process_item_query_uri(item_uri)
+    res = client.get_item(validated_uri)
     return jsonify(res), 200
 
 
@@ -93,10 +92,11 @@ def list_similar_content(item_uri):
         200 (int): success status code
     """
     query_params = request.args
-    validated_query_params = process_list_similar_query_params(query_params)
-    validated_uri = process_item_query_uri(url2pathname(item_uri))
-    db = get_db()
-    res = db.get_similar(validated_uri, validated_query_params)
+
+    client = get_client()
+    validated_query_params = client.process_list_similar_query_params(query_params)
+    validated_uri = client.process_item_query_uri(url2pathname(item_uri))
+    res = client.get_similar(validated_uri, validated_query_params)
     return jsonify(res), 200
 
 

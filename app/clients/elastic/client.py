@@ -1,12 +1,17 @@
 from elasticsearch5 import Elasticsearch
 
 from app.clients.client_interface import DBClient
+from app.clients.elastic import query_param_definitions
 from app.clients.elastic.process_response import transform_hits
 from app.clients.elastic.querybuilder import get_content, get_item, get_similar
 from exceptions.clientexceptions import NoResultsFoundError
 
 
 class ESClient(DBClient):
+    @property
+    def parameter_definitions(self):
+        return query_param_definitions
+
     def setup_connection(self):
         store = Elasticsearch(hosts=[self.endpoint], http_auth=(self.user, self.passwd))
         self.store = store

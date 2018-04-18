@@ -2,7 +2,7 @@
 import pytest
 
 from app.processing import input_query
-from app.apiparams.validation import process_list_content_query_params
+from app.apiparams.validator import process_list_content_query_params
 from exceptions.queryexceptions import InvalidInputQuery
 from tests.testdata.querydata import get_multi_query_parameter_test_mappings_restricted, \
     get_multi_query_parameter_test_mappings, multi_input_query_params_multidict_allowed, \

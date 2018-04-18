@@ -2,7 +2,7 @@
 from rdflib import URIRef, Literal, XSD
 
 from app.apiparams.types import BoolFromString, MediaLiteral, LowercaseLiteral
-from app.apiparams.validation.validator import ParamValidator
+from app.apiparams.validator import ParamValidator
 
 sortable_fields = ['duration', 'publicationDate', 'masterBrand']
 

@@ -1,7 +1,7 @@
 """Definitions of API parameters for all endpoints."""
 
 from app.apiparams.types import BoolFromString, ValidatedDatetime
-from app.apiparams.validation.validator import ParamValidator
+from app.apiparams.validator import ParamValidator
 
 sortable_fields = ['duration', 'publicationDate', 'masterBrand']
 
