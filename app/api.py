@@ -11,7 +11,7 @@ from app.clients.elastic.client import ESClient
 from app.clients.sparql.client import SPARQLClient
 from app.utils import constants
 from exceptions.clientexceptions import NoResultsFoundError
-from exceptions.helpers import log_last_exception, format_traceback_as_html
+from exceptions.helpers import log_last_exception
 from exceptions.queryexceptions import InvalidInputQuery
 
 logging.basicConfig(level=logging.INFO)
@@ -32,16 +32,16 @@ app = Flask(__name__)
 
 
 def get_client():
-    if not hasattr(g, 'database'):
-        sd = DB_CLIENT(DB_ENDPOINT, DB_USER, DB_PASS)
-        g.database = sd
-    return g.database
+    if not hasattr(g, 'client'):
+        client = DB_CLIENT(DB_ENDPOINT, DB_USER, DB_PASS)
+        g.client = client
+    return g.client
 
 
 @app.teardown_appcontext
-def close_db(error):
-    if hasattr(g, 'database'):
-        g.database.close_connection()
+def close_client_connection(error=''):
+    if hasattr(g, 'client'):
+        g.client.close_connection()
 
 
 @app.route('/', methods=['GET'])
@@ -62,7 +62,7 @@ def list_content():
     query_params = request.args
 
     client = get_client()
-    validated_query_params = client.process_list_content_query_params(query_params)
+    validated_query_params = client.process_content_query_params(query_params)
     res = client.get_content(validated_query_params)
     return jsonify(res), 200
 
@@ -94,7 +94,7 @@ def list_similar_content(item_uri):
     query_params = request.args
 
     client = get_client()
-    validated_query_params = client.process_list_similar_query_params(query_params)
+    validated_query_params = client.process_similar_query_params(query_params)
     validated_uri = client.process_item_query_uri(url2pathname(item_uri))
     res = client.get_similar(validated_uri, validated_query_params)
     return jsonify(res), 200
@@ -113,10 +113,10 @@ def server_error(e):
         err_code (int)
     """
     log_last_exception()
-    # html_traceback = format_traceback_as_html()
+
     if type(e) in (InvalidInputQuery, QueryBadFormed):
         code = 400
-    if isinstance(e, NoResultsFoundError):
+    elif isinstance(e, NoResultsFoundError):
         code = 404
     else:
         code = 500

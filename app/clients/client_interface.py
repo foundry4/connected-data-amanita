@@ -85,7 +85,7 @@ class DBClient(ABC):
         """
 
     # parameter validation
-    def process_list_content_query_params(self, query_params):
+    def process_content_query_params(self, query_params):
         """Process input multidict of params from inbound query to regular dict of params that has
         been validated against a list of expected params and values.
 
@@ -104,7 +104,7 @@ class DBClient(ABC):
         _, validated_typed_uri = self._validate_param('item_uri', uri, endpoint='item')
         return validated_typed_uri
 
-    def process_list_similar_query_params(self, query_params):
+    def process_similar_query_params(self, query_params):
         """Process input multidict of params from inbound query to regular dict of params that has
         been validated against a list of expected params and values.
 

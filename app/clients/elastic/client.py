@@ -18,13 +18,13 @@ class ESClient(DBClient):
 
     def get_content(self, validated_query_params):
         query_body = get_content.build_query_body(**validated_query_params)
-        es_res = self.store.search(index='pips', doc_type='clip', body=query_body, scroll='1m')
+        es_res = self.query(query_body, index='pips', doc_type='clip', scroll='1m')
         clips = transform_hits(es_res)
         return {'Results': clips}
 
     def get_item(self, validated_item_uri):
         query_body = get_item.build_query_body(validated_item_uri)
-        es_res = self.store.search(index='pips', doc_type='clip', body=query_body, scroll='1m')
+        es_res = self.query(query_body, index='pips', doc_type='clip', scroll='1m')
         hits = transform_hits(es_res)
         if len(hits) == 0:
             raise NoResultsFoundError(f'No results for URI: {validated_item_uri}')
@@ -32,13 +32,12 @@ class ESClient(DBClient):
 
     def get_similar(self, validated_item_uri, validated_query_params):
         query_body = get_similar.build_query_body(item_uri=validated_item_uri, **validated_query_params)
-        es_res = self.store.search(index='pips', doc_type='clip', body=query_body, scroll='1m')
+        es_res = self.query(query_body, index='pips', doc_type='clip', scroll='1m')
         clips = transform_hits(es_res)
         return {'Results': clips}
 
-    @staticmethod
-    def query(query, **params):
-        pass
+    def query(self, query, **params):
+        return self.store.search(body=query, **params)
 
     def close_connection(self):
         # handled by garbage collection
