@@ -1,8 +1,10 @@
 import pytest
+from iso8601 import iso8601
 from rdflib import URIRef
 
 from app.apiparams import lists, types, validator
-from app.apiparams.types import BoolFromString, MediaLiteral, LowercaseLiteral, ValidatedDatetime
+from app.apiparams.types import BoolFromString, MediaUriRef, LowercaseLiteral, ValidatedDatetime, StrictlyPositiveInt, \
+    URIStr, LowercaseStr
 from app.apiparams.validator import ParamValidator
 from exceptions.queryexceptions import InvalidInputParameterValue
 
@@ -51,12 +53,12 @@ def test_bool_from_string():
 
 
 def test_media_literal():
-    video = MediaLiteral('video')
+    video = MediaUriRef('video')
     assert video.n3() == '<http://purl.org/dc/terms/MovingImage>'
-    audio = MediaLiteral('audio')
+    audio = MediaUriRef('audio')
     assert audio.n3() == '<http://purl.org/dc/terms/Sound>'
     with pytest.raises(ValueError):
-        MediaLiteral('notmedia')
+        MediaUriRef('notmedia')
 
 
 def test_lowercase_literal():
@@ -67,7 +69,7 @@ def test_lowercase_literal():
 def test_validated_datetime():
     datetime = ValidatedDatetime('19941128T155300')
     assert str(datetime) == '19941128T155300'
-    datetime_obj = datetime.datetime_obj
+    datetime_obj = iso8601.parse_date(datetime)
     assert datetime_obj.year == 1994
     assert datetime_obj.month == 11
     assert datetime_obj.day == 28
@@ -75,11 +77,33 @@ def test_validated_datetime():
     assert datetime_obj.minute == 53
     assert datetime_obj.second == 0
 
+def test_strictly_positive_int():
+    spi = StrictlyPositiveInt(1)
+    assert int(spi) == 1
+    with pytest.raises(ValueError):
+        StrictlyPositiveInt(0)
+    with pytest.raises(ValueError):
+        StrictlyPositiveInt(-1)
+
+def test_uri_str():
+    uri_str = URIStr('http://validuri.com')
+    assert uri_str == 'http://validuri.com'
+    with pytest.raises(TypeError):
+        URIStr(10)
+    with pytest.raises(ValueError):
+        URIStr(':"}{L"ODF"LSDF')
+
+def test_lowercase_str():
+    lowercase = LowercaseStr('MixedCase')
+    assert lowercase == 'mixedcase'
+
 
 def test_parameter_types():
     # fail if new parameter types added or parameter types removed
     defined_parameter_types = [v for v in vars(types) if not v.startswith('_')]
-    assert defined_parameter_types == ['iso8601', 'URIRef', 'Literal', 'NS', 'BoolFromString', 'MediaLiteral', 'LowercaseLiteral', 'ValidatedDatetime']
+    assert defined_parameter_types == ['iso8601', 'URIRef', 'Literal', 'NS', 'BoolFromString', 'MediaUriRef',
+                                       'LowercaseLiteral', 'ValidatedDatetime', 'StrictlyPositiveInt', 'URIStr',
+                                       'LowercaseStr']
 
 # test validator class
 def test_param_validator():
@@ -100,7 +124,7 @@ def test_param_validator():
     assert isinstance(validated_param, TestValue)
     assert validated_param.val == 'correct'
     # test incorrectly formatted value
-    with pytest.raises(ValueError):
+    with pytest.raises(InvalidInputParameterValue):
         validator.validate('incorrect')
     # test allowed value
     validator = ParamValidator('test_param', TestAllowedValues, allowed_values=['allowed'])
@@ -115,7 +139,7 @@ def test_param_validator():
     validated_param = validator.validate('correct')
     assert isinstance(validated_param, list)
     # test list of incorrectly formatted values (single value)
-    with pytest.raises(ValueError):
+    with pytest.raises(InvalidInputParameterValue):
         validator.validate('incorrect')
     # test list of correctly formatted values (multiple values)
     validated_param = validator.validate(['correct', 'correct'])
@@ -123,10 +147,10 @@ def test_param_validator():
     assert all(isinstance(param, TestValue) for param in validated_param)
     assert all(param.val == 'correct' for param in validated_param)
     # test list of incorrectly formatted values (multiple values)
-    with pytest.raises(ValueError):
+    with pytest.raises(InvalidInputParameterValue):
         validator.validate(['incorrect','incorrect'])
     # test list of mixed formatted values (multiple values)
-    with pytest.raises(ValueError):
+    with pytest.raises(InvalidInputParameterValue):
         validator.validate(['correct', 'incorrect'])
     # test list of allowed values
     validator = ParamValidator('test_param', TestAllowedValues, allowed_values=['allowed'], is_list=True)

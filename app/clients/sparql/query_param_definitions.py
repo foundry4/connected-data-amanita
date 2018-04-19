@@ -1,7 +1,7 @@
 """Definitions of API parameters for all endpoints."""
 from rdflib import URIRef, Literal, XSD
 
-from app.apiparams.types import BoolFromString, MediaLiteral, LowercaseLiteral
+from app.apiparams.types import BoolFromString, MediaUriRef, LowercaseLiteral
 from app.apiparams.validator import ParamValidator
 
 sortable_fields = ['duration', 'publicationDate', 'masterBrand']
@@ -14,7 +14,7 @@ item_uri = ParamValidator(
 
 media_type = ParamValidator(
     snake_case_name='media_type',
-    param_type=MediaLiteral,
+    param_type=MediaUriRef,
     allowed_values=['video', 'audio'],
     is_list=True,
 )

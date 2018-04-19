@@ -1,13 +1,14 @@
 """Definitions of API parameters for all endpoints."""
 
-from app.apiparams.types import BoolFromString, ValidatedDatetime
+from app.apiparams.types import BoolFromString, ValidatedDatetime, StrictlyPositiveInt, LowercaseLiteral, URIStr, \
+    LowercaseStr
 from app.apiparams.validator import ParamValidator
 
 sortable_fields = ['duration', 'publicationDate', 'masterBrand']
 
 item_uri = ParamValidator(
     snake_case_name='item_uri',
-    param_type=str,
+    param_type=URIStr,
     is_list=False
 )
 media_type = ParamValidator(
@@ -24,7 +25,7 @@ sort = ParamValidator(
 )
 max_duration = ParamValidator(
     snake_case_name='max_duration',
-    param_type=int,
+    param_type=StrictlyPositiveInt,
     is_list=False,
 )
 region = ParamValidator(
@@ -40,17 +41,17 @@ published_after = ParamValidator(
 )
 categories = ParamValidator(
     snake_case_name='categories',
-    param_type=str,
+    param_type=LowercaseStr,
     is_list=True,
 )
 limit = ParamValidator(
     snake_case_name='limit',
-    param_type=int,
+    param_type=StrictlyPositiveInt,
     is_list=False
 )
 offset = ParamValidator(
     snake_case_name='offset',
-    param_type=int,
+    param_type=StrictlyPositiveInt,
     is_list=False
 )
 random = ParamValidator(

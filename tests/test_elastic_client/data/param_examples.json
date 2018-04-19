@@ -1,0 +1,79 @@
+{
+  "item_uri": {
+    "good_raw": "http://exampleuri.com",
+    "bad_format_raw": 10,
+    "not_allowed_raw": null,
+    "validated": "http://exampleuri.com"
+  },
+  "media_type": {
+    "good_raw": [
+      "audio",
+      "video"
+    ],
+    "bad_format_raw": 10,
+    "not_allowed_raw": "kjadsl",
+    "validated": [
+      "audio",
+      "video"
+    ]
+  },
+  "sort": {
+    "good_raw": [
+      "duration",
+      "publicationDate",
+      "masterBrand",
+      "-duration",
+      "-publicationDate",
+      "-masterBrand"
+    ],
+    "bad_format_raw": 10,
+    "not_allowed_raw": [
+      "tags",
+      "date"
+    ],
+    "validated": [
+      "duration",
+      "publicationDate",
+      "masterBrand",
+      "-duration",
+      "-publicationDate",
+      "-masterBrand"
+    ]
+  },
+  "max_duration": {
+    "good_raw": 100,
+    "bad_format_raw": "100",
+    "not_allowed_raw": -4,
+    "validated": 100
+  },
+  "region": {
+    "good_raw": "uk",
+    "bad_format_raw": 10,
+    "not_allowed_raw": "sdfdsf",
+    "validated": "uk"
+  },
+  "published_after": {
+    "good_raw":"19941128T155300",
+    "bad_format_raw": "not_a_date",
+    "not_allowed_raw": "sdfdsf",
+    "validated": "19941128T155300"
+  },
+  "categories": {
+    "good_raw": ["Music", "Comedy"],
+    "bad_format_raw": 10,
+    "not_allowed_raw": null,
+    "validated": ["music", "comedy"]
+  },
+  "limit": {
+    "good_raw": 10,
+    "bad_format_raw": "10",
+    "not_allowed_raw": -10,
+    "validated": 10
+  },
+  "offset": {
+    "good_raw": 10,
+    "bad_format_raw": "10",
+    "not_allowed_raw": -10,
+    "validated": 10
+  }
+}

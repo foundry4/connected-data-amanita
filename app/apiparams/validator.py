@@ -44,11 +44,14 @@ class ParamValidator:
 
     def _cast_vals(self, v):
         """Cast value to type defined in types.py"""
-        if self.is_list:
-            v = [v] if not isinstance(v, list) else v
-            v_cast = [self.param_type(i, **self.kwargs) for i in v]
-        else:
-            v_cast = self.param_type(v, **self.kwargs)
+        try:
+            if self.is_list:
+                v_l = [v] if not isinstance(v, list) else v
+                v_cast = [self.param_type(i, **self.kwargs) for i in v_l]
+            else:
+                v_cast = self.param_type(v, **self.kwargs)
+        except Exception as e:
+            raise InvalidInputParameterValue(f'Value(s) {v} incorrectly formatted: {str(e)}.')
         return v_cast
 
 

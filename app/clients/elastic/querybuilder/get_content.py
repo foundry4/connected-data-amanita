@@ -7,12 +7,14 @@ from elasticsearch_dsl import Search, Q
 
 
 def build_query_body(media_type=None, sort=None, max_duration=None, published_after=None, categories=None,
-                     region=None, random=False, limit=constants.DEFAULT_QUERY_LIMIT,
+                     region=None, random=False, limit=constants.DEFAULT_QUERY_LIMIT, similarity_method=None,
                      offset=constants.DEFAULT_QUERY_OFFSET):
     if published_after is not None:
         raise NotImplementedError('The parameter `publishedAfter` is not yet implemented')
     if region is not None:
         raise NotImplementedError('The parameter `region` is not yet implemented')
+    if similarity_method is not None:
+        raise NotImplementedError('The parameter `similarityMethod` is not yet implemented')
     if sort is not None and random:
         raise InvalidInputParameterCombination('Cannot specify both `sort` and `random`.')
 
