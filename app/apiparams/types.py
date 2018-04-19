@@ -4,6 +4,7 @@ from rdflib import URIRef, Literal
 from app.clients.sparql.namespaces import namespaces as NS
 
 
+
 class BoolFromString:
     def __init__(self, bool_str):
         if bool_str not in ['true', 'True', 'false', 'False']:

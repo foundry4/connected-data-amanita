@@ -76,6 +76,11 @@ def test_validated_datetime():
     assert datetime_obj.second == 0
 
 
+def test_parameter_types():
+    # fail if new parameter types added or parameter types removed
+    defined_parameter_types = [v for v in vars(types) if not v.startswith('_')]
+    assert defined_parameter_types == ['iso8601', 'URIRef', 'Literal', 'NS', 'BoolFromString', 'MediaLiteral', 'LowercaseLiteral', 'ValidatedDatetime']
+
 # test validator class
 def test_param_validator():
     class TestValue:
