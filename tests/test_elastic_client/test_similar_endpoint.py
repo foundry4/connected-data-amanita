@@ -6,12 +6,12 @@ import inspect
 
 import app.api as api
 from app.clients.elastic.client import ESClient
-from app.clients.elastic.querybuilder.get_content import build_query_body
+from app.clients.elastic.querybuilder.get_similar import build_query_body
 
 # response processing
 from exceptions.queryexceptions import InvalidInputParameterCombination
 
-
+item_uri = 'programmes:bbc.co.uk,2018/FIXME/p05q11tt'
 def test_response_processing(flask_app, monkeypatch):
     # dont test parameters here just test content processing
     monkeypatch.setattr(api, 'DB_CLIENT', ESClient)  # instead of using env vars to select db
@@ -19,19 +19,19 @@ def test_response_processing(flask_app, monkeypatch):
     raw_response_file = open("test_elastic_client/data/raw_output_100_similar_examples.json")
     raw_response = json.load(raw_response_file)
     monkeypatch.setattr(ESClient, 'query', lambda *_, **__: raw_response)
-    r = flask_app.get('/content')
+    r = flask_app.get(f'/content/{item_uri}/similar')
     assert r.status_code == 200
     processed_response_file = open("test_elastic_client/data/processed_output_100_similar_examples.json")
     processed_response = json.load(processed_response_file)
     assert json.loads(r.get_data(as_text=True)) == processed_response
 
-#
-# # query building
-# def test_query_building_no_params():
-#     body = build_query_body()
-#     assert body == {'query': {'match_all': {}}, 'from': 0, 'size': 20}
-#
-#
+
+# query building
+def test_query_building_no_params():
+    body = build_query_body(item_uri=item_uri)
+    assert body == {'query': {'bool': {'should': [{'more_like_this': {'like': {'_index': 'pips', '_type': 'clip', '_id': 'programmes:bbc.co.uk,2018/FIXME/p05q11tt'}, 'fields': ['title', 'masterBrand.mid', 'mediaType'], 'min_term_freq': 1, 'min_doc_freq': 1}}, {'nested': {'path': 'genres', 'query': {'more_like_this': {'fields': ['genres.key'], 'like': {'_index': 'pips', '_type': 'clip', '_id': 'programmes:bbc.co.uk,2018/FIXME/p05q11tt'}, 'min_term_freq': 1, 'min_doc_freq': 1}}}}]}}, 'from': 0, 'size': 20}
+
+
 # non_implemented_params = ['published_after', 'region', 'similarity_method']
 #
 #
