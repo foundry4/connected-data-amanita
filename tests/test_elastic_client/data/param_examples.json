@@ -42,7 +42,7 @@
   },
   "max_duration": {
     "good_raw": 100,
-    "bad_format_raw": "100",
+    "bad_format_raw": "bla",
     "not_allowed_raw": -4,
     "validated": 100
   },
@@ -66,13 +66,13 @@
   },
   "limit": {
     "good_raw": 10,
-    "bad_format_raw": "10",
+    "bad_format_raw": "bla",
     "not_allowed_raw": -10,
     "validated": 10
   },
   "offset": {
     "good_raw": 10,
-    "bad_format_raw": "10",
+    "bad_format_raw": "bla",
     "not_allowed_raw": -10,
     "validated": 10
   }

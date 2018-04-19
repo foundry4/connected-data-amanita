@@ -40,9 +40,10 @@ class ValidatedDatetime(str):
 
 class StrictlyPositiveInt(int):
     def __new__(cls, integer):
+        integer = int(integer)
         if integer < 1:
             raise ValueError('Integer must be greater than 0.')
-        return integer
+        return int(integer)
 
 
 class URIStr(str):
