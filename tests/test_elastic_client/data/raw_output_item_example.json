@@ -1,0 +1,112 @@
+{
+  "_scroll_id": "DXF1ZXJ5QW5kRmV0Y2gBAAAAAAAA4xsWUmt4MHFQQkNRRE83VUUwTnpqMEdfUQ==",
+  "took": 1,
+  "timed_out": false,
+  "_shards": {
+    "total": 1,
+    "successful": 1,
+    "skipped": 0,
+    "failed": 0
+  },
+  "hits": {
+    "total": 1,
+    "max_score": 1.0,
+    "hits": [
+      {
+        "_index": "pips",
+        "_type": "clip",
+        "_id": "programmes:bbc.co.uk,2018/FIXME/p05q11tt",
+        "_score": 1.0,
+        "_source": {
+          "advertisingAllowed": "null",
+          "embargoed": false,
+          "masterBrand": {
+            "mid": "bbc_1xtra",
+            "resultType": "master_brand",
+            "href": "/nitro/api/master_brands?mid=bbc_1xtra"
+          },
+          "mediaType": "audio",
+          "pid": "p05q11tt",
+          "releaseDate": null,
+          "title": "J Fresh ft. Lady Ice - Headtop",
+          "updatedTime": "2017-12-05T13:28:55Z",
+          "version": {
+            "duration": 329.0,
+            "href": "/nitro/api/versions?pid=p05q11v1",
+            "pid": "p05q11v1"
+          },
+          "synopses": {
+            "short": "Tonight's Targo Embargo comes courtesy of Bournemouth producer J Fresh.",
+            "medium": null,
+            "long": null
+          },
+          "ancestor": {
+            "brandResourceId": "b0071ryj",
+            "brandTitle": "DJ Target",
+            "episodeResourceId": "b09gtkpc",
+            "episodeTitle": "DJ Target 04/12/2017",
+            "seriesResourceId": null,
+            "seriesTitle": null
+          },
+          "genres": [
+            {
+              "uri": "bbc.co.uk/programmes/genres/music",
+              "key": "music",
+              "label": "Music",
+              "level": 0
+            },
+            {
+              "uri": "bbc.co.uk/programmes/genres/music/hiphoprnbanddancehall",
+              "key": "hiphoprnbanddancehall",
+              "label": "Hip Hop, RnB & Dancehall",
+              "level": 1
+            },
+            {
+              "uri": "bbc.co.uk/programmes/genres/music/hiphoprnbanddancehall/experimentalandnew",
+              "key": "experimentalandnew",
+              "label": "Experimental & New",
+              "level": 2
+            },
+            {
+              "uri": "bbc.co.uk/programmes/genres/music/hiphoprnbanddancehall/dancehall",
+              "key": "dancehall",
+              "label": "Dancehall",
+              "level": 2
+            },
+            {
+              "uri": "bbc.co.uk/programmes/genres/music/hiphoprnbanddancehall/grime",
+              "key": "grime",
+              "label": "Grime",
+              "level": 2
+            },
+            {
+              "uri": "bbc.co.uk/programmes/genres/music/hiphoprnbanddancehall/hiphop",
+              "key": "hiphop",
+              "label": "Hip Hop",
+              "level": 2
+            },
+            {
+              "uri": "bbc.co.uk/programmes/genres/music/hiphoprnbanddancehall/garage",
+              "key": "garage",
+              "label": "Garage",
+              "level": 2
+            },
+            {
+              "uri": "bbc.co.uk/programmes/genres/music/hiphoprnbanddancehall/rnb",
+              "key": "rnb",
+              "label": "RnB",
+              "level": 2
+            }
+          ],
+          "image": "http://ichef.bbci.co.uk/images/ic/$recipe/p05q13cg.jpg",
+          "duration": 329.0,
+          "pgFormats": [
+            "Performances & Events"
+          ],
+          "scheduledEnd": "2018-01-03T20:00:00",
+          "scheduledStart": "2017-12-04T20:00:00"
+        }
+      }
+    ]
+  }
+}
