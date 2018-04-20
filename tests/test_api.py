@@ -36,14 +36,17 @@ class MockDB:
 
 
 def test_get_client_and_close(monkeypatch):
+    # coverage doesnt seem to register for this test
+    class FakeContext:
+        pass
+    monkeypatch.setattr(api, 'g', FakeContext)
     monkeypatch.setattr(api, 'DB_CLIENT', MockDB)
-    with api.app.app_context():
-        assert not hasattr(api.g, 'client')
-        client = api.get_client()
-        assert isinstance(client, MockDB)
-        assert hasattr(api.g, 'client')
-        api.close_client_connection()
-        assert api.g.client.close_connection_called
+    assert not hasattr(api.g, 'client')
+    client = api.get_client()
+    assert isinstance(client, MockDB)
+    assert hasattr(api.g, 'client')
+    api.close_client_connection()
+    assert api.g.client.close_connection_called
 
 
 def test_api_root_status(flask_app):

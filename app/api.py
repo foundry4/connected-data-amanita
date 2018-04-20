@@ -123,5 +123,5 @@ def server_error(e):
     return f'<h1>Error {code}</h1>{str(e)}', code
 
 
-if __name__ == '__main__':
+if __name__ == '__main__': # pragma: no cover
     app.run(host='0.0.0.0', port=PORT, debug=True)
