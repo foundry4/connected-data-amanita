@@ -27,7 +27,7 @@ export DB_ENDPOINT=http://localhost:5001
 export DB_USER=$USERNAME
 export DB_PASS=$PASSWORD
 ```
-
+[]Resources to run Elasticseaerch stack locally.](https://github.com/bbc/connected-data-elasticsearch-docker-stack)
 ### 3. Run the service:
 ```
 PORT=5001 \
@@ -35,7 +35,7 @@ PYTHONPATH=.:$PYTHONPATH \
 python -m app.api
 ```
 
-### 4. Visit the application at http://localhost:5000.
+### 4. Visit the application at http://localhost:5001.
 
 ## Style
 
