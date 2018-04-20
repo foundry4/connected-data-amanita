@@ -121,7 +121,8 @@ def server_error(e):
         code = 404
     else:
         code = 500
-    return f'<h1>Error {code}</h1>{str(e)}', code
+    e_str = str(e).replace("\n", "<br />")
+    return f'<h1>Error {code}</h1>{e_str}', code
 
 
 if __name__ == '__main__': # pragma: no cover

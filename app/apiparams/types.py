@@ -1,3 +1,4 @@
+"""Definitions of types that may be used to validate and format incoming query parameters."""
 import iso8601
 from rdflib import URIRef, Literal
 
@@ -5,9 +6,9 @@ from app.clients.sparql.namespaces import namespaces as NS
 
 
 class BoolFromString:
-    def __new__(self, bool_str):
+    def __new__(cls, bool_str):
         if bool_str not in ['true', 'True', 'false', 'False']:
-            raise ValueError(f'"{bool_str}" is not a valid boolean string.')
+            raise ValueError(f'"{bool_str}" is not a valid boolean string')
         real_bool = True if bool_str in ['true', 'True'] else False
         return real_bool
 
@@ -19,7 +20,7 @@ class MediaUriRef(URIRef):
         elif media_str == 'audio':
             uriref = NS['dct'].Sound
         else:
-            raise ValueError('Invalid media type.')
+            raise ValueError('Invalid media type')
         return URIRef(uriref)
 
 
@@ -39,8 +40,8 @@ class StrictlyPositiveInt(int):
     def __new__(cls, integer):
         integer = int(integer)
         if integer < 1:
-            raise ValueError('Integer must be greater than 0.')
-        return int(integer)
+            raise ValueError('Integer must be greater than 0')
+        return integer
 
 
 class URIStr(str):
@@ -49,12 +50,12 @@ class URIStr(str):
         try:
             u.n3()
         except Exception:
-            raise ValueError(f'{uri_str} does not look like a valid URI.')
+            raise ValueError(f'{uri_str} does not look like a valid URI')
         return uri_str
 
 
 class LowercaseStr(str):
     def __new__(cls, string):
         if not isinstance(string, str):
-            raise TypeError(f'"{string}" is not a string.')
+            raise TypeError(f'"{string}" is not a string')
         return string.lower()

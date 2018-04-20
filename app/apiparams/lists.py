@@ -1,4 +1,8 @@
-"""Lists of API Parameters for particular endpoints."""
+"""
+Lists of API Parameters for particular endpoints.
+It accepts the parameter definitions from the clients as each client may have a different implementation of the same
+parameter.
+"""
 
 
 def get_param_validators_for_endpoint(endpoint, definitions):
