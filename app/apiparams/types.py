@@ -5,14 +5,11 @@ from app.clients.sparql.namespaces import namespaces as NS
 
 
 class BoolFromString:
-    def __init__(self, bool_str):
+    def __new__(self, bool_str):
         if bool_str not in ['true', 'True', 'false', 'False']:
             raise ValueError(f'"{bool_str}" is not a valid boolean string.')
         real_bool = True if bool_str in ['true', 'True'] else False
-        self.bool = real_bool
-
-    def __bool__(self):
-        return self.bool
+        return real_bool
 
 
 class MediaUriRef(URIRef):

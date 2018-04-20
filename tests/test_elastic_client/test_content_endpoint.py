@@ -7,7 +7,7 @@ import inspect
 import app.api as api
 from app.clients.elastic.client import ESClient
 from app.clients.elastic.querybuilder.get_content import build_query_body
-
+from app.clients.elastic.querybuilder import get_content
 # response processing
 from exceptions.queryexceptions import InvalidInputParameterCombination
 
@@ -46,12 +46,13 @@ def test_query_building_params_invalid_combination():
         build_query_body(sort='', random=True)
 
 
-def test_query_building_all_implemented_params():
+def test_query_building_all_implemented_params(monkeypatch):
     params = json.load(open("test_elastic_client/data/param_examples.json"))
     expected_params = list(inspect.signature(build_query_body).parameters)
 
+    # test with sort param separately to random param (cant specify both)
     val_params = {k: v['validated'] for k, v in params.items() if
-                  k not in non_implemented_params and k in expected_params}
+                  k not in non_implemented_params and k in expected_params and k != 'random'}
     body = build_query_body(**val_params)
     assert body == {
         'query': {
@@ -72,3 +73,26 @@ def test_query_building_all_implemented_params():
         'from': 10,
         'size': 10
     }
+
+    #test random param
+    val_params = {k: v['validated'] for k, v in params.items() if
+                  k not in non_implemented_params and k in expected_params and k != 'sort'}
+    monkeypatch.setattr(get_content, 'randint', lambda *_: 1)
+    body = build_query_body(**val_params)
+    assert body == {
+        'query': {
+            'bool': {
+                'filter': [
+                    {'term': {'mediaType': 'audio'}},
+                    {'term': {'mediaType': 'video'}},
+                    {'range': {'duration': {'lte': 100}}},
+                    {'nested': {'path': 'genres', 'query': {'match': {'genres.key': 'music'}}}},
+                    {'nested': {'path': 'genres', 'query': {'match': {'genres.key': 'comedy'}}}}
+                ],
+                'must': [{'function_score': {'functions': [{'random_score': {'seed': 1}}]}}]
+            }
+        },
+        'from': 10,
+        'size': 10
+    }
+

@@ -75,5 +75,11 @@
     "bad_format_raw": "bla",
     "not_allowed_raw": -10,
     "validated": 10
+  },
+  "random": {
+    "good_raw": "true",
+    "bad_format_raw": "True",
+    "not_allowed_raw": 10,
+    "validated": true
   }
 }

@@ -12,7 +12,7 @@ class ESClient(DBClient):
     def parameter_definitions(self):
         return query_param_definitions
 
-    def setup_connection(self):
+    def setup_connection(self):  # pragma: no cover
         store = Elasticsearch(hosts=[self.endpoint], http_auth=(self.user, self.passwd))
         self.store = store
 
@@ -36,7 +36,7 @@ class ESClient(DBClient):
         clips = transform_hits(es_res)
         return {'Results': clips}
 
-    def query(self, query, **params):
+    def query(self, query, **params):  # pragma: no cover
         return self.store.search(body=query, **params)
 
     def close_connection(self):

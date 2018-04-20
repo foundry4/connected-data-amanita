@@ -35,4 +35,5 @@ def build_query_body(media_type=None, sort=None, max_duration=None, published_af
 
     if random:
         search = search.query('function_score', functions=[{'random_score': {'seed': randint(0, 999)}}])
+
     return search.to_dict()

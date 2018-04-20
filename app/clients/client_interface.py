@@ -41,7 +41,7 @@ class DBClient(ABC):
         """DOCSTRING TODO"""
 
     @abstractmethod
-    def setup_connection(self):
+    def setup_connection(self):  # pragma: no cover
         """Uses authentication credentials to open connection to SPARQL store."""
 
     @abstractmethod
@@ -101,7 +101,7 @@ class DBClient(ABC):
 
     def process_item_query_uri(self, uri):
         """Convert URI into format compatible with rdflib."""
-        params = {'itemUri':uri}
+        params = {'itemUri': uri}
         validated = self._validate_param_dict(params, endpoint='item')
         return validated['item_uri']
 
@@ -139,4 +139,3 @@ class DBClient(ABC):
             raise InvalidInputQuery("Invalid parameters/value(s):\n    %s" % '\n    '.join(exceptions))
 
         return validated_typed_params
-
