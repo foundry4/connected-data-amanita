@@ -5,7 +5,8 @@ from app.apiparams import lists, types
 from app.apiparams.types import BoolFromString, MediaUriRef, LowercaseLiteral, ValidatedDatetime, StrictlyPositiveInt, \
     URIStr, LowercaseStr
 from app.apiparams.validator import ParamValidator
-from exceptions.queryexceptions import InvalidInputParameterValue
+from exceptions.queryexceptions import InvalidInputParameterValue, InvalidInputParameter, InvalidInputQuery
+from app.clients import client_interface
 
 
 class Definitions:
@@ -31,7 +32,7 @@ def test_correct_similar_parameter_list():
 
 
 def test_correct_item_parameter_list():
-    specced_content_parameters = ['item_uri']
+    specced_content_parameters = ['itemUri']
 
     implemented_content_parameters = lists.get_param_validators_for_endpoint('item', Definitions())
     assert sorted(implemented_content_parameters) == sorted(specced_content_parameters)
@@ -231,3 +232,71 @@ def test_param_validator_list_expecting_single():
     validator = ParamValidator('test_param', TestTypeFormatted, is_list=False)
     with pytest.raises(InvalidInputParameterValue):
         validator.validate(['correct', 'correct'])
+
+
+# test protected _validate_param_dict method
+# have to create child class because cant instantiate and test abstract base class directly
+
+param_validators = {
+    'paramOne': ParamValidator(
+        snake_case_name='param_one',
+        param_type=str
+    ),
+    'paramTwo': ParamValidator(
+        snake_case_name='param_two',
+        param_type=str
+    ),
+}
+
+existing_input_query_params = {
+    'paramOne': 'val1',
+    'paramTwo': 'val2'
+}
+
+non_existing_input_query_params = {
+    'paramOne': 'val1',
+    'paramThree': 'val3'
+}
+
+validated_params = {
+    'param_one': 'val1',
+    'param_two': 'val2'
+}
+
+
+class MockClient(client_interface.DBClient):
+    def __init__(self):
+        super().__init__('', '', '')
+
+    def setup_connection(self):
+        pass
+
+    @property
+    def parameter_definitions(self):
+        return None
+
+    def close_connection(self):
+        pass
+
+    @staticmethod
+    def query(query, **params):
+        pass
+
+    def get_content(self, validated_query_params):
+        pass
+
+    def get_item(self, validated_item_uri):
+        pass
+
+    def get_similar(self, validated_item_uri, validated_query_params):
+        pass
+
+
+def test_validate_param_dict(monkeypatch):
+    client = MockClient()
+    monkeypatch.setattr(client_interface, 'get_param_validators_for_endpoint', lambda *_: param_validators)
+    validated_params = client._validate_param_dict(existing_input_query_params, 'test')
+    assert validated_params == validated_params
+
+    with pytest.raises(InvalidInputQuery):
+        client._validate_param_dict(non_existing_input_query_params, 'test')

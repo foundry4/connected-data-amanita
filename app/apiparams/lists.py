@@ -27,7 +27,7 @@ def get_param_validators_for_endpoint(endpoint, definitions):
         }
     elif endpoint == 'item':
         return {
-            'item_uri': definitions.item_uri
+            'itemUri': definitions.item_uri
         }
     else:
         raise ValueError(f'{endpoint} is not a valid endpoint.')

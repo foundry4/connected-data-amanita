@@ -101,8 +101,9 @@ class DBClient(ABC):
 
     def process_item_query_uri(self, uri):
         """Convert URI into format compatible with rdflib."""
-        _, validated_typed_uri = self._validate_param('item_uri', uri, endpoint='item')
-        return validated_typed_uri
+        params = {'itemUri':uri}
+        validated = self._validate_param_dict(params, endpoint='item')
+        return validated['item_uri']
 
     def process_similar_query_params(self, query_params):
         """Process input multidict of params from inbound query to regular dict of params that has
@@ -118,13 +119,19 @@ class DBClient(ABC):
         validated_typed_params = self._validate_param_dict(query_params_dict, endpoint='similar')
         return validated_typed_params
 
-    def _validate_param_dict(self, param_dict, endpoint):
-        """Iterate through parameters, validate them and cast them to an RDFLib object."""
+    def _validate_param_dict(self, query_params, endpoint):
+        """Iterate through parameters, validate them and cast them to the correct type."""
         validated_typed_params, exceptions = {}, []
-        for param, val in param_dict.items():
+        validators = get_param_validators_for_endpoint(endpoint, self.parameter_definitions)
+        for param_name, param_val in query_params.items():
             try:
-                snake_case_name, validated_param = self._validate_param(param, val, endpoint)
-                validated_typed_params[snake_case_name] = validated_param
+                try:
+                    validator = validators[param_name]
+                except KeyError:
+                    raise InvalidInputParameter(
+                        f'Parameter `{param_name}` is not included in the defined parameters {list(validators)}'
+                    )
+                validated_typed_params[validator.snake_case_name] = validator.validate(param_val)
             except (InvalidInputParameter, InvalidInputParameterValue) as e:
                 exceptions.append(f'{type(e).__name__}: {str(e)}')
 
@@ -133,16 +140,3 @@ class DBClient(ABC):
 
         return validated_typed_params
 
-    def _validate_param(self, param_name, param_val, endpoint):
-        """Validate and cast a parameter to an RDFLib object."""
-        validators = get_param_validators_for_endpoint(endpoint, self.parameter_definitions)
-        try:
-            validator = validators[param_name]
-        except KeyError:
-            raise InvalidInputParameter(
-                f'Parameter `{param_name}` is not included in the defined parameters {list(validators)}')
-
-        snake_case_name = validator.snake_case_name
-        typed_param_val = validator.validate(param_val)
-
-        return snake_case_name, typed_param_val
