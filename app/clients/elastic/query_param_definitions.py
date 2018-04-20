@@ -1,4 +1,4 @@
-"""Definitions of API parameters for all endpoints."""
+"""Definitions of API parameter validators for all endpoints for Elasticsearch only."""
 
 from app.apiparams.types import BoolFromString, ValidatedDatetime, StrictlyPositiveInt, LowercaseLiteral, URIStr, \
     LowercaseStr

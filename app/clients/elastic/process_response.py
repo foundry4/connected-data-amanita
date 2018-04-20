@@ -2,6 +2,7 @@ from app.utils.conversions import lower_camel_case_to_upper
 
 
 def transform_hits(es_res):
+    """Transform raw ES results to align with API specification."""
     hits = [clip for clip in es_res['hits']['hits']]
     clips = []
     for hit in hits:

@@ -9,6 +9,8 @@ from elasticsearch_dsl import Search, Q
 def build_query_body(media_type=None, sort=None, max_duration=None, published_after=None, categories=None,
                      region=None, random=False, limit=constants.DEFAULT_QUERY_LIMIT, similarity_method=None,
                      offset=constants.DEFAULT_QUERY_OFFSET):
+    """Build query dict ready to pass to Elasticsearch search instance for retrieving a non-personalised list of
+    content. """
     if published_after is not None:
         raise NotImplementedError('The parameter `publishedAfter` is not yet implemented')
     if region is not None:

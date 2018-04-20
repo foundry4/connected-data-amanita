@@ -6,6 +6,8 @@ from app.utils import constants
 def build_query_body(item_uri=None, media_type=None, max_duration=None, published_after=None,
                      region=None, similarity_method=None, limit=constants.DEFAULT_QUERY_LIMIT,
                      offset=constants.DEFAULT_QUERY_OFFSET):
+    """Build query dict ready to pass to Elasticsearch search instance for retrieving a list of similar items given a
+    URI."""
     if published_after is not None:
         raise NotImplementedError('The parameter `publishedAfter` is not yet implemented.')
     if region is not None:

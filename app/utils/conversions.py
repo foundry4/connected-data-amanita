@@ -1,3 +1,6 @@
+"""Functions to map/convert simple data."""
+
+
 def lower_camel_case_to_upper(lower):
     return lower[0].upper() + lower[1:]
 

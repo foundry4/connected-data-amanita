@@ -8,14 +8,9 @@ from exceptions.queryexceptions import InvalidInputParameter, InvalidInputParame
 
 
 class DBClient(ABC):
-    """
-    """
-
     def __init__(self, endpoint, user, passwd):
         """
-        Defines public interface for a graph client object. For now the object is limited to setting up a connection
-        and querying the SPARQL endpoint, with the `get_content` method forming a particular SPAQRL query to list
-        content and process optional parameters.
+        Defines public interface for a database client object. New clients should inherit from this class.
 
         Args:
             endpoint (string): endpoint URL for stardog instance
