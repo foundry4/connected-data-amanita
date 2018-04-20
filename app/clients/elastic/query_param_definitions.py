@@ -66,4 +66,3 @@ similarity_method = ParamValidator(
     is_list=False,
     allowed_values=['genre', 'masterBrand']
 )
-

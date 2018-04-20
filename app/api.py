@@ -31,7 +31,7 @@ logger.info(f'Using credentials:\n endpoint: {DB_ENDPOINT}\n user: {DB_USER}\n p
 app = Flask(__name__)
 
 
-def get_client(): # pragma: no cover
+def get_client():  # pragma: no cover
     # this is covered by tests but coverage.py doesnt pick it up
     if not hasattr(g, 'client'):
         client = DB_CLIENT(DB_ENDPOINT, DB_USER, DB_PASS)
@@ -125,5 +125,5 @@ def server_error(e):
     return f'<h1>Error {code}</h1>{e_str}', code
 
 
-if __name__ == '__main__': # pragma: no cover
+if __name__ == '__main__':  # pragma: no cover
     app.run(host='0.0.0.0', port=PORT, debug=True)

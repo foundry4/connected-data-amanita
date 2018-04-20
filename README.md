@@ -1,8 +1,6 @@
 # Content Graph API
 
-API for the content graph. Implemented with the Python 2
-[Flask](http://flask.pocoo.org/) microframework and running with
-[Green Unicorn](http://gunicorn.org/) Python WSGI HTTP Server.
+API for reading from the Content Graph/Store.
 
 ## Run Locally
 ### 1. Create a virtualenv, install dependencies:

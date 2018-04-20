@@ -26,6 +26,7 @@ def transform_hits(es_res):
         clip['PublicationDate'] = clip['ReleaseDate']
         clips.append(clip)
 
-    fields_to_keep = ['Pid', 'Uri', 'MediaType', 'Duration', 'MasterBrand', 'Genres', 'Image', 'Title', 'PublicationDate']
+    fields_to_keep = ['Pid', 'Uri', 'MediaType', 'Duration', 'MasterBrand', 'Genres', 'Image', 'Title',
+                      'PublicationDate']
     hits = [{k: v for k, v in clip.items() if k in fields_to_keep} for clip in clips]
     return hits
