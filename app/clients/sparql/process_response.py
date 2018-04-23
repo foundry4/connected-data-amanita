@@ -1,5 +1,4 @@
 from app.utils import constants
-from app.utils.conversions import lower_camel_case_to_upper
 from exceptions.queryexceptions import InvalidQueryResponse
 
 
@@ -34,16 +33,16 @@ def transform_bindings(bindings):
         # general
         for field, data in item.items():
             if field not in tag_fields + genre_fields:
-                item_processed[lower_camel_case_to_upper(field)] = data['value']
+                item_processed[field] = data['value']
 
         # tags
         tags_raw = [convert_csv_to_list(item[key]['value']) for key in tag_fields]
-        item_processed['Tags'] = generate_tag_list(*tags_raw)
+        item_processed['tags'] = generate_tag_list(*tags_raw)
 
         # genres
         genres_raw = [convert_csv_to_list(item[key]['value']) if key in item else None for key in genre_fields]
         if any(genres_raw):
-            item_processed['Genres'] = generate_genre_dict(*genres_raw)
+            item_processed['genres'] = generate_genre_dict(*genres_raw)
         results.append(item_processed)
     return results
 
@@ -54,11 +53,11 @@ def generate_tag_list(tag_names, tag_uris, tag_sources, tag_confidences):
     tags_by_source = []
     for source in sorted(set(tag_sources)):
         tags_by_source.append({
-            'Source': source,
-            'TagList': remove_duplicates_from_results_and_sort([{
-                'Uri': taguri,
-                'Label': tag,
-                'Confidence': float(conf)
+            'source': source,
+            'tagList': remove_duplicates_from_results_and_sort([{
+                'uri': taguri,
+                'label': tag,
+                'confidence': float(conf)
             } for tag, taguri, sourceiter, conf in zip(tag_names, tag_uris, tag_sources, tag_confidences)
                 if sourceiter == source])
         })
@@ -70,21 +69,21 @@ def generate_genre_dict(uris_1, uris_2, uris_3, names_1, names_2, names_3, keys_
     genres = {}
     if uris_1 is not None:
         genres['TopLevel'] = remove_duplicates_from_results_and_sort([{
-            'Uri': uri,
-            'Label': name,
-            'Key': key
+            'uri': uri,
+            'label': name,
+            'key': key
         } for uri, name, key in zip(uris_1, names_1, keys_1)])
     if uris_2 is not None:
         genres['SecondLevel'] = remove_duplicates_from_results_and_sort([{
-            'Uri': uri,
-            'Label': name,
-            'Key': key
+            'uri': uri,
+            'label': name,
+            'key': key
         } for uri, name, key in zip(uris_2, names_2, keys_2)])
     if uris_3 is not None:
         genres['ThirdLevel'] = remove_duplicates_from_results_and_sort([{
-            'Uri': uri,
-            'Label': name,
-            'Key': key
+            'uri': uri,
+            'label': name,
+            'key': key
         } for uri, name, key in zip(uris_3, names_3, keys_3)])
     return genres
 

@@ -14,7 +14,6 @@ from app.clients.elastic.querybuilder.get_item import build_query_body
 from exceptions.clientexceptions import NoResultsFoundError
 
 
-
 # query building
 def test_query_building_no_params():
     body = build_query_body('item_uri')

@@ -20,21 +20,21 @@ class ESClient(DBClient):
         query_body = get_content.build_query_body(**validated_query_params)
         es_response = self.query(query_body, index='pips', doc_type='clip', scroll='1m')
         clips = map_hits_to_api_spec(es_response)
-        return {'Results': clips}
+        return {'results': clips}
 
     def get_item(self, validated_item_uri):
         query_body = get_item.build_query_body(validated_item_uri)
         es_response = self.query(query_body, index='pips', doc_type='clip', scroll='1m')
-        hits = map_hits_to_api_spec(es_response)
-        if len(hits) == 0:
+        clips = map_hits_to_api_spec(es_response)
+        if len(clips) == 0:
             raise NoResultsFoundError(f'No results for URI: {validated_item_uri}')
-        return hits[0]
+        return clips[0]
 
     def get_similar(self, validated_item_uri, validated_query_params):
         query_body = get_similar.build_query_body(item_uri=validated_item_uri, **validated_query_params)
         es_response = self.query(query_body, index='pips', doc_type='clip', scroll='1m')
         clips = map_hits_to_api_spec(es_response)
-        return {'Results': clips}
+        return {'results': clips}
 
     def query(self, query, **params):  # pragma: no cover
         return self.store.search(body=query, **params)

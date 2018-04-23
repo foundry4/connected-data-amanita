@@ -1,4 +1,4 @@
-from app.utils.conversions import lower_camel_case_to_upper
+from copy import copy
 
 
 def map_hits_to_api_spec(es_res):
@@ -6,27 +6,26 @@ def map_hits_to_api_spec(es_res):
     hits = es_res['hits']['hits']
     clips = []
     for hit in hits:
-        clip = hit['_source']
-        clip = {lower_camel_case_to_upper(k): v for k, v in clip.items()}
-        clip['Uri'] = hit['_id']
-        clip['MasterBrand'] = clip['MasterBrand']['mid'] if clip['MasterBrand'] is not None else None
-        genres = {'TopLevel': [], 'SecondLevel': [], 'ThirdLevel': []}
+        clip = copy(hit['_source'])
+        clip['uri'] = hit['_id']
+        clip['masterBrand'] = clip['masterBrand']['mid'] if clip['masterBrand'] is not None else None
+        genres = {'topLevel': [], 'secondLevel': [], 'thirdLevel': []}
         genre_mapping = {
-            0: 'TopLevel',
-            1: 'SecondLevel',
-            2: 'ThirdLevel'
+            0: 'topLevel',
+            1: 'secondLevel',
+            2: 'thirdLevel'
         }
-        for genre in clip['Genres']:
+        for genre in clip['genres']:
             genres[genre_mapping[genre['level']]].append({
-                'Uri': genre['uri'],
-                'Label': genre['label'],
-                'Key': genre['key']
+                'uri': genre['uri'],
+                'label': genre['label'],
+                'key': genre['key']
             })
-        clip['Genres'] = genres
-        clip['PublicationDate'] = clip['ReleaseDate']
+        clip['genres'] = genres
+        clip['publicationDate'] = clip['releaseDate']
         clips.append(clip)
 
-    fields_to_keep = ['Pid', 'Uri', 'MediaType', 'Duration', 'MasterBrand', 'Genres', 'Image', 'Title',
-                      'PublicationDate']
+    fields_to_keep = ['pid', 'uri', 'mediaType', 'duration', 'masterBrand', 'genres', 'image', 'title',
+                      'publicationDate']
     hits = [{k: v for k, v in clip.items() if k in fields_to_keep} for clip in clips]
     return hits

@@ -1,14 +1,9 @@
 """Test response is processed correctly. This could """
 import json
 
-import pytest
-
-import inspect
-
 import app.api as api
 from app.clients.elastic.client import ESClient
 
-item_uri = 'programmes:bbc.co.uk,2018/FIXME/p05q11tt'
 
 def test_content_endpoint_map_hits_to_api_response(flask_app, monkeypatch):
     # dont test parameters here just test content processing
@@ -23,6 +18,7 @@ def test_content_endpoint_map_hits_to_api_response(flask_app, monkeypatch):
     processed_response = json.load(processed_response_file)
     assert json.loads(r.get_data(as_text=True)) == processed_response
 
+item_uri = 'programmes:bbc.co.uk,2018/FIXME/p05q11tt'
 
 def test_similar_endpoint_map_hits_to_api_response(flask_app, monkeypatch):
     # dont test parameters here just test content processing
