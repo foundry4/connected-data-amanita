@@ -1,10 +1,15 @@
-from exceptions.queryexceptions import InvalidInputParameterValue
+from app.apiparams.lists import get_param_mappers_for_endpoint
+from exceptions.queryexceptions import InvalidInputParameterValue, InvalidInputParameter, InvalidInputQuery
 
 
-class ParamValidator:
+class ParameterMapper:
     def __init__(self, snake_case_name, param_type, allowed_values=None, is_list=False, **kwargs):
         """
-        Class for storing and validating input query parameters defined in the api spec
+        Class to cast parameters into a desired type that is compatible with the database to be queried.
+        Exceptions are caught for cases in which:
+            - A parameter value is passed that is not contained in the `allowed_values` member
+            - An incorrect number of parameters is given
+            - An exception is raised when casting the value to the desired type
 
         Arguments:
             snake_case_name (string): the name of the parameter
@@ -43,7 +48,8 @@ class ParamValidator:
                 f'{len(v)} values given to parameter {self.snake_case_name} when single value expected.')
 
     def _cast_vals(self, v):
-        """Cast value to type defined in types.py"""
+        """Cast value to the given `param_type`, catch any exceptions raised.
+        Special type definitions exist in `apiparams.types`."""
         try:
             if self.is_list:
                 v_l = [v] if not isinstance(v, list) else v
@@ -53,3 +59,35 @@ class ParamValidator:
         except Exception as e:
             raise InvalidInputParameterValue(f'Value(s) {v} incorrectly formatted: {str(e)}.')
         return v_cast
+
+
+def map_param_values_to_db_compatible(query_params, endpoint, parameter_definitions):
+    """Iterate through parameters, validate them and cast them to the correct type. On errors in mapping the
+    parameters, raise an exception.
+
+    Arguments:
+        query_params (dict): raw params from http request
+        parameter_definitions: dict of ParameterMapper objects that relate to the given endpoint
+        endpoint: endpoint to get the relevant parameter mapper definitions for
+    Returns:
+         mapped_params: dictionary of mapped params.
+    """
+    mapped_params, exceptions = {}, []
+    validators = get_param_mappers_for_endpoint(endpoint, parameter_definitions)
+    for param_name, param_val in query_params.items():
+        try:
+            validator = validators[param_name]
+            mapped_params[validator.snake_case_name] = validator.validate(param_val)
+        except KeyError:
+            e = InvalidInputParameter(
+                f'InvalidInputParameter: Parameter `{param_name}` is not included in the defined parameters '
+                f'{list(validators)} for the endpoint "{endpoint}"'
+            )
+            exceptions.append(f'{type(e).__name__}: {str(e)}')
+        except InvalidInputParameterValue as e:
+            exceptions.append(f'{type(e).__name__}: {str(e)}')
+
+    if exceptions:
+        raise InvalidInputQuery("Invalid parameters/value(s):\n    %s" % '\n    '.join(exceptions))
+
+    return mapped_params

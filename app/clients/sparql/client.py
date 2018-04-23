@@ -6,8 +6,8 @@ from rdflib import Graph
 from rdflib.namespace import NamespaceManager
 from rdflib.plugins.stores import sparqlstore
 
-from app.clients.client_interface import DBClient
-from app.clients.sparql import query_param_definitions
+from app.clients.client_superclass import DBClient
+from app.clients.sparql import query_parameter_mappers
 from app.clients.sparql.querybuilder import get_content, get_similar
 from app.clients.sparql.querybuilder import get_item
 from app.clients.sparql.namespaces import namespaces as ns
@@ -25,7 +25,7 @@ class SPARQLClient(DBClient):
 
     @property
     def parameter_definitions(self):
-        return query_param_definitions
+        return query_parameter_mappers
 
     def setup_connection(self):
         store = sparqlstore.SPARQLUpdateStore()

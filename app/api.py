@@ -63,7 +63,7 @@ def list_content():
     query_params = request.args
 
     client = get_client()
-    validated_query_params = client.process_content_query_params(query_params)
+    validated_query_params = client.map_content_query_params_to_db_compatible(query_params)
     res = client.get_content(validated_query_params)
     return jsonify(res), 200
 
@@ -78,7 +78,7 @@ def item(item_uri):
         200 (int): success status code
     """
     client = get_client()
-    validated_uri = client.process_item_query_uri(item_uri)
+    validated_uri = client.map_item_query_uri_to_db_compatible(item_uri)
     res = client.get_item(validated_uri)
     return jsonify(res), 200
 
@@ -95,8 +95,8 @@ def list_similar_content(item_uri):
     query_params = request.args
 
     client = get_client()
-    validated_query_params = client.process_similar_query_params(query_params)
-    validated_uri = client.process_item_query_uri(url2pathname(item_uri))
+    validated_query_params = client.map_similar_query_params_to_db_compatible(query_params)
+    validated_uri = client.map_item_query_uri_to_db_compatible(url2pathname(item_uri))
     res = client.get_similar(validated_uri, validated_query_params)
     return jsonify(res), 200
 

@@ -2,15 +2,16 @@ import json
 
 import pytest
 
-from app.clients.elastic import query_param_definitions
+from app.clients.elastic import query_parameter_mappers
 from exceptions.queryexceptions import InvalidInputParameterValue
 
 
-@pytest.mark.parametrize('param',json.load(open("test_elastic_client/data/param_examples.json")).items())
-def test_parameter_definitions(param):
-    definitions = query_param_definitions
+@pytest.mark.parametrize('param',json.load(open("test_clients_elastic/data/param_examples.json")).items())
+def test_parameter_mappers(param):
+    """Test each parameter mapper with good and bad inputs"""
+    mappers = query_parameter_mappers
     param_name, param_vals = param
-    validator = getattr(definitions, param_name)
+    validator = getattr(mappers, param_name)
 
     validated_param = validator.validate(param_vals['good_raw'])
     assert validated_param == param_vals['validated']

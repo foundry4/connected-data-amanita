@@ -1,11 +1,11 @@
-"""
-Lists of API Parameters for particular endpoints.
-It accepts the parameter definitions from the clients as each client may have a different implementation of the same
-parameter.
-"""
+"""This file defines which parameters are used/needed for each endpoint. DB Clients to be imoplemented should
+implement a `parameter_definitions` property that contains definitions of all the parameters listed here.
+
+Returns objects to map parameter values to the correct format, given all of the mapping objects defined by the client,
+and the relevant endpoint. """
 
 
-def get_param_validators_for_endpoint(endpoint, definitions):
+def get_param_mappers_for_endpoint(endpoint, definitions):
     if endpoint == 'content':
         return {
             'mediaType': definitions.media_type,
@@ -18,7 +18,7 @@ def get_param_validators_for_endpoint(endpoint, definitions):
             'offset': definitions.offset,
             'random': definitions.random
         }
-    elif endpoint == 'similar':
+    if endpoint == 'similar':
         return {
             'mediaType': definitions.media_type,
             'sort': definitions.sort,
@@ -29,9 +29,8 @@ def get_param_validators_for_endpoint(endpoint, definitions):
             'offset': definitions.offset,
             'similarityMethod': definitions.similarity_method,
         }
-    elif endpoint == 'item':
+    if endpoint == 'item':
         return {
             'itemUri': definitions.item_uri
         }
-    else:
-        raise ValueError(f'{endpoint} is not a valid endpoint.')
+    raise ValueError(f'{endpoint} is not a valid endpoint.')

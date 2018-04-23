@@ -25,13 +25,13 @@ class MockDB:
     def get_item(self, *_):
         pass
 
-    def process_content_query_params(self, *_):
+    def map_content_query_params_to_db_compatible(self, *_):
         pass
 
-    def process_item_query_uri(self, *_):
+    def map_item_query_uri_to_db_compatible(self, *_):
         pass
 
-    def process_similar_query_params(self, *_):
+    def map_similar_query_params_to_db_compatible(self, *_):
         pass
 
 

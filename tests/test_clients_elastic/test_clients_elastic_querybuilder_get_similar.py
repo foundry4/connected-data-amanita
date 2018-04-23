@@ -13,31 +13,16 @@ from exceptions.queryexceptions import InvalidInputParameterCombination
 
 item_uri = 'programmes:bbc.co.uk,2018/FIXME/p05q11tt'
 
-
-def test_response_processing(flask_app, monkeypatch):
-    # dont test parameters here just test content processing
-    monkeypatch.setattr(api, 'DB_CLIENT', ESClient)  # instead of using env vars to select db
-    monkeypatch.setattr(ESClient, 'setup_connection', lambda *_, **__: None)
-    raw_response_file = open("test_elastic_client/data/raw_output_100_similar_examples.json")
-    raw_response = json.load(raw_response_file)
-    monkeypatch.setattr(ESClient, 'query', lambda *_, **__: raw_response)
-    r = flask_app.get(f'/content/{item_uri}/similar')
-    assert r.status_code == 200
-    processed_response_file = open("test_elastic_client/data/processed_output_100_similar_examples.json")
-    processed_response = json.load(processed_response_file)
-    assert json.loads(r.get_data(as_text=True)) == processed_response
-
-
 # query building
 def test_query_building_no_params():
     body = build_query_body(item_uri=item_uri)
     assert body == {'query': {'bool': {'should': [{'more_like_this': {
-        'like': {'_index': 'pips', '_type': 'clip', '_id': 'programmes:bbc.co.uk,2018/FIXME/p05q11tt'},
+        'like': {'_index': 'pips', '_type': 'clip', '_id': item_uri},
         'fields': ['title', 'masterBrand.mid', 'mediaType'], 'min_term_freq': 1, 'min_doc_freq': 1}}, {
         'nested': {'path': 'genres', 'query': {
             'more_like_this': {'fields': ['genres.key'],
                                'like': {'_index': 'pips', '_type': 'clip',
-                                        '_id': 'programmes:bbc.co.uk,2018/FIXME/p05q11tt'},
+                                        '_id': item_uri},
                                'min_term_freq': 1,
                                'min_doc_freq': 1}}}}]}}, 'from': 0,
         'size': 20}
@@ -53,7 +38,7 @@ def test_query_building_params_not_implemented(non_implemented_param):
 
 
 def test_query_building_all_implemented_params():
-    params = json.load(open("test_elastic_client/data/param_examples.json"))
+    params = json.load(open("test_clients_elastic/data/param_examples.json"))
     expected_params = list(inspect.signature(build_query_body).parameters)
 
     val_params = {k: v['validated'] for k, v in params.items() if

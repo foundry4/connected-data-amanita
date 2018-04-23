@@ -46,12 +46,4 @@ def build_query_body(item_uri=None, media_type=None, max_duration=None, publishe
     ]
     search = search.query('bool', should=similarity_filters)
 
-    # similarity by title
-
-    # similarity by genre
-    # # similarity by synopsis
-    # search = search.query(
-
-    # )
-
     return search.to_dict()

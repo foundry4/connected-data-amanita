@@ -1,4 +1,5 @@
-"""Definitions of types that may be used to validate and format incoming query parameters."""
+"""Definitions of types used to cast incoming query parameters to the desired db-compatible format. If the input
+parameter is of an invalid format then exceptions should be raised. """
 import iso8601
 from rdflib import URIRef, Literal
 
@@ -6,6 +7,7 @@ from app.clients.sparql.namespaces import namespaces as NS
 
 
 class BoolFromString:
+    """Converts string to Python boolean."""
     def __new__(cls, bool_str):
         if bool_str not in ['true', 'True', 'false', 'False']:
             raise ValueError(f'"{bool_str}" is not a valid boolean string')
@@ -14,6 +16,7 @@ class BoolFromString:
 
 
 class MediaUriRef(URIRef):
+    """Convert 'video'/'audio' to DCMI term."""
     def __new__(cls, media_str):
         if media_str == 'video':
             uriref = NS['dct'].MovingImage
@@ -25,11 +28,13 @@ class MediaUriRef(URIRef):
 
 
 class LowercaseLiteral(Literal):
+    """Convert string to a lower case Literal."""
     def __new__(cls, str_lit):
         return Literal(str_lit.lower())
 
 
 class ValidatedDatetime(str):
+    """Check that datetime is valid by parsing it, if valid then return the input string."""
     def __new__(cls, datetime: str):
         datetime = datetime[1:] if datetime.startswith('P') else datetime
         iso8601.parse_date(datetime)
@@ -37,6 +42,7 @@ class ValidatedDatetime(str):
 
 
 class StrictlyPositiveInt(int):
+    """Raise exception if int < 1."""
     def __new__(cls, integer):
         integer = int(integer)
         if integer < 1:
@@ -45,6 +51,7 @@ class StrictlyPositiveInt(int):
 
 
 class URIStr(str):
+    """Raise exception if URI cannot be cast as and rdflib URIRef."""
     def __new__(cls, uri_str):
         u = URIRef(uri_str)
         try:
