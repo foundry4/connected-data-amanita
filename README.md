@@ -1,6 +1,6 @@
 # Amanita
 
-API for Amanita. Implemented with the Python 2
+API for the content graph. Implemented with the Python 2
 [Flask](http://flask.pocoo.org/) microframework and running with
 [Green Unicorn](http://gunicorn.org/) Python WSGI HTTP Server.
 
