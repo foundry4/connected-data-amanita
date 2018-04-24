@@ -5,7 +5,8 @@ import pytest
 
 from app.clients.elastic.querybuilder.get_similar import build_query_body
 
-item_uri = 'programmes:bbc.co.uk,2018/FIXME/p05q11tt'
+params = json.load(open("test_clients_elastic/data/param_examples.json"))
+item_uri = params['item_uri']['validated']
 
 
 # query building
@@ -56,15 +57,18 @@ non_implemented_params = ['published_after', 'region', 'similarity_method']
 @pytest.mark.parametrize('non_implemented_param', non_implemented_params)
 def test_query_building_params_not_implemented(non_implemented_param):
     with pytest.raises(NotImplementedError):
-        build_query_body(**{non_implemented_param: ''})
+        build_query_body(item_uri=None, **{non_implemented_param: ''})
 
 
 def test_query_building_all_implemented_params():
-    params = json.load(open("test_clients_elastic/data/param_examples.json"))
-    expected_params = list(inspect.signature(build_query_body).parameters)
 
-    val_params = {k: v['validated'] for k, v in params.items() if
-                  k not in non_implemented_params and k in expected_params}
+    val_params = {
+        'item_uri': params['item_uri']['validated'],
+        'media_type': params['media_type']['validated'],
+        'max_duration': params['max_duration']['validated'],
+        'limit': params['limit']['validated'],
+        'offset': params['offset']['validated']
+    }
     body = build_query_body(**val_params)
     expected = {
         'query': {

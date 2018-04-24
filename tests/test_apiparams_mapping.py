@@ -177,10 +177,10 @@ class MockClient(client_superclass.DBClient):
     def get_content(self, mapped_params):
         pass
 
-    def get_item(self, validated_item_uri):
+    def get_item(self, mapped_params):
         pass
 
-    def get_similar(self, validated_item_uri, validated_query_params):
+    def get_similar(self,mapped_paramss):
         pass
 
 

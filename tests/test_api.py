@@ -35,13 +35,13 @@ class MockDBClient:
         return MockDefinitions()
 
 
-class FakeContext:
+class MockFlaskContext:
     pass
 
 
 def test_get_client_and_close(monkeypatch):
     # coverage doesnt seem to register for this test
-    monkeypatch.setattr(api, 'g', FakeContext())
+    monkeypatch.setattr(api, 'g', MockFlaskContext())
     monkeypatch.setattr(api, 'db_client_classes', {'mock_db_client': MockDBClient})
     assert not hasattr(api.g, 'client')
 
@@ -54,7 +54,7 @@ def test_get_client_and_close(monkeypatch):
 
 
 def test_get_invalid_client(monkeypatch):
-    monkeypatch.setattr(api, 'g', FakeContext())
+    monkeypatch.setattr(api, 'g', MockFlaskContext())
     with pytest.raises(InvalidClientName):
         api.get_client('invalid_client')
 
@@ -65,15 +65,14 @@ def test_api_root_status(flask_app):
     assert r.status_code == 200
 
 
-def test_api_content_endpoint(flask_app, monkeypatch):
+def test_api_content_endpoint_status(flask_app, monkeypatch):
     monkeypatch.setattr(api, 'db_client_classes', {'mock_db_client': MockDBClient})
     monkeypatch.setattr(api, 'DB_CLIENT', 'mock_db_client')
     monkeypatch.setattr(api, 'map_param_values_to_given_definitions', lambda *_, **__: {})
     r = flask_app.get('/content')
     assert r.status_code == 200
 
-
-def test_api_item_endpoint(flask_app, monkeypatch):
+def test_api_item_endpoint_status(flask_app, monkeypatch):
     monkeypatch.setattr(api, 'db_client_classes', {'mock_db_client': MockDBClient})
     monkeypatch.setattr(api, 'DB_CLIENT', 'mock_db_client')
     monkeypatch.setattr(api, 'map_param_values_to_given_definitions', lambda *_, **__: {})
@@ -81,7 +80,7 @@ def test_api_item_endpoint(flask_app, monkeypatch):
     assert r.status_code == 200
 
 
-def test_api_similar_endpoint(flask_app, monkeypatch):
+def test_api_similar_endpoint_status(flask_app, monkeypatch):
     monkeypatch.setattr(api, 'db_client_classes', {'mock_db_client': MockDBClient})
     monkeypatch.setattr(api, 'DB_CLIENT', 'mock_db_client')
     monkeypatch.setattr(api, 'map_param_values_to_given_definitions', lambda *_, **__: {})
