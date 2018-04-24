@@ -49,28 +49,27 @@ class DBClient(ABC):
         """
 
     @abstractmethod
-    def get_content(self, validated_query_params):
+    def get_content(self, mapped_params):
         """
         Get list of content from graph and filter based on `query_params`.
         Args:
-            validated_query_params (dict): _validated_ query parameters for filtering results
+            mapped_params (dict): parameters for filtering results
         """
 
     @abstractmethod
-    def get_item(self, validated_item_uri):
+    def get_item(self, mapped_params):
         """
         Get list of content from graph and filter based on `query_params`.
         Args:
-            validated_item_uri (rdflib.URIRef): _validated_ uri of item to get data for
+            mapped_params (dict): parameters for filtering results, should include 'itemUri'
         """
 
     @abstractmethod
-    def get_similar(self, validated_item_uri, validated_query_params):
+    def get_similar(self, mapped_params):
         """
         Get list of content related to given item uri and filter based on `query_params`.
         Args:
-            validated_query_params: _validated_ query parameters for filtering results
-            validated_item_uri (rdflib.URIRef): _validated_ uri of item to get data for
+            mapped_params (dict): parameters for filtering results, should include 'itemUri'
         """
 
 

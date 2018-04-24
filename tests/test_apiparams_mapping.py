@@ -174,7 +174,7 @@ class MockClient(client_superclass.DBClient):
     def query(query, **params):
         pass
 
-    def get_content(self, validated_query_params):
+    def get_content(self, mapped_params):
         pass
 
     def get_item(self, validated_item_uri):
@@ -190,4 +190,4 @@ def test_map_param_values_to_db_compatible(monkeypatch):
     assert validated_params == validated_params
 
     with pytest.raises(InvalidInputQuery):
-        map_param_values_to_given_definitions(non_existing_input_query_params, 'test', None)
+        map_param_values_to_given_definitions(None, 'test', path_params=non_existing_input_query_params)

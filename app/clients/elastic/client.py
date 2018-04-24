@@ -16,22 +16,22 @@ class ESClient(DBClient):
         store = Elasticsearch(hosts=[self.endpoint], http_auth=(self.user, self.passwd))
         self.store = store
 
-    def get_content(self, validated_query_params):
-        query_body = get_content.build_query_body(**validated_query_params)
+    def get_content(self, mapped_params):
+        query_body = get_content.build_query_body(**mapped_params)
         es_response = self.query(query_body, index='pips', doc_type='clip', scroll='1m')
         clips = map_hits_to_api_spec(es_response)
         return {'results': clips}
 
-    def get_item(self, validated_item_uri):
-        query_body = get_item.build_query_body(validated_item_uri)
+    def get_item(self, mapped_params):
+        query_body = get_item.build_query_body(**mapped_params)
         es_response = self.query(query_body, index='pips', doc_type='clip', scroll='1m')
         clips = map_hits_to_api_spec(es_response)
         if len(clips) == 0:
-            raise NoResultsFoundError(f'No results for URI: {validated_item_uri}')
+            raise NoResultsFoundError(f'No results for URI: {mapped_params}')
         return clips[0]
 
-    def get_similar(self, validated_item_uri, validated_query_params):
-        query_body = get_similar.build_query_body(item_uri=validated_item_uri, **validated_query_params)
+    def get_similar(self, mapped_params):
+        query_body = get_similar.build_query_body(**mapped_params)
         es_response = self.query(query_body, index='pips', doc_type='clip', scroll='1m')
         clips = map_hits_to_api_spec(es_response)
         return {'results': clips}

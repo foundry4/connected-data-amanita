@@ -62,62 +62,30 @@ class ParameterMapper:
         return v_cast
 
 
-# parameter mapping
-def map_content_query_params_to_db_compatible(query_params, parameter_definitions):
-    """Process input multidict of params from inbound query to regular dict of params that has
-    been validated against a list of expected params and values.
+def map_param_values_to_given_definitions(parameter_definitions, endpoint, path_params=None, query_params=None):
+    """Iterate through parameters, cast them to the correct type. On errors in mapping any parameters,
+    raise an exception.
 
     Arguments:
-        query_params (MultiDict): query parameters from HTTP request
-        parameter_definitions: TODO
+        parameter_definitions (object):  ParameterMapper objects that relate to the given endpoint
+        endpoint (str): endpoint for which the parameters will be used for
+        path_params (dict): dict of any path parameters to be mapped
+        query_params (MultiDict): raw params from http request
 
     Returns:
-        validated_typed_params (dict): parameters that have been validated and cast to the correct type
-    """
-    query_params_dict = map_multidict_to_dict(query_params)
-    validated_typed_params = map_param_values_to_given_definitions(query_params_dict, endpoint='content',
-                                                                   parameter_definitions=parameter_definitions)
-    return validated_typed_params
-
-
-def map_item_query_uri_to_db_compatible(uri, parameter_definitions):
-    """Convert URI into format compatible with database."""
-    params = {'itemUri': uri}
-    validated = map_param_values_to_given_definitions(params, endpoint='item',
-                                                      parameter_definitions=parameter_definitions)
-    return validated['item_uri']
-
-
-def map_similar_query_params_to_db_compatible(query_params, parameter_definitions):
-    """Process input multidict of params from inbound query to regular dict of params that has
-    been validated against a list of expected params and values.
-
-    Arguments:
-        query_params (MultiDict): query parameters from HTTP request
-
-    Returns:
-        validated_typed_params (dict): parameters that have been validated and cast to the correct type
-    """
-    query_params_dict = map_multidict_to_dict(query_params)
-    validated_typed_params = map_param_values_to_given_definitions(query_params_dict, endpoint='similar',
-                                                                   parameter_definitions=parameter_definitions)
-    return validated_typed_params
-
-
-def map_param_values_to_given_definitions(query_params, endpoint, parameter_definitions):
-    """Iterate through parameters, validate them and cast them to the correct type. On errors in mapping the
-    parameters, raise an exception.
-
-    Arguments:
-        query_params (dict): raw params from http request
-        parameter_definitions: dict of ParameterMapper objects that relate to the given endpoint
-        endpoint: endpoint to get the relevant parameter mapper definitions for
-    Returns:
-         mapped_params: dictionary of mapped params.
+        mapped_params: dictionary of mapped params.
     """
     mapped_params, exceptions = {}, []
+
+    params = {}
+    if query_params is not None:
+        query_params = map_multidict_to_dict(query_params)
+        params.update(query_params)
+    if path_params is not None:
+        params.update(path_params)
+
     validators = get_param_mappers_for_endpoint(endpoint, parameter_definitions)
-    for param_name, param_val in query_params.items():
+    for param_name, param_val in params.items():
         try:
             validator = validators[param_name]
             mapped_params[validator.snake_case_name] = validator.validate(param_val)

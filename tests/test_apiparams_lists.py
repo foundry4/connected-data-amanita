@@ -18,7 +18,7 @@ def test_get_param_mappers_for_endpoint_correct_content_parameter_list():
 
 
 def test_get_param_mappers_for_endpoint_correct_similar_parameter_list():
-    specced_content_parameters = ['mediaType', 'sort', 'maxDuration', 'region', 'publishedAfter', 'limit',
+    specced_content_parameters = ['itemUri', 'mediaType', 'sort', 'maxDuration', 'region', 'publishedAfter', 'limit',
                                   'offset', 'similarityMethod']
 
     implemented_content_parameters = lists.get_param_mappers_for_endpoint('similar', MockDefinitions())

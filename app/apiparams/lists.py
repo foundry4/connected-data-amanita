@@ -20,6 +20,7 @@ def get_param_mappers_for_endpoint(endpoint, definitions):
         }
     elif endpoint == 'similar':
         mappers = {
+            'itemUri': definitions.item_uri,
             'mediaType': definitions.media_type,
             'sort': definitions.sort,
             'maxDuration': definitions.max_duration,

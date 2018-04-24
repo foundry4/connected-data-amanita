@@ -6,8 +6,7 @@ from urllib.request import url2pathname
 from SPARQLWrapper.SPARQLExceptions import QueryBadFormed
 from flask import Flask, jsonify, request, g
 
-from app.apiparams.mapping import map_content_query_params_to_db_compatible, map_item_query_uri_to_db_compatible, \
-    map_similar_query_params_to_db_compatible
+from app.apiparams.mapping import map_param_values_to_given_definitions
 from app.clients.elastic.client import ESClient
 from app.clients.sparql.client import SPARQLClient
 from app.utils import constants
@@ -68,8 +67,12 @@ def list_content():
     query_params = request.args
 
     client = get_client(DB_CLIENT)
-    validated_query_params = map_content_query_params_to_db_compatible(query_params, client.parameter_definitions)
-    res = client.get_content(validated_query_params)
+    mapped_params = map_param_values_to_given_definitions(
+        client.parameter_definitions,
+        'content',
+        query_params=query_params
+    )
+    res = client.get_content(mapped_params)
     return jsonify(res), 200
 
 
@@ -83,8 +86,13 @@ def item(item_uri):
         200 (int): success status code
     """
     client = get_client(DB_CLIENT)
-    validated_uri = map_item_query_uri_to_db_compatible(url2pathname(item_uri), client.parameter_definitions)
-    res = client.get_item(validated_uri)
+    path_params = {'itemUri': url2pathname(item_uri)}
+    mapped_params = map_param_values_to_given_definitions(
+        client.parameter_definitions,
+        'item',
+        path_params=path_params
+    )
+    res = client.get_item(mapped_params)
     return jsonify(res), 200
 
 
@@ -100,9 +108,15 @@ def list_similar_content(item_uri):
     query_params = request.args
 
     client = get_client(DB_CLIENT)
-    validated_query_params = map_similar_query_params_to_db_compatible(query_params, client.parameter_definitions)
-    validated_uri = map_item_query_uri_to_db_compatible(url2pathname(item_uri), client.parameter_definitions)
-    res = client.get_similar(validated_uri, validated_query_params)
+    path_params = {'itemUri': url2pathname(item_uri)}
+    mapped_params = map_param_values_to_given_definitions(
+        client.parameter_definitions,
+        'similar',
+        query_params=query_params,
+        path_params=path_params
+    )
+
+    res = client.get_similar(mapped_params)
     return jsonify(res), 200
 
 

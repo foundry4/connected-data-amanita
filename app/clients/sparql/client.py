@@ -33,8 +33,8 @@ class SPARQLClient(DBClient):
         self.store = store
         self._initialise_namespaces()
 
-    def get_content(self, validated_query_params):
-        query_string = get_content.build_query(**validated_query_params)
+    def get_content(self, mapped_params):
+        query_string = get_content.build_query(**mapped_params)
         sparql_result = self.query(query_string)
         if is_result_set_empty(sparql_result):
             bindings = []
@@ -44,21 +44,21 @@ class SPARQLClient(DBClient):
         content_list = transform_bindings(bindings)
         return content_list
 
-    def get_item(self, validated_item_uri):
-        query_string = get_item.build_query(validated_item_uri)
+    def get_item(self, mapped_params):
+        query_string = get_item.build_query(**mapped_params)
         sparql_result = self.query(query_string)
         if is_result_set_empty(sparql_result):
-            raise NoResultsFoundError(f'No results for URI: {validated_item_uri}')
+            raise NoResultsFoundError(f'No results for URI: {mapped_params["item_uri"]}')
         else:
             result_serialized = json.loads(sparql_result.serialize(format='json'))
             bindings = get_bindings_from_response(result_serialized)
         item_list = transform_bindings(bindings)
         item = item_list[0]
-        item['Uri'] = str(validated_item_uri)
+        item['uri'] = str(mapped_params['item_uri'])
         return item
 
-    def get_similar(self, validated_item_uri, validated_query_params):
-        query_string = get_similar.build_query(item_uri=validated_item_uri, **validated_query_params)
+    def get_similar(self, mapped_params):
+        query_string = get_similar.build_query(**mapped_params)
         sparql_result = self.query(query_string)
         if is_result_set_empty(sparql_result):
             bindings = []

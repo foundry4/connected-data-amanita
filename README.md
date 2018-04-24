@@ -24,7 +24,7 @@ export DB_PASS=$PASSWORD
 #### For use with Elastic
 ```
 export DB_CLIENT='elasticsearch'
-export DB_ENDPOINT=http://localhost:5001
+export DB_ENDPOINT=http://localhost:9001
 export DB_USER=$USERNAME
 export DB_PASS=$PASSWORD
 ```
