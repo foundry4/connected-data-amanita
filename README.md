@@ -12,7 +12,8 @@ python3 -m venv env
 pip3 install -r requirements.txt
 ```
 
-### 2a. Run with Stardog
+### 2. Set up environmental variables:
+#### For use with Stardog
 ```
 export DB_CLIENT='stardog'
 export DB_ENDPOINT=http://$SERVER:$PORT/content-graph-test/query
@@ -20,7 +21,7 @@ export DB_USER=$USERNAME
 export DB_PASS=$PASSWORD
 ```
 
-### 2b. Run with Elastic
+#### For use with Elastic
 ```
 export DB_CLIENT='elasticsearch'
 export DB_ENDPOINT=http://localhost:5001
