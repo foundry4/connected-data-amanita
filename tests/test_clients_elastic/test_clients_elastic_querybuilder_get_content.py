@@ -1,16 +1,11 @@
+import inspect
 import json
 
 import pytest
 
-import inspect
-
-import app.api as api
-from app.clients.elastic.client import ESClient
-from app.clients.elastic.querybuilder.get_content import build_query_body
 from app.clients.elastic.querybuilder import get_content
-# response processing
+from app.clients.elastic.querybuilder.get_content import build_query_body
 from exceptions.queryexceptions import InvalidInputParameterCombination
-
 
 
 # query building
@@ -35,13 +30,18 @@ def test_build_query_body_params_invalid_combination():
 
 def test_build_query_body_all_implemented_params(monkeypatch):
     params = json.load(open("test_clients_elastic/data/param_examples.json"))
-    expected_params = list(inspect.signature(build_query_body).parameters)
 
-    # test with sort param separately to random param (cant specify both)
-    val_params = {k: v['validated'] for k, v in params.items() if
-                  k not in non_implemented_params and k in expected_params and k != 'random'}
+    # test all with sort param separately to all with random param (cant specify both)
+    val_params = {
+        'media_type': params['media_type']['validated'],
+        'sort': params['sort']['validated'],
+        'max_duration': params['max_duration']['validated'],
+        'categories': params['categories']['validated'],
+        'limit': params['limit']['validated'],
+        'offset': params['offset']['validated']
+    }
     body = build_query_body(**val_params)
-    assert body == {
+    expected = {
         'query': {
             'bool': {
                 'filter': [
@@ -60,13 +60,21 @@ def test_build_query_body_all_implemented_params(monkeypatch):
         'from': 10,
         'size': 10
     }
+    assert body == expected
 
-    #test random param
-    val_params = {k: v['validated'] for k, v in params.items() if
-                  k not in non_implemented_params and k in expected_params and k != 'sort'}
+    # test all with random param
+    val_params = {
+        'media_type': params['media_type']['validated'],
+        'random': params['random']['validated'],
+        'max_duration': params['max_duration']['validated'],
+        'categories': params['categories']['validated'],
+        'limit': params['limit']['validated'],
+        'offset': params['offset']['validated']
+    }
+
     monkeypatch.setattr(get_content, 'randint', lambda *_: 1)
     body = build_query_body(**val_params)
-    assert body == {
+    expected = {
         'query': {
             'bool': {
                 'filter': [
@@ -82,4 +90,4 @@ def test_build_query_body_all_implemented_params(monkeypatch):
         'from': 10,
         'size': 10
     }
-
+    assert body == expected

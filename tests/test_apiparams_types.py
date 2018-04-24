@@ -8,14 +8,10 @@ from app.apiparams.types import BoolFromString, MediaUriRef, LowercaseLiteral, V
 
 # test parameter types
 def test_bool_from_string():
-    bool = BoolFromString('true')
-    assert bool
-    bool = BoolFromString('True')
-    assert bool
-    bool = BoolFromString('false')
-    assert not bool
-    bool = BoolFromString('False')
-    assert not bool
+    assert BoolFromString('true')
+    assert BoolFromString('True')
+    assert not BoolFromString('false')
+    assert not BoolFromString('False')
     with pytest.raises(ValueError):
         BoolFromString('notbool')
 
