@@ -1,21 +1,21 @@
 """API is run from here, access at localhost:5000. To run queries from browser, visit the `localhost:5000/content`
 endpoint and add parameters like so `/content?limit=5`."""
-import logging
+import os
 from urllib.request import url2pathname
 
 from SPARQLWrapper.SPARQLExceptions import QueryBadFormed
 from flask import Flask, jsonify, request, g
-import os
 
 from app.clients.elastic.client import ESClient
 from app.clients.sparql.client import SPARQLClient
 from app.utils import constants
+from app.utils import logging
 from exceptions.clientexceptions import NoResultsFoundError
 from exceptions.helpers import log_last_exception
 from exceptions.queryexceptions import InvalidInputQuery
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger()
+logger = logging.get_logger(__name__)
+
 db_clients = {
     'stardog': SPARQLClient,
     'elasticsearch': ESClient

@@ -1,5 +1,5 @@
-from elasticsearch_dsl import Search, Nested
-from elasticsearch_dsl.query import MoreLikeThis, Query, Bool, Q
+from elasticsearch_dsl import Search
+from elasticsearch_dsl.query import MoreLikeThis, Q
 from app.utils import constants
 
 

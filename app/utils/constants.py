@@ -12,3 +12,5 @@ TAG_SEPARATOR = '^'  # separating char to use when converting string of tags in 
 DEFAULT_HTTP_PORT = "5001"
 
 DEFAULT_DB_CLIENT = 'stardog'
+
+LOG_LEVEL = 'DEBUG'

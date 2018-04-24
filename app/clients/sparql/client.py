@@ -1,21 +1,20 @@
 import json
 from urllib.error import HTTPError, URLError
 
-from flask import logging
 from rdflib import Graph
 from rdflib.namespace import NamespaceManager
 from rdflib.plugins.stores import sparqlstore
 
 from app.clients.client_superclass import DBClient
 from app.clients.sparql import query_parameter_mappers
-from app.clients.sparql.querybuilder import get_content, get_similar
-from app.clients.sparql.querybuilder import get_item
 from app.clients.sparql.namespaces import namespaces as ns
 from app.clients.sparql.process_response import get_bindings_from_response, transform_bindings, is_result_set_empty
+from app.clients.sparql.querybuilder import get_content, get_similar
+from app.clients.sparql.querybuilder import get_item
+from app.utils import logging
 from exceptions.clientexceptions import NoResultsFoundError, DBClientResponseError
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger = logging.get_logger(__name__)
 
 
 class SPARQLClient(DBClient):
