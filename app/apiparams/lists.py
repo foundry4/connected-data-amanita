@@ -7,7 +7,7 @@ and the relevant endpoint. """
 
 def get_param_mappers_for_endpoint(endpoint, definitions):
     if endpoint == 'content':
-        return {
+        mappers = {
             'mediaType': definitions.media_type,
             'sort': definitions.sort,
             'maxDuration': definitions.max_duration,
@@ -18,8 +18,8 @@ def get_param_mappers_for_endpoint(endpoint, definitions):
             'offset': definitions.offset,
             'random': definitions.random
         }
-    if endpoint == 'similar':
-        return {
+    elif endpoint == 'similar':
+        mappers = {
             'mediaType': definitions.media_type,
             'sort': definitions.sort,
             'maxDuration': definitions.max_duration,
@@ -29,8 +29,10 @@ def get_param_mappers_for_endpoint(endpoint, definitions):
             'offset': definitions.offset,
             'similarityMethod': definitions.similarity_method,
         }
-    if endpoint == 'item':
-        return {
+    elif endpoint == 'item':
+        mappers = {
             'itemUri': definitions.item_uri
         }
-    raise ValueError(f'{endpoint} is not a valid endpoint.')
+    else:
+        raise ValueError(f'{endpoint} is not a valid endpoint.')
+    return mappers
