@@ -1,7 +1,7 @@
 import pytest
 
 from app.apiparams import mapping
-from app.apiparams.mapping import ParameterMapper, map_param_values_to_db_compatible
+from app.apiparams.mapping import ParameterMapper, map_param_values_to_given_definitions
 from app.clients import client_superclass
 from exceptions.queryexceptions import InvalidInputParameterValue, InvalidInputQuery
 
@@ -126,7 +126,7 @@ def test_param_validator_list_expecting_single():
         validator.validate(['correct', 'correct'])
 
 
-# test protected map_param_values_to_db_compatible method
+# test protected map_param_values_to_given_definitions method
 # have to create child class because cant instantiate and test abstract base class directly
 
 param_mappers = {
@@ -186,8 +186,8 @@ class MockClient(client_superclass.DBClient):
 
 def test_map_param_values_to_db_compatible(monkeypatch):
     monkeypatch.setattr(mapping, 'get_param_mappers_for_endpoint', lambda *_: param_mappers)
-    validated_params = map_param_values_to_db_compatible(existing_input_query_params, 'test', None)
+    validated_params = map_param_values_to_given_definitions(existing_input_query_params, 'test', None)
     assert validated_params == validated_params
 
     with pytest.raises(InvalidInputQuery):
-        map_param_values_to_db_compatible(non_existing_input_query_params, 'test', None)
+        map_param_values_to_given_definitions(non_existing_input_query_params, 'test', None)

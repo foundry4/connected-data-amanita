@@ -75,16 +75,16 @@ def map_content_query_params_to_db_compatible(query_params, parameter_definition
         validated_typed_params (dict): parameters that have been validated and cast to the correct type
     """
     query_params_dict = map_multidict_to_dict(query_params)
-    validated_typed_params = map_param_values_to_db_compatible(query_params_dict, endpoint='content',
-                                                               parameter_definitions=parameter_definitions)
+    validated_typed_params = map_param_values_to_given_definitions(query_params_dict, endpoint='content',
+                                                                   parameter_definitions=parameter_definitions)
     return validated_typed_params
 
 
 def map_item_query_uri_to_db_compatible(uri, parameter_definitions):
     """Convert URI into format compatible with database."""
     params = {'itemUri': uri}
-    validated = map_param_values_to_db_compatible(params, endpoint='item',
-                                                  parameter_definitions=parameter_definitions)
+    validated = map_param_values_to_given_definitions(params, endpoint='item',
+                                                      parameter_definitions=parameter_definitions)
     return validated['item_uri']
 
 
@@ -99,12 +99,12 @@ def map_similar_query_params_to_db_compatible(query_params, parameter_definition
         validated_typed_params (dict): parameters that have been validated and cast to the correct type
     """
     query_params_dict = map_multidict_to_dict(query_params)
-    validated_typed_params = map_param_values_to_db_compatible(query_params_dict, endpoint='similar',
-                                                               parameter_definitions=parameter_definitions)
+    validated_typed_params = map_param_values_to_given_definitions(query_params_dict, endpoint='similar',
+                                                                   parameter_definitions=parameter_definitions)
     return validated_typed_params
 
 
-def map_param_values_to_db_compatible(query_params, endpoint, parameter_definitions):
+def map_param_values_to_given_definitions(query_params, endpoint, parameter_definitions):
     """Iterate through parameters, validate them and cast them to the correct type. On errors in mapping the
     parameters, raise an exception.
 
