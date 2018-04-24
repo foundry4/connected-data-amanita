@@ -6,35 +6,40 @@ from urllib.request import url2pathname
 from SPARQLWrapper.SPARQLExceptions import QueryBadFormed
 from flask import Flask, jsonify, request, g
 
+from app.apiparams.mapping import map_content_query_params_to_db_compatible, map_item_query_uri_to_db_compatible, \
+    map_similar_query_params_to_db_compatible
 from app.clients.elastic.client import ESClient
 from app.clients.sparql.client import SPARQLClient
 from app.utils import constants
 from app.utils import logging
-from exceptions.clientexceptions import NoResultsFoundError
+from exceptions.clientexceptions import NoResultsFoundError, InvalidClientName
 from exceptions.helpers import log_last_exception
 from exceptions.queryexceptions import InvalidInputQuery
 
 logger = logging.get_logger(__name__)
 
-db_clients = {
-    'stardog': SPARQLClient,
-    'elasticsearch': ESClient
-}
-
 PORT = int(os.getenv("PORT", constants.DEFAULT_HTTP_PORT))
 DB_ENDPOINT = os.getenv('DB_ENDPOINT', constants.DEFAULT_DB_ENDPOINT)
 DB_USER = os.getenv('DB_USER', constants.DEFAULT_DB_USER)
 DB_PASS = os.getenv('DB_PASS', constants.DEFAULT_DB_PASS)
-DB_CLIENT = db_clients[os.getenv('DB_CLIENT', constants.DEFAULT_DB_CLIENT)]
+DB_CLIENT = os.getenv('DB_CLIENT', constants.DEFAULT_DB_CLIENT)
 logger.info(f'Using credentials:\n endpoint: {DB_ENDPOINT}\n user: {DB_USER}\n pass: {DB_PASS}')
+
+db_client_classes = {
+    'stardog': SPARQLClient,
+    'elasticsearch': ESClient
+}
 
 app = Flask(__name__)
 
 
-def get_client():  # pragma: no cover
-    # this is covered by tests but coverage.py doesnt pick it up
+def get_client(db_client_name):
     if not hasattr(g, 'client'):
-        client = DB_CLIENT(DB_ENDPOINT, DB_USER, DB_PASS)
+        try:
+            client = db_client_classes[db_client_name](DB_ENDPOINT, DB_USER, DB_PASS)
+        except KeyError:
+            raise InvalidClientName(f'Client {db_client_name} is not implemented, choose from {list(db_client_classes)}')
+
         g.client = client
     return g.client
 
@@ -62,8 +67,8 @@ def list_content():
     """
     query_params = request.args
 
-    client = get_client()
-    validated_query_params = client.map_content_query_params_to_db_compatible(query_params)
+    client = get_client(DB_CLIENT)
+    validated_query_params = map_content_query_params_to_db_compatible(query_params, client.parameter_definitions)
     res = client.get_content(validated_query_params)
     return jsonify(res), 200
 
@@ -77,8 +82,8 @@ def item(item_uri):
         res (string): results encoded in json
         200 (int): success status code
     """
-    client = get_client()
-    validated_uri = client.map_item_query_uri_to_db_compatible(item_uri)
+    client = get_client(DB_CLIENT)
+    validated_uri = map_item_query_uri_to_db_compatible(url2pathname(item_uri), client.parameter_definitions)
     res = client.get_item(validated_uri)
     return jsonify(res), 200
 
@@ -94,9 +99,9 @@ def list_similar_content(item_uri):
     """
     query_params = request.args
 
-    client = get_client()
-    validated_query_params = client.map_similar_query_params_to_db_compatible(query_params)
-    validated_uri = client.map_item_query_uri_to_db_compatible(url2pathname(item_uri))
+    client = get_client(DB_CLIENT)
+    validated_query_params = map_similar_query_params_to_db_compatible(query_params, client.parameter_definitions)
+    validated_uri = map_item_query_uri_to_db_compatible(url2pathname(item_uri), client.parameter_definitions)
     res = client.get_similar(validated_uri, validated_query_params)
     return jsonify(res), 200
 

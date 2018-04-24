@@ -1,8 +1,5 @@
 from abc import ABC, abstractmethod
 
-from app.apiparams.mapping import map_param_values_to_db_compatible
-from app.utils.conversions import map_multidict_to_dict
-
 
 class DBClient(ABC):
     def __init__(self, endpoint, user, passwd):
@@ -76,40 +73,4 @@ class DBClient(ABC):
             validated_item_uri (rdflib.URIRef): _validated_ uri of item to get data for
         """
 
-    # parameter mapping
-    def map_content_query_params_to_db_compatible(self, query_params):
-        """Process input multidict of params from inbound query to regular dict of params that has
-        been validated against a list of expected params and values.
 
-        Arguments:
-            query_params (MultiDict): query parameters from HTTP request
-
-        Returns:
-            validated_typed_params (dict): parameters that have been validated and cast to the correct type
-        """
-        query_params_dict = map_multidict_to_dict(query_params)
-        validated_typed_params = map_param_values_to_db_compatible(query_params_dict, endpoint='content',
-                                                                   parameter_definitions=self.parameter_definitions)
-        return validated_typed_params
-
-    def map_item_query_uri_to_db_compatible(self, uri):
-        """Convert URI into format compatible with database."""
-        params = {'itemUri': uri}
-        validated = map_param_values_to_db_compatible(params, endpoint='item',
-                                                      parameter_definitions=self.parameter_definitions)
-        return validated['item_uri']
-
-    def map_similar_query_params_to_db_compatible(self, query_params):
-        """Process input multidict of params from inbound query to regular dict of params that has
-        been validated against a list of expected params and values.
-
-        Arguments:
-            query_params (MultiDict): query parameters from HTTP request
-
-        Returns:
-            validated_typed_params (dict): parameters that have been validated and cast to the correct type
-        """
-        query_params_dict = map_multidict_to_dict(query_params)
-        validated_typed_params = map_param_values_to_db_compatible(query_params_dict, endpoint='similar',
-                                                                   parameter_definitions=self.parameter_definitions)
-        return validated_typed_params

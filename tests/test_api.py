@@ -3,11 +3,16 @@ import pytest
 from SPARQLWrapper.SPARQLExceptions import QueryBadFormed
 
 import app.api as api
-from exceptions.clientexceptions import NoResultsFoundError
+from exceptions.clientexceptions import NoResultsFoundError, InvalidClientName
 from exceptions.queryexceptions import InvalidInputQuery
 
 
-class MockDB:
+class MockDefinitions:
+    def __getattr__(self, item):
+        return None
+
+
+class MockDBClient:
     close_connection_called = False
 
     def __init__(self, *_):
@@ -25,28 +30,33 @@ class MockDB:
     def get_item(self, *_):
         pass
 
-    def map_content_query_params_to_db_compatible(self, *_):
-        pass
+    @property
+    def parameter_definitions(self):
+        return MockDefinitions()
 
-    def map_item_query_uri_to_db_compatible(self, *_):
-        pass
 
-    def map_similar_query_params_to_db_compatible(self, *_):
-        pass
+class FakeContext:
+    pass
 
 
 def test_get_client_and_close(monkeypatch):
     # coverage doesnt seem to register for this test
-    class FakeContext:
-        pass
-    monkeypatch.setattr(api, 'g', FakeContext)
-    monkeypatch.setattr(api, 'DB_CLIENT', MockDB)
+    monkeypatch.setattr(api, 'g', FakeContext())
+    monkeypatch.setattr(api, 'db_client_classes', {'mock_db_client': MockDBClient})
     assert not hasattr(api.g, 'client')
-    client = api.get_client()
-    assert isinstance(client, MockDB)
+
+    client = api.get_client('mock_db_client')
+    assert isinstance(client, MockDBClient)
     assert hasattr(api.g, 'client')
+
     api.close_client_connection()
     assert api.g.client.close_connection_called
+
+
+def test_get_invalid_client(monkeypatch):
+    monkeypatch.setattr(api, 'g', FakeContext())
+    with pytest.raises(InvalidClientName):
+        api.get_client('invalid_client')
 
 
 def test_api_root_status(flask_app):
@@ -56,19 +66,26 @@ def test_api_root_status(flask_app):
 
 
 def test_api_content_endpoint(flask_app, monkeypatch):
-    monkeypatch.setattr(api, 'DB_CLIENT', MockDB)
+    monkeypatch.setattr(api, 'db_client_classes', {'mock_db_client': MockDBClient})
+    monkeypatch.setattr(api, 'DB_CLIENT', 'mock_db_client')
+    monkeypatch.setattr(api, 'map_content_query_params_to_db_compatible', lambda *_: {})
     r = flask_app.get('/content')
     assert r.status_code == 200
 
 
 def test_api_item_endpoint(flask_app, monkeypatch):
-    monkeypatch.setattr(api, 'DB_CLIENT', MockDB)
+    monkeypatch.setattr(api, 'db_client_classes', {'mock_db_client': MockDBClient})
+    monkeypatch.setattr(api, 'DB_CLIENT', 'mock_db_client')
+    monkeypatch.setattr(api, 'map_item_query_uri_to_db_compatible', lambda *_: {})
     r = flask_app.get('/content/randomitempid')
     assert r.status_code == 200
 
 
 def test_api_similar_endpoint(flask_app, monkeypatch):
-    monkeypatch.setattr(api, 'DB_CLIENT', MockDB)
+    monkeypatch.setattr(api, 'db_client_classes', {'mock_db_client': MockDBClient})
+    monkeypatch.setattr(api, 'DB_CLIENT', 'mock_db_client')
+    monkeypatch.setattr(api, 'map_similar_query_params_to_db_compatible', lambda *_: {})
+    monkeypatch.setattr(api, 'map_item_query_uri_to_db_compatible', lambda *_: {})
     r = flask_app.get('/content/randomitempid/similar')
     assert r.status_code == 200
 
@@ -80,7 +97,7 @@ def test_api_similar_endpoint(flask_app, monkeypatch):
     'query_exception', [InvalidInputQuery, QueryBadFormed]
 )
 def test_invalid_input_query_caught(flask_app, monkeypatch, endpoint, query_exception):
-    class QueryExceptionMockDB(MockDB):
+    class QueryExceptionMockDB(MockDBClient):
         def get_content(self, *_):
             raise query_exception()
 
@@ -90,17 +107,23 @@ def test_invalid_input_query_caught(flask_app, monkeypatch, endpoint, query_exce
         def get_item(self, *_):
             raise query_exception()
 
-    monkeypatch.setattr(api, 'DB_CLIENT', QueryExceptionMockDB)
+    monkeypatch.setattr(api, 'db_client_classes', {'mock_db_client': QueryExceptionMockDB})
+    monkeypatch.setattr(api, 'DB_CLIENT', 'mock_db_client')
+    monkeypatch.setattr(api, 'map_similar_query_params_to_db_compatible', lambda *_: {})
+    monkeypatch.setattr(api, 'map_content_query_params_to_db_compatible', lambda *_: {})
+    monkeypatch.setattr(api, 'map_item_query_uri_to_db_compatible', lambda *_: {})
     r = flask_app.get(endpoint)
     assert r.status_code == 400
 
 
 def test_no_results(flask_app, monkeypatch):
-    class QueryExceptionMockDB(MockDB):
+    class QueryExceptionMockDB(MockDBClient):
         def get_item(self, *_):
             raise NoResultsFoundError()
 
-    monkeypatch.setattr(api, 'DB_CLIENT', QueryExceptionMockDB)
+    monkeypatch.setattr(api, 'db_client_classes', {'mock_db_client': QueryExceptionMockDB})
+    monkeypatch.setattr(api, 'DB_CLIENT', 'mock_db_client')
+    monkeypatch.setattr(api, 'map_item_query_uri_to_db_compatible', lambda *_: {})
     r = flask_app.get('/content/randomitempid')
     assert r.status_code == 404
 
@@ -109,7 +132,7 @@ def test_no_results(flask_app, monkeypatch):
     'endpoint', ['/content', '/content/randomitempid', '/content/randomitempid/similar']
 )
 def test_server_error_exception(flask_app, monkeypatch, endpoint):
-    class ExceptionMockDB(MockDB):
+    class ExceptionMockDB(MockDBClient):
         def get_content(self, *_):
             raise Exception()
 

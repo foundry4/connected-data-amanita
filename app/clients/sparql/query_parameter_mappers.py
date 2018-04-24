@@ -1,4 +1,4 @@
-"""Definitions of API parameters for all endpoints."""
+"""MockDefinitions of API parameters for all endpoints."""
 from rdflib import URIRef, Literal, XSD
 
 from app.apiparams.types import BoolFromString, MediaUriRef, LowercaseLiteral

@@ -89,7 +89,7 @@ def generate_genre_dict(uris_1, uris_2, uris_3, names_1, names_2, names_3, keys_
 
 
 def convert_csv_to_list(csv):
-    return csv.split(constants.TAG_SEPARATOR)
+    return csv.split(constants.SPARQL_TAG_SEPARATOR)
 
 
 def is_result_set_empty(sparql_result):

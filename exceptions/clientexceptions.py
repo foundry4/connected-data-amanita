@@ -6,3 +6,7 @@ class DBClientResponseError(Exception):
 class NoResultsFoundError(Exception):
     """Error when no results found"""
     pass
+
+class InvalidClientName(Exception):
+    """Error when invalid client name given from env var"""
+    pass
