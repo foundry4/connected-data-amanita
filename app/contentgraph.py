@@ -4,7 +4,7 @@ from flask import logging
 
 from app.clients.stardogclient import StardogClient
 from app.utils import constants
-from app.utils.conversions import map_content_to_api_spec
+from app.utils.conversions import map_content_to_api_spec, lower_dict_keys
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -26,7 +26,7 @@ def get_item_from_graph(validated_uri):
     """Get a single item from the content graph, given a programme URI."""
     db_client = _init_db_client()
     result = db_client.get_item(validated_uri)
-    return result
+    return lower_dict_keys(result)
 
 
 def get_similar_items_from_graph(item_uri, validated_query_params):

@@ -47,3 +47,4 @@ This app is provided as with a Dockerfile which is used to build a container.
 This should then be pushed to a container registry and deployed either as a
 manual process or using something such as build triggers and a continuous
 delivery platform like [Spinnaker](https://www.spinnaker.io/).
+
