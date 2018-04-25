@@ -3,7 +3,6 @@ import pytest
 
 from app import api as api
 
-
 @pytest.fixture
 def flask_app():
     api.app.testing = True

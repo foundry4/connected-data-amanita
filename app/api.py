@@ -1,26 +1,52 @@
 """API is run from here, access at localhost:5000. To run queries from browser, visit the `localhost:5000/content`
 endpoint and add parameters like so `/content?limit=5`."""
+import os
 from urllib.request import url2pathname
 
 from SPARQLWrapper.SPARQLExceptions import QueryBadFormed
-from flask import Flask, jsonify, request
-import os
-import logging
+from flask import Flask, jsonify, request, g
 
-from app import contentgraph
-from exceptions.clientexceptions import DBClientResponseError, NoResultsFoundError
-from exceptions.helpers import log_last_exception, format_traceback_as_html
+from app.apiparams.mapping import map_param_values_to_given_definitions
+from app.clients.elastic.client import ESClient
+from app.clients.sparql.client import SPARQLClient
+from app.utils import constants
+from app.utils import logging
+from exceptions.clientexceptions import NoResultsFoundError, InvalidClientName
+from exceptions.helpers import log_last_exception
 from exceptions.queryexceptions import InvalidInputQuery
-from app.utils.processquery import process_list_content_query_params, process_item_query_uri, \
-    process_list_similar_query_params
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger = logging.get_logger(__name__)
 
-DEFAULT_HTTP_PORT = "5001"
-PORT = int(os.getenv("PORT", DEFAULT_HTTP_PORT))
+PORT = int(os.getenv("PORT", constants.DEFAULT_HTTP_PORT))
+DB_ENDPOINT = os.getenv('DB_ENDPOINT', constants.DEFAULT_DB_ENDPOINT)
+DB_USER = os.getenv('DB_USER')
+DB_PASS = os.getenv('DB_PASS')
+DB_CLIENT = os.getenv('DB_CLIENT', constants.DEFAULT_DB_CLIENT)
+logger.info(f'Using credentials:\n endpoint: {DB_ENDPOINT}\n user: {DB_USER}\n pass: {DB_PASS}')
+
+db_client_classes = {
+    'stardog': SPARQLClient,
+    'elasticsearch': ESClient
+}
 
 app = Flask(__name__)
+
+
+def get_client(db_client_name):
+    if not hasattr(g, 'client'):
+        try:
+            client = db_client_classes[db_client_name](DB_ENDPOINT, DB_USER, DB_PASS)
+        except KeyError:
+            raise InvalidClientName(f'Client {db_client_name} is not implemented, choose from {list(db_client_classes)}')
+
+        g.client = client
+    return g.client
+
+
+@app.teardown_appcontext
+def close_client_connection(error=''):
+    if hasattr(g, 'client'):
+        g.client.close_connection()
 
 
 @app.route('/', methods=['GET'])
@@ -39,8 +65,14 @@ def list_content():
         200 (int): success status code
     """
     query_params = request.args
-    validated_query_params = process_list_content_query_params(query_params)
-    res = contentgraph.get_content_from_graph(validated_query_params)
+
+    client = get_client(DB_CLIENT)
+    mapped_params = map_param_values_to_given_definitions(
+        client.parameter_definitions,
+        'content',
+        query_params=query_params
+    )
+    res = {"results": client.get_content(mapped_params)}
     return jsonify(res), 200
 
 
@@ -53,8 +85,14 @@ def item(item_uri):
         res (string): results encoded in json
         200 (int): success status code
     """
-    validated_uri = process_item_query_uri(item_uri)
-    res = contentgraph.get_item_from_graph(validated_uri)
+    client = get_client(DB_CLIENT)
+    path_params = {'itemUri': url2pathname(item_uri)}
+    mapped_params = map_param_values_to_given_definitions(
+        client.parameter_definitions,
+        'item',
+        path_params=path_params
+    )
+    res = client.get_item(mapped_params)
     return jsonify(res), 200
 
 
@@ -68,9 +106,17 @@ def list_similar_content(item_uri):
         200 (int): success status code
     """
     query_params = request.args
-    validated_query_params = process_list_similar_query_params(query_params)
-    validated_uri = process_item_query_uri(url2pathname(item_uri))
-    res = contentgraph.get_similar_items_from_graph(validated_uri, validated_query_params)
+
+    client = get_client(DB_CLIENT)
+    path_params = {'itemUri': url2pathname(item_uri)}
+    mapped_params = map_param_values_to_given_definitions(
+        client.parameter_definitions,
+        'similar',
+        query_params=query_params,
+        path_params=path_params
+    )
+
+    res = {"results": client.get_similar(mapped_params)}
     return jsonify(res), 200
 
 
@@ -87,14 +133,16 @@ def server_error(e):
         err_code (int)
     """
     log_last_exception()
-    html_traceback = format_traceback_as_html()
+
     if type(e) in (InvalidInputQuery, QueryBadFormed):
-        return html_traceback, 400
-    if isinstance(e, NoResultsFoundError):
-        return html_traceback, 404
+        code = 400
+    elif isinstance(e, NoResultsFoundError):
+        code = 404
     else:
-        return html_traceback, 500
+        code = 500
+    e_str = str(e).replace("\n", "<br />")
+    return f'<h1>Error {code}</h1>{e_str}', code
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     app.run(host='0.0.0.0', port=PORT, debug=True)

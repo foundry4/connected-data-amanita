@@ -1,0 +1,63 @@
+[{
+  "masterBrand": "bbc_1xtra",
+  "mediaType": "audio",
+  "pid": "p05q11tt",
+  "title": "J Fresh ft. Lady Ice - Headtop",
+  "genres": {
+    "topLevel": [
+      {
+        "uri": "bbc.co.uk/programmes/genres/music",
+        "label": "Music",
+        "key": "music"
+      }
+    ],
+    "secondLevel": [
+      {
+        "uri": "bbc.co.uk/programmes/genres/music/hiphoprnbanddancehall",
+        "label": "Hip Hop, RnB & Dancehall",
+        "key": "hiphoprnbanddancehall"
+      }
+    ],
+    "thirdLevel": [
+      {
+        "uri": "bbc.co.uk/programmes/genres/music/hiphoprnbanddancehall/experimentalandnew",
+        "label": "Experimental & New",
+        "key": "experimentalandnew"
+      },
+      {
+        "uri": "bbc.co.uk/programmes/genres/music/hiphoprnbanddancehall/dancehall",
+        "label": "Dancehall",
+        "key": "dancehall"
+      },
+      {
+        "uri": "bbc.co.uk/programmes/genres/music/hiphoprnbanddancehall/grime",
+        "label": "Grime",
+        "key": "grime"
+      },
+      {
+        "uri": "bbc.co.uk/programmes/genres/music/hiphoprnbanddancehall/hiphop",
+        "label": "Hip Hop",
+        "key": "hiphop"
+      },
+      {
+        "uri": "bbc.co.uk/programmes/genres/music/hiphoprnbanddancehall/garage",
+        "label": "Garage",
+        "key": "garage"
+      },
+      {
+        "uri": "bbc.co.uk/programmes/genres/music/hiphoprnbanddancehall/rnb",
+        "label": "RnB",
+        "key": "rnb"
+      }
+    ]
+  },
+  "image": "http://ichef.bbci.co.uk/images/ic/$recipe/p05q13cg.jpg",
+  "duration": 329.0,
+  "uri": "programmes:bbc.co.uk,2018/FIXME/p05q11tt",
+  "publicationDate": null,
+  "version": {
+    "duration": 329.0,
+    "href": "/nitro/api/versions?pid=p05q11v1",
+    "pid": "p05q11v1"
+  }
+}]
