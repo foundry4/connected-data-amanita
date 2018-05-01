@@ -23,6 +23,7 @@ def map_hits_to_api_spec(es_res):
             })
         clip['genres'] = genres
         clip['publicationDate'] = clip['releaseDate']
+        clip['version'] = clip['version']['pid']
         clips.append(clip)
 
     fields_to_keep = ['pid', 'uri', 'mediaType', 'duration', 'masterBrand', 'genres', 'image', 'title',

@@ -30,11 +30,7 @@
         "duration": 520.0,
         "uri": "programmes:bbc.co.uk,2018/FIXME/p05pp3lx",
         "publicationDate": null,
-        "version": {
-             "duration": 520.0,
-             "href": "/nitro/api/versions?pid=p05pp3lz",
-             "pid": "p05pp3lz"
-        }
+        "version": "p05pp3lz"
     },
     {
         "masterBrand": "bbc_music",
@@ -67,11 +63,7 @@
         "image": "http://ichef.bbci.co.uk/images/ic/$recipe/p05ns1xx.jpg",
         "duration": 168.0,
         "uri": "programmes:bbc.co.uk,2018/FIXME/p05nrrrf",
-	"version": {
-		"duration": 168.0,
-		"href": "/nitro/api/versions?pid=p05nrrrh",
-		"pid": "p05nrrrh"
-	},
+	"version": "p05nrrrh",
         "publicationDate": null
     }
 ]

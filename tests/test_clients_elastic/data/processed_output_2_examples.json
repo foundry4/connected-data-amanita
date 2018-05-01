@@ -3,11 +3,7 @@
 		"mediaType": "video",
 		"pid": "p05q57yj",
 		"title": "කැලිෆෝනියාවේ ලැව්ගින්න",
-		"version": {
-			"duration": 35.0,
-			"href": "/nitro/api/versions?pid=p05q57yq",
-			"pid": "p05q57yq"
-		},
+		"version": "p05q57yq",
 		"genres": {
 			"topLevel": [],
 			"secondLevel": [],
@@ -22,11 +18,7 @@
 		"mediaType": "video",
 		"pid": "p05q57x6",
 		"title": "The three rules that define luxury",
-		"version": {
-			"duration": 151.0,
-			"href": "/nitro/api/versions?pid=p05q57xc",
-			"pid": "p05q57xc"
-		},
+		"version": "p05q57xc",
 		"genres": {
 			"topLevel": [],
 			"secondLevel": [],

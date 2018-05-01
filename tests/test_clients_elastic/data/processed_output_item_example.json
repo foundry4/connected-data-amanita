@@ -55,9 +55,5 @@
   "duration": 329.0,
   "uri": "programmes:bbc.co.uk,2018/FIXME/p05q11tt",
   "publicationDate": null,
-  "version": {
-    "duration": 329.0,
-    "href": "/nitro/api/versions?pid=p05q11v1",
-    "pid": "p05q11v1"
-  }
+  "version": "p05q11v1"
 }]
