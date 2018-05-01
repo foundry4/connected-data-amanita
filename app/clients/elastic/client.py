@@ -13,11 +13,7 @@ class ESClient(DBClient):
         return query_parameter_mappers
 
     def setup_connection(self):
-        if hasattr(self, 'user') and hasattr(self, 'password'):
-            store = Elasticsearch(hosts=[self.endpoint], http_auth=(self.user, self.passwd))
-        else:
-            store = Elasticsearch(hosts=[self.endpoint])
-        self.store = store
+        self.store = Elasticsearch(hosts=[self.endpoint], http_auth=(self.user, self.passwd))
 
     def get_content(self, mapped_params):
         query_body = get_content.build_query_body(**mapped_params)
