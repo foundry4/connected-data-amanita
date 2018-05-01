@@ -66,3 +66,12 @@ class LowercaseStr(str):
         if not isinstance(string, str):
             raise TypeError(f'"{string}" is not a string')
         return string.lower()
+
+
+class DashSortFromRPC(str):
+    def __new__(cls, string):
+        str_lower = string.lower()
+        field, order = str_lower.split('_')
+        if order == 'desc':
+            field = '-' + field
+        return field

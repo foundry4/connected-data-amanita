@@ -190,4 +190,4 @@ def test_map_param_values_to_db_compatible(monkeypatch):
     assert validated_params == validated_params
 
     with pytest.raises(InvalidInputQuery):
-        map_param_values_to_given_definitions(None, 'test', path_params=non_existing_input_query_params)
+        map_param_values_to_given_definitions(None, 'test', non_existing_input_query_params)

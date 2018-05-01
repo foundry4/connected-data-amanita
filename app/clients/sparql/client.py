@@ -6,7 +6,8 @@ from rdflib.namespace import NamespaceManager
 from rdflib.plugins.stores import sparqlstore
 
 from app.clients.client_superclass import DBClient
-from app.clients.sparql import query_parameter_mappers
+
+from app.clients.sparql.query_parameter_mappers import http as http_params
 from app.clients.sparql.namespaces import namespaces as ns
 from app.clients.sparql.process_response import get_bindings_from_response, transform_bindings, is_result_set_empty
 from app.clients.sparql.querybuilder import get_content, get_similar
@@ -18,13 +19,9 @@ logger = logging.get_logger(__name__)
 
 
 class SPARQLClient(DBClient):
-    @property
-    def client_name(self):
-        return 'stardog'
-
-    @property
-    def parameter_definitions(self):
-        return query_parameter_mappers
+    @staticmethod
+    def get_parameter_definitions(request_type):
+        return http_params
 
     def setup_connection(self):
         store = sparqlstore.SPARQLUpdateStore()

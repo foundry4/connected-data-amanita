@@ -17,3 +17,8 @@ rdflib-jsonld==0.4.0
 six==1.11.0
 SPARQLWrapper==1.8.0
 Werkzeug==0.14.1
+futures==3.1.1
+google-api-python-client==1.6.5
+grpcio==1.10.0
+grpcio-tools==1.10.0
+requests==2.18.4

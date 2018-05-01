@@ -11,6 +11,9 @@ SPARQL_TAG_SEPARATOR = '^'  # separating char to use when converting string of t
 # cant use comma as some tags have a comma in
 DEFAULT_HTTP_PORT = "5001"
 
+DEFAULT_RPC_PORT = "50051"
+DEFAULT_GRPC_MAX_WORKERS = "10"
+
 DEFAULT_DB_CLIENT = 'elasticsearch'
 
 LOG_LEVEL = 'DEBUG'

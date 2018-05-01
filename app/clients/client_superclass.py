@@ -24,10 +24,14 @@ class DBClient(ABC):
         self.store = None
         self.setup_connection()
 
-    @property
+
     @abstractmethod
-    def parameter_definitions(self):
-        """Store the parameter definitions specific to the client as a property."""
+    def get_parameter_definitions(self, request_type):
+        """Store the parameter definitions specific to the client as a property.
+
+        Arguments:
+            request_type (str): type of request determines how parameters are mapped. Either 'http' or 'rpc'.
+        """
 
     @abstractmethod
     def setup_connection(self):

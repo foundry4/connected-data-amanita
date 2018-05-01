@@ -2,18 +2,28 @@ from elasticsearch5 import Elasticsearch
 
 from app.clients.elastic.querybuilder import get_content, get_similar, get_item
 from app.clients.client_superclass import DBClient
-from app.clients.elastic import query_parameter_mappers
+
+from app.clients.elastic.query_parameter_mappers import http as http_param_mappings, rpc as rpc_param_mappings
 from app.clients.elastic.process_response import map_hits_to_api_spec
 from exceptions.clientexceptions import NoResultsFoundError
 
 
 class ESClient(DBClient):
-    @property
-    def parameter_definitions(self):
-        return query_parameter_mappers
+    @staticmethod
+    def get_parameter_definitions(request_type):
+        if request_type not in ['http', 'rpc']:
+            raise ValueError(f'Request type {request_type} has no parameter mappings.')
+        if request_type == 'http':
+            return http_param_mappings
+        if request_type == 'rpc':
+            return rpc_param_mappings
 
     def setup_connection(self):
-        self.store = Elasticsearch(hosts=[self.endpoint], http_auth=(self.user, self.passwd))
+        if hasattr(self, 'user') and hasattr(self, 'password'):
+            store = Elasticsearch(hosts=[self.endpoint], http_auth=(self.user, self.passwd))
+        else:
+            store = Elasticsearch(hosts=[self.endpoint])
+        self.store = store
 
     def get_content(self, mapped_params):
         query_body = get_content.build_query_body(**mapped_params)

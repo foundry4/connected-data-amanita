@@ -62,7 +62,8 @@ class ParameterMapper:
         return v_cast
 
 
-def map_param_values_to_given_definitions(parameter_definitions, endpoint, path_params=None, query_params=None):
+
+def map_param_values_to_given_definitions(parameter_definitions, endpoint, query_params):
     """Iterate through parameters, cast them to the correct type. On errors in mapping any parameters,
     raise an exception.
 
@@ -77,15 +78,9 @@ def map_param_values_to_given_definitions(parameter_definitions, endpoint, path_
     """
     mapped_params, exceptions = {}, []
 
-    params = {}
-    if query_params is not None:
-        query_params = map_multidict_to_dict(query_params)
-        params.update(query_params)
-    if path_params is not None:
-        params.update(path_params)
 
     validators = get_param_mappers_for_endpoint(endpoint, parameter_definitions)
-    for param_name, param_val in params.items():
+    for param_name, param_val in query_params.items():
         try:
             validator = validators[param_name]
             mapped_params[validator.snake_case_name] = validator.validate(param_val)

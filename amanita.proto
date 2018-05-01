@@ -1,0 +1,145 @@
+syntax = "proto3";
+
+package datalabamanitaapi;
+
+enum MediaTypeParam {
+    VIDEO = 0;
+    AUDIO = 1;
+}
+
+enum RegionParam {
+    UK = 0;
+    EX_UK = 1;
+    WORLDWIDE = 2;
+}
+
+enum SortParam {
+    DURATION_ASC = 0;
+    DURATION_DESC = 1;
+    MASTER_BRAND_ASC = 2;
+    MASTER_BRAND_DESC = 3;
+    MEDIA_ASC = 4;
+    MEDIA_DESC = 5;
+}
+
+message ListContentRequest {
+    repeated string categories = 1;
+    int32 max_duration = 2;
+    repeated MediaTypeParam media_type = 3;
+    string published_after = 4;
+    bool random = 5;
+    RegionParam region = 6;
+    repeated SortParam sort = 7;
+}
+
+message ItemRequest {
+    string uri = 1;
+}
+
+message ListSimilarItemsRequest {
+    int32 max_duration = 1;
+    repeated MediaTypeParam media_type = 2;
+    string published_after = 3;
+    RegionParam region = 4;
+    SortParam sort = 6;
+    string uri = 7;
+}
+
+message MinimalItem {
+    enum MinimalItemMediaType {
+        VIDEO = 0;
+        AUDIO = 1;
+    }
+
+    message GenresMessage {
+        // List of second level genres
+        repeated Genre second_level = 1;
+
+        // List of third level genres
+        repeated Genre third_level = 2;
+
+        // List of top level genres
+        repeated Genre top_level = 3;
+    }
+
+    // The duration of the media item, if applicable
+    float duration = 1;
+
+    // The set of genres that the media item belongs to
+    GenresMessage genres = 2;
+
+    // Direct link to image ichef URL associated with media
+    string image = 3;
+
+    // The BBC Master brand of the content piece. Follows PIPS semantics
+    string master_brand = 4;
+
+    // Indicates the media type of the item
+    MinimalItemMediaType media_type = 5;
+
+    // The media item's unique identifier / key
+    string pid = 6;
+
+    // The date/time that the content was initially published. Follows PIPS semantics
+    string publication_date = 7;
+
+    // Title of the media item
+    string title = 9;
+
+    // URI for the programme - not necessarily the PID.
+    string uri = 10;
+
+    Version version = 11;
+}
+
+message ResultSet {
+    repeated MinimalItem results = 1;
+}
+
+message Version {
+    // duration from version field
+    float duration = 1;
+
+    // version pid
+    string pid = 2;
+}
+
+// Individual top-level genre with associated metadata
+message Genre {
+    // Key of genre
+    string key = 1;
+
+    // Human readable label of the genre
+    string label = 2;
+
+    // URI for the respective genre
+    string uri = 3;
+}
+
+message HealthCheckRequest {}
+
+message HealthCheckResponse {
+    string message = 1;
+}
+
+service DatalabAmanitaAPIService {
+    // List content
+    // 
+    // Get a list of media items that match a set of filters.
+    rpc ListContent (ListContentRequest) returns (ResultSet) {}
+
+    // Get details for a single media item by URI.
+    // 
+    // Get details for a single media item by passing in the item URI.
+    rpc Item (ItemRequest) returns (MinimalItem) {}
+
+    // Get media items related to the given URI.
+    // 
+    // Given an item URI, return list of similar media items.
+    rpc ListSimilarItems (ListSimilarItemsRequest) returns (ResultSet) {}
+
+    // Health check
+    //
+    // The healthcheck endpoint is a NOOP to check services response
+    rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse) {}
+}

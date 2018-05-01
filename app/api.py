@@ -11,6 +11,7 @@ from app.clients.elastic.client import ESClient
 from app.clients.sparql.client import SPARQLClient
 from app.utils import constants
 from app.utils import logging
+from app.utils.conversions import map_multidict_to_dict
 from exceptions.clientexceptions import NoResultsFoundError, InvalidClientName
 from exceptions.helpers import log_last_exception
 from exceptions.queryexceptions import InvalidInputQuery
@@ -19,10 +20,11 @@ logger = logging.get_logger(__name__)
 
 PORT = int(os.getenv("PORT", constants.DEFAULT_HTTP_PORT))
 DB_ENDPOINT = os.getenv('DB_ENDPOINT', constants.DEFAULT_DB_ENDPOINT)
-DB_USER = os.getenv('DB_USER')
-DB_PASS = os.getenv('DB_PASS')
+DB_USER = os.getenv('DB_USER', constants.DEFAULT_DB_USER)
+DB_PASS = os.getenv('DB_PASS', constants.DEFAULT_DB_PASS)
 DB_CLIENT = os.getenv('DB_CLIENT', constants.DEFAULT_DB_CLIENT)
 logger.info(f'Using credentials:\n endpoint: {DB_ENDPOINT}\n user: {DB_USER}\n pass: {DB_PASS}')
+
 
 db_client_classes = {
     'stardog': SPARQLClient,
@@ -64,14 +66,10 @@ def list_content():
         res (string): results encoded in json
         200 (int): success status code
     """
-    query_params = request.args
-
+    query_params = map_multidict_to_dict(request.args)
     client = get_client(DB_CLIENT)
-    mapped_params = map_param_values_to_given_definitions(
-        client.parameter_definitions,
-        'content',
-        query_params=query_params
-    )
+    mapped_params = map_param_values_to_given_definitions(client.get_parameter_definitions('http'), 'content',
+                                                          query_params=query_params)
     res = client.get_content(mapped_params)
     return jsonify(res), 200
 
@@ -86,12 +84,8 @@ def item(item_uri):
         200 (int): success status code
     """
     client = get_client(DB_CLIENT)
-    path_params = {'itemUri': url2pathname(item_uri)}
-    mapped_params = map_param_values_to_given_definitions(
-        client.parameter_definitions,
-        'item',
-        path_params=path_params
-    )
+    params = {'itemUri': url2pathname(item_uri)}
+    mapped_params = map_param_values_to_given_definitions(client.get_parameter_definitions('http'), 'item', params)
     res = client.get_item(mapped_params)
     return jsonify(res), 200
 
@@ -106,16 +100,10 @@ def list_similar_content(item_uri):
         200 (int): success status code
     """
     query_params = request.args
-
-    client = get_client(DB_CLIENT)
     path_params = {'itemUri': url2pathname(item_uri)}
-    mapped_params = map_param_values_to_given_definitions(
-        client.parameter_definitions,
-        'similar',
-        query_params=query_params,
-        path_params=path_params
-    )
-
+    params = {**path_params, **map_multidict_to_dict(query_params)}
+    client = get_client(DB_CLIENT)
+    mapped_params = map_param_values_to_given_definitions(client.get_parameter_definitions('http'), 'similar', query_params=params)
     res = client.get_similar(mapped_params)
     return jsonify(res), 200
 
