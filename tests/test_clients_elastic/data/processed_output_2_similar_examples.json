@@ -1,0 +1,77 @@
+[
+    {
+        "masterBrand": "bbc_1xtra",
+        "mediaType": "audio",
+        "pid": "p05pp3lx",
+        "title": "Yogi feat. D.R.A.M & Lady Leshurr - Cakin'",
+        "genres": {
+            "topLevel": [
+                {
+                    "uri": "bbc.co.uk/programmes/genres/music",
+                    "label": "Music",
+                    "key": "music"
+                }
+            ],
+            "secondLevel": [
+                {
+                    "uri": "bbc.co.uk/programmes/genres/music/hiphoprnbanddancehall",
+                    "label": "Hip Hop, RnB & Dancehall",
+                    "key": "hiphoprnbanddancehall"
+                },
+                {
+                    "uri": "bbc.co.uk/programmes/genres/music/danceandelectronica",
+                    "label": "Dance & Electronica",
+                    "key": "danceandelectronica"
+                }
+            ],
+            "thirdLevel": []
+        },
+        "image": "http://ichef.bbci.co.uk/images/ic/$recipe/p05pplsm.jpg",
+        "duration": 520.0,
+        "uri": "programmes:bbc.co.uk,2018/FIXME/p05pp3lx",
+        "publicationDate": null,
+        "version": {
+             "duration": 520.0,
+             "href": "/nitro/api/versions?pid=p05pp3lz",
+             "pid": "p05pp3lz"
+        }
+    },
+    {
+        "masterBrand": "bbc_music",
+        "mediaType": "audio",
+        "pid": "p05nrrrf",
+        "title": "On The Playlist: J-Fresh - Tryna Get By",
+        "genres": {
+            "topLevel": [
+                {
+                    "uri": "bbc.co.uk/programmes/genres/music",
+                    "label": "Music",
+                    "key": "music"
+                }
+            ],
+            "secondLevel": [
+                {
+                    "uri": "bbc.co.uk/programmes/genres/music/hiphoprnbanddancehall",
+                    "label": "Hip Hop, RnB & Dancehall",
+                    "key": "hiphoprnbanddancehall"
+                }
+            ],
+            "thirdLevel": [
+                {
+                    "uri": "bbc.co.uk/programmes/genres/music/hiphoprnbanddancehall/grime",
+                    "label": "Grime",
+                    "key": "grime"
+                }
+            ]
+        },
+        "image": "http://ichef.bbci.co.uk/images/ic/$recipe/p05ns1xx.jpg",
+        "duration": 168.0,
+        "uri": "programmes:bbc.co.uk,2018/FIXME/p05nrrrf",
+	"version": {
+		"duration": 168.0,
+		"href": "/nitro/api/versions?pid=p05nrrrh",
+		"pid": "p05nrrrh"
+	},
+        "publicationDate": null
+    }
+]

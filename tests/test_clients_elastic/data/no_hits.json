@@ -1,0 +1,16 @@
+{
+  "_scroll_id": "DXF1ZXJ5QW5kRmV0Y2gBAAAAAAABAToWUmt4MHFQQkNRRE83VUUwTnpqMEdfUQ==",
+  "took": 0,
+  "timed_out": false,
+  "_shards": {
+    "total": 1,
+    "successful": 1,
+    "skipped": 0,
+    "failed": 0
+  },
+  "hits": {
+    "total": 0,
+    "max_score": null,
+    "hits": []
+  }
+}

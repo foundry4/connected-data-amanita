@@ -1,0 +1,147 @@
+{
+    "_scroll_id": "DXF1ZXJ5QW5kRmV0Y2gBAAAAAAABWLMWUmt4MHFQQkNRRE83VUUwTnpqMEdfUQ==",
+    "took": 10,
+    "timed_out": false,
+    "_shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": 186,
+        "max_score": 13.469493,
+        "hits": [
+            {
+                "_index": "pips",
+                "_type": "clip",
+                "_id": "programmes:bbc.co.uk,2018/FIXME/p05pp3lx",
+                "_score": 13.469493,
+                "_source": {
+                    "advertisingAllowed": "none",
+                    "embargoed": false,
+                    "masterBrand": {
+                        "mid": "bbc_1xtra",
+                        "resultType": "master_brand",
+                        "href": "/nitro/api/master_brands?mid=bbc_1xtra"
+                    },
+                    "mediaType": "audio",
+                    "pid": "p05pp3lx",
+                    "releaseDate": null,
+                    "title": "Yogi feat. D.R.A.M & Lady Leshurr - Cakin'",
+                    "updatedTime": "2017-12-01T16:54:35Z",
+                    "version": {
+                        "duration": 520.0,
+                        "href": "/nitro/api/versions?pid=p05pp3lz",
+                        "pid": "p05pp3lz"
+                    },
+                    "synopses": {
+                        "short": "Jam gets producer Yogi in the studio for the first time to premiere his new track 'Cakin'",
+                        "medium": null,
+                        "long": null
+                    },
+                    "ancestor": {
+                        "brandResourceId": "b0071stt",
+                        "brandTitle": "MistaJam",
+                        "episodeResourceId": "b09g5cj6",
+                        "episodeTitle": "MistaJam 30/11/2017",
+                        "seriesResourceId": null,
+                        "seriesTitle": null
+                    },
+                    "genres": [
+                        {
+                            "uri": "bbc.co.uk/programmes/genres/music",
+                            "key": "music",
+                            "label": "Music",
+                            "level": 0
+                        },
+                        {
+                            "uri": "bbc.co.uk/programmes/genres/music/hiphoprnbanddancehall",
+                            "key": "hiphoprnbanddancehall",
+                            "label": "Hip Hop, RnB & Dancehall",
+                            "level": 1
+                        },
+                        {
+                            "uri": "bbc.co.uk/programmes/genres/music/danceandelectronica",
+                            "key": "danceandelectronica",
+                            "label": "Dance & Electronica",
+                            "level": 1
+                        }
+                    ],
+                    "image": "http://ichef.bbci.co.uk/images/ic/$recipe/p05pplsm.jpg",
+                    "duration": 520.0,
+                    "pgFormats": [
+                        "Discussion & Talk"
+                    ],
+                    "scheduledEnd": "2017-12-30T18:30:00",
+                    "scheduledStart": "2017-11-30T18:30:00"
+                }
+            },
+            {
+                "_index": "pips",
+                "_type": "clip",
+                "_id": "programmes:bbc.co.uk,2018/FIXME/p05nrrrf",
+                "_score": 13.32003,
+                "_source": {
+                    "advertisingAllowed": "none",
+                    "embargoed": false,
+                    "masterBrand": {
+                        "mid": "bbc_music",
+                        "resultType": "master_brand",
+                        "href": "/nitro/api/master_brands?mid=bbc_music"
+                    },
+                    "mediaType": "audio",
+                    "pid": "p05nrrrf",
+                    "releaseDate": null,
+                    "title": "On The Playlist: J-Fresh - Tryna Get By",
+                    "updatedTime": "2017-11-21T17:34:07Z",
+                    "version": {
+                        "duration": 168.0,
+                        "href": "/nitro/api/versions?pid=p05nrrrh",
+                        "pid": "p05nrrrh"
+                    },
+                    "synopses": {
+                        "short": "On The Playlist: J-Fresh - Tryna Get By",
+                        "medium": null,
+                        "long": null
+                    },
+                    "ancestor": {
+                        "brandResourceId": "p010j8y5",
+                        "brandTitle": "BBC Music Introducing",
+                        "episodeResourceId": null,
+                        "episodeTitle": null,
+                        "seriesResourceId": null,
+                        "seriesTitle": null
+                    },
+                    "genres": [
+                        {
+                            "uri": "bbc.co.uk/programmes/genres/music",
+                            "key": "music",
+                            "label": "Music",
+                            "level": 0
+                        },
+                        {
+                            "uri": "bbc.co.uk/programmes/genres/music/hiphoprnbanddancehall",
+                            "key": "hiphoprnbanddancehall",
+                            "label": "Hip Hop, RnB & Dancehall",
+                            "level": 1
+                        },
+                        {
+                            "uri": "bbc.co.uk/programmes/genres/music/hiphoprnbanddancehall/grime",
+                            "key": "grime",
+                            "label": "Grime",
+                            "level": 2
+                        }
+                    ],
+                    "image": "http://ichef.bbci.co.uk/images/ic/$recipe/p05ns1xx.jpg",
+                    "duration": 168.0,
+                    "pgFormats": [
+                        "Performances & Events"
+                    ],
+                    "scheduledEnd": null,
+                    "scheduledStart": "2017-11-24T06:00:00"
+                }
+            }
+       ]
+    }
+}

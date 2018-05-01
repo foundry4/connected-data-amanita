@@ -1,0 +1,105 @@
+{
+    "_scroll_id": "DXF1ZXJ5QW5kRmV0Y2gBAAAAAAABWJYWUmt4MHFQQkNRRE83VUUwTnpqMEdfUQ==",
+    "took": 1,
+    "timed_out": false,
+    "_shards": {
+        "total": 1,
+        "successful": 1,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": 19157,
+        "max_score": 1.0,
+        "hits": [
+            {
+                "_index": "pips",
+                "_type": "clip",
+                "_id": "programmes:bbc.co.uk,2018/FIXME/p05q57yj",
+                "_score": 1.0,
+                "_source": {
+                    "advertisingAllowed": "commercial",
+                    "embargoed": false,
+                    "masterBrand": {
+                        "mid": "bbc_webonly",
+                        "resultType": "master_brand",
+                        "href": "/nitro/api/master_brands?mid=bbc_webonly"
+                    },
+                    "mediaType": "video",
+                    "pid": "p05q57yj",
+                    "releaseDate": null,
+                    "title": "\u0d9a\u0dd0\u0dbd\u0dd2\u0dc6\u0ddd\u0db1\u0dd2\u0dba\u0dcf\u0dc0\u0dda \u0dbd\u0dd0\u0dc0\u0dca\u0d9c\u0dd2\u0db1\u0dca\u0db1",
+                    "updatedTime": "2017-12-05T14:51:30Z",
+                    "version": {
+                        "duration": 35.0,
+                        "href": "/nitro/api/versions?pid=p05q57yq",
+                        "pid": "p05q57yq"
+                    },
+                    "synopses": {
+                        "short": "27 000 \u0daf\u0dc4\u0dc3\u0d9a\u0dca \u0db4\u0db8\u0dab \u0db4\u0dd2\u0dbb\u0dd2\u0dc3\u0d9a\u0dca \u0db1\u0dd2\u0dc0\u0dcf\u0dc3\u0dc0\u0dbd\u0dd2\u0db1\u0dca \u0d89\u0dc0\u0dad\u0dca\u0d9a\u0dbb \u0d87\u0dad",
+                        "medium": null,
+                        "long": null
+                    },
+                    "ancestor": {
+                        "brandResourceId": null,
+                        "brandTitle": null,
+                        "episodeResourceId": null,
+                        "episodeTitle": null,
+                        "seriesResourceId": null,
+                        "seriesTitle": null
+                    },
+                    "genres": [],
+                    "image": "http://ichef.bbci.co.uk/images/ic/$recipe/p05q588r.jpg",
+                    "duration": 35.0,
+                    "pgFormats": [],
+                    "scheduledEnd": null,
+                    "scheduledStart": "2017-12-05T14:51:26"
+                }
+            },
+            {
+                "_index": "pips",
+                "_type": "clip",
+                "_id": "programmes:bbc.co.uk,2018/FIXME/p05q57x6",
+                "_score": 1.0,
+                "_source": {
+                    "advertisingAllowed": "none",
+                    "embargoed": false,
+                    "masterBrand": {
+                        "mid": "bbc_webonly",
+                        "resultType": "master_brand",
+                        "href": "/nitro/api/master_brands?mid=bbc_webonly"
+                    },
+                    "mediaType": "video",
+                    "pid": "p05q57x6",
+                    "releaseDate": null,
+                    "title": "The three rules that define luxury",
+                    "updatedTime": "2017-12-05T14:50:47Z",
+                    "version": {
+                        "duration": 151.0,
+                        "href": "/nitro/api/versions?pid=p05q57xc",
+                        "pid": "p05q57xc"
+                    },
+                    "synopses": {
+                        "short": "Supercars, diamond rings, $10,000 wine: what makes valuable things valuable?",
+                        "medium": null,
+                        "long": null
+                    },
+                    "ancestor": {
+                        "brandResourceId": null,
+                        "brandTitle": null,
+                        "episodeResourceId": null,
+                        "episodeTitle": null,
+                        "seriesResourceId": null,
+                        "seriesTitle": null
+                    },
+                    "genres": [],
+                    "image": "http://ichef.bbci.co.uk/images/ic/$recipe/p05q585x.jpg",
+                    "duration": 151.0,
+                    "pgFormats": [],
+                    "scheduledEnd": null,
+                    "scheduledStart": "2017-12-05T14:50:42"
+                }
+            }
+        ]
+    }
+}
