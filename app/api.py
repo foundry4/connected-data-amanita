@@ -72,7 +72,7 @@ def list_content():
         'content',
         query_params=query_params
     )
-    res = {"results": client.get_content(mapped_params)}
+    res = client.get_content(mapped_params)
     return jsonify(res), 200
 
 
@@ -116,7 +116,7 @@ def list_similar_content(item_uri):
         path_params=path_params
     )
 
-    res = {"results": client.get_similar(mapped_params)}
+    res = client.get_similar(mapped_params)
     return jsonify(res), 200
 
 
