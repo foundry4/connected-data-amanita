@@ -11,4 +11,4 @@ def test_map_multidict_to_dict():
 
 
 def test_map_content_to_api_spec():
-    assert map_content_to_api_spec('content') == {'Results': 'content'}
+    assert map_content_to_api_spec('content') == {'results': 'content'}
