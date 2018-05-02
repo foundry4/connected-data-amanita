@@ -1,11 +1,11 @@
 from elasticsearch_dsl import Search
 from elasticsearch_dsl.query import MoreLikeThis, Q
-from app.utils import constants
+from app.utils import global_vars
 
 
 def build_query_body(item_uri, media_type=None, max_duration=None, published_after=None,
-                     region=None, similarity_method=None, limit=constants.DEFAULT_QUERY_LIMIT,
-                     offset=constants.DEFAULT_QUERY_OFFSET):
+                     region=None, similarity_method=None, limit=global_vars.DEFAULT_QUERY_LIMIT,
+                     offset=global_vars.DEFAULT_QUERY_OFFSET):
     """Build query dict ready to pass to Elasticsearch search instance for retrieving a list of similar items given a
     URI."""
     if published_after is not None:

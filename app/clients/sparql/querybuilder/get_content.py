@@ -2,13 +2,13 @@ from app.clients.sparql.querybuilder.subqueries import build_sparql_anding_state
     build_filter_statement, build_sort_statement, build_regular_fields_pattern_statement, \
     build_tags_pattern_statement, build_genres_pattern_statement, build_tags_select_statement, \
     build_genres_select_statement
-from app.utils import constants
+from app.utils import global_vars
 from exceptions.queryexceptions import InvalidInputParameterCombination
 
 
 def build_query(media_type=None, tags=None, sort=None, max_duration=None, published_after=None, categories=None,
-                region=None, random=False, limit=constants.DEFAULT_QUERY_LIMIT,
-                offset=constants.DEFAULT_QUERY_OFFSET):
+                region=None, random=False, limit=global_vars.DEFAULT_QUERY_LIMIT,
+                offset=global_vars.DEFAULT_QUERY_OFFSET):
     """
     Construct a SPARQL query to retrieve content from the content graph. Filter by validated query params.
 

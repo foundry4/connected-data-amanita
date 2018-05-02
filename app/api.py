@@ -1,6 +1,5 @@
 """API is run from here, access at localhost:5000. To run queries from browser, visit the `localhost:5000/content`
 endpoint and add parameters like so `/content?limit=5`."""
-import os
 from urllib.request import url2pathname
 
 from SPARQLWrapper.SPARQLExceptions import QueryBadFormed
@@ -9,20 +8,15 @@ from flask import Flask, jsonify, request, g
 from app.apiparams.mapping import map_param_values_to_given_definitions
 from app.clients.elastic.client import ESClient
 from app.clients.sparql.client import SPARQLClient
-from app.utils import constants
 from app.utils import logging
 from app.utils.conversions import map_multidict_to_dict
+from app.utils.global_vars import HTTP_PORT, DB_ENDPOINT, DB_USER, DB_PASS, DB_CLIENT
 from exceptions.clientexceptions import NoResultsFoundError, InvalidClientName
 from exceptions.helpers import log_last_exception
 from exceptions.queryexceptions import InvalidInputQuery
 
 logger = logging.get_logger(__name__)
 
-PORT = int(os.getenv("PORT", constants.DEFAULT_HTTP_PORT))
-DB_ENDPOINT = os.getenv('DB_ENDPOINT', constants.DEFAULT_DB_ENDPOINT)
-DB_USER = os.getenv('DB_USER', constants.DEFAULT_DB_USER)
-DB_PASS = os.getenv('DB_PASS', constants.DEFAULT_DB_PASS)
-DB_CLIENT = os.getenv('DB_CLIENT', constants.DEFAULT_DB_CLIENT)
 logger.info(f'Using credentials:\n endpoint: {DB_ENDPOINT}\n user: {DB_USER}\n pass: {DB_PASS}')
 
 
@@ -46,7 +40,7 @@ def get_client(db_client_name):
 
 
 @app.teardown_appcontext
-def close_client_connection(error=''):
+def close_client_connection(_):
     if hasattr(g, 'client'):
         g.client.close_connection()
 
@@ -133,4 +127,4 @@ def server_error(e):
 
 
 if __name__ == '__main__':  # pragma: no cover
-    app.run(host='0.0.0.0', port=PORT, debug=True)
+    app.run(host='0.0.0.0', port=HTTP_PORT, debug=True)

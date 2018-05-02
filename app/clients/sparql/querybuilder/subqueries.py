@@ -1,5 +1,5 @@
 """Building blocks for SPARQL queries."""
-from app.utils import constants
+from app.utils import global_vars
 
 
 def serialize_sparql_bindings(bindings):
@@ -198,5 +198,5 @@ def build_genres_pattern_statement(prog_uri='?programme'):
 
 def build_group_concat_stmt(singular, plural):
     """Build a group concat statement to aggregate results."""
-    stmt = f'(GROUP_CONCAT(?{singular};separator="{constants.SPARQL_TAG_SEPARATOR}") as ?{plural})'
+    stmt = f'(GROUP_CONCAT(?{singular};separator="{globals.SPARQL_TAG_SEPARATOR}") as ?{plural})'
     return stmt
