@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  amanita:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - DB_CLIENT='elasticsearch'
+      - DB_ENDPOINT=http://elastic:9200
+      - DB_USER=elastic
+      - DB_PASS=changeme
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.4
+    ports:
+      - "9200:9200"
+    environment:
+      - "discovery.type=single-node"
