@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Adapted from: https://docs.travis-ci.com/user/docker/
+
+echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+docker push notbinary/connected-data-amanita
