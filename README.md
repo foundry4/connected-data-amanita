@@ -10,6 +10,7 @@ This fork has been modified to run a development setup using Docker Compose.
 
 You should be able to:
 ```
+docker-compose pull
 docker-compose build
 docker-compose up
 ```
