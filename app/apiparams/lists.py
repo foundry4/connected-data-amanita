@@ -28,7 +28,6 @@ def get_param_mappers_for_endpoint(endpoint, definitions):
             'publishedAfter': definitions.published_after,
             'limit': definitions.limit,
             'offset': definitions.offset,
-            'similarityMethod': definitions.similarity_method,
         }
     elif endpoint == 'item':
         mappers = {

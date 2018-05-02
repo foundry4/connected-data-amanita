@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='amanita.proto',
   package='datalabamanitaapi',
   syntax='proto3',
-  serialized_pb=_b('\n\ramanita.proto\x12\x11\x64\x61talabamanitaapi\"\xfa\x01\n\x12ListContentRequest\x12\x12\n\ncategories\x18\x01 \x03(\t\x12\x14\n\x0cmax_duration\x18\x02 \x01(\x05\x12\x35\n\nmedia_type\x18\x03 \x03(\x0e\x32!.datalabamanitaapi.MediaTypeParam\x12\x17\n\x0fpublished_after\x18\x04 \x01(\t\x12\x0e\n\x06random\x18\x05 \x01(\x08\x12.\n\x06region\x18\x06 \x01(\x0e\x32\x1e.datalabamanitaapi.RegionParam\x12*\n\x04sort\x18\x07 \x03(\x0e\x32\x1c.datalabamanitaapi.SortParam\"\x1a\n\x0bItemRequest\x12\x0b\n\x03uri\x18\x01 \x01(\t\"\xe8\x01\n\x17ListSimilarItemsRequest\x12\x14\n\x0cmax_duration\x18\x01 \x01(\x05\x12\x35\n\nmedia_type\x18\x02 \x03(\x0e\x32!.datalabamanitaapi.MediaTypeParam\x12\x17\n\x0fpublished_after\x18\x03 \x01(\t\x12.\n\x06region\x18\x04 \x01(\x0e\x32\x1e.datalabamanitaapi.RegionParam\x12*\n\x04sort\x18\x06 \x01(\x0e\x32\x1c.datalabamanitaapi.SortParam\x12\x0b\n\x03uri\x18\x07 \x01(\t\"\x87\x04\n\x0bMinimalItem\x12\x10\n\x08\x64uration\x18\x01 \x01(\x02\x12<\n\x06genres\x18\x02 \x01(\x0b\x32,.datalabamanitaapi.MinimalItem.GenresMessage\x12\r\n\x05image\x18\x03 \x01(\t\x12\x14\n\x0cmaster_brand\x18\x04 \x01(\t\x12G\n\nmedia_type\x18\x05 \x01(\x0e\x32\x33.datalabamanitaapi.MinimalItem.MinimalItemMediaType\x12\x0b\n\x03pid\x18\x06 \x01(\t\x12\x18\n\x10publication_date\x18\x07 \x01(\t\x12\r\n\x05title\x18\t \x01(\t\x12\x0b\n\x03uri\x18\n \x01(\t\x12+\n\x07version\x18\x0b \x01(\x0b\x32\x1a.datalabamanitaapi.Version\x1a\x9b\x01\n\rGenresMessage\x12.\n\x0csecond_level\x18\x01 \x03(\x0b\x32\x18.datalabamanitaapi.Genre\x12-\n\x0bthird_level\x18\x02 \x03(\x0b\x32\x18.datalabamanitaapi.Genre\x12+\n\ttop_level\x18\x03 \x03(\x0b\x32\x18.datalabamanitaapi.Genre\",\n\x14MinimalItemMediaType\x12\t\n\x05VIDEO\x10\x00\x12\t\n\x05\x41UDIO\x10\x01\"<\n\tResultSet\x12/\n\x07results\x18\x01 \x03(\x0b\x32\x1e.datalabamanitaapi.MinimalItem\"(\n\x07Version\x12\x10\n\x08\x64uration\x18\x01 \x01(\x02\x12\x0b\n\x03pid\x18\x02 \x01(\t\"0\n\x05Genre\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05label\x18\x02 \x01(\t\x12\x0b\n\x03uri\x18\x03 \x01(\t\"\x14\n\x12HealthCheckRequest\"&\n\x13HealthCheckResponse\x12\x0f\n\x07message\x18\x01 \x01(\t*&\n\x0eMediaTypeParam\x12\t\n\x05VIDEO\x10\x00\x12\t\n\x05\x41UDIO\x10\x01*/\n\x0bRegionParam\x12\x06\n\x02UK\x10\x00\x12\t\n\x05\x45X_UK\x10\x01\x12\r\n\tWORLDWIDE\x10\x02*|\n\tSortParam\x12\x10\n\x0c\x44URATION_ASC\x10\x00\x12\x11\n\rDURATION_DESC\x10\x01\x12\x14\n\x10MASTER_BRAND_ASC\x10\x02\x12\x15\n\x11MASTER_BRAND_DESC\x10\x03\x12\r\n\tMEDIA_ASC\x10\x04\x12\x0e\n\nMEDIA_DESC\x10\x05\x32\xfa\x02\n\x18\x44\x61talabAmanitaAPIService\x12T\n\x0bListContent\x12%.datalabamanitaapi.ListContentRequest\x1a\x1c.datalabamanitaapi.ResultSet\"\x00\x12H\n\x04Item\x12\x1e.datalabamanitaapi.ItemRequest\x1a\x1e.datalabamanitaapi.MinimalItem\"\x00\x12^\n\x10ListSimilarItems\x12*.datalabamanitaapi.ListSimilarItemsRequest\x1a\x1c.datalabamanitaapi.ResultSet\"\x00\x12^\n\x0bHealthCheck\x12%.datalabamanitaapi.HealthCheckRequest\x1a&.datalabamanitaapi.HealthCheckResponse\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\ramanita.proto\x12\x11\x64\x61talabamanitaapi\"\xfa\x01\n\x12ListContentRequest\x12\x12\n\ncategories\x18\x01 \x03(\t\x12\x14\n\x0cmax_duration\x18\x02 \x01(\x05\x12\x35\n\nmedia_type\x18\x03 \x03(\x0e\x32!.datalabamanitaapi.MediaTypeParam\x12\x17\n\x0fpublished_after\x18\x04 \x01(\t\x12\x0e\n\x06random\x18\x05 \x01(\x08\x12.\n\x06region\x18\x06 \x01(\x0e\x32\x1e.datalabamanitaapi.RegionParam\x12*\n\x04sort\x18\x07 \x03(\x0e\x32\x1c.datalabamanitaapi.SortParam\"\x1f\n\x0bItemRequest\x12\x10\n\x08item_uri\x18\x01 \x01(\t\"\xed\x01\n\x17ListSimilarItemsRequest\x12\x14\n\x0cmax_duration\x18\x01 \x01(\x05\x12\x35\n\nmedia_type\x18\x02 \x03(\x0e\x32!.datalabamanitaapi.MediaTypeParam\x12\x17\n\x0fpublished_after\x18\x03 \x01(\t\x12.\n\x06region\x18\x04 \x01(\x0e\x32\x1e.datalabamanitaapi.RegionParam\x12*\n\x04sort\x18\x06 \x01(\x0e\x32\x1c.datalabamanitaapi.SortParam\x12\x10\n\x08item_uri\x18\x07 \x01(\t\"\x87\x04\n\x0bMinimalItem\x12\x10\n\x08\x64uration\x18\x01 \x01(\x02\x12<\n\x06genres\x18\x02 \x01(\x0b\x32,.datalabamanitaapi.MinimalItem.GenresMessage\x12\r\n\x05image\x18\x03 \x01(\t\x12\x14\n\x0cmaster_brand\x18\x04 \x01(\t\x12G\n\nmedia_type\x18\x05 \x01(\x0e\x32\x33.datalabamanitaapi.MinimalItem.MinimalItemMediaType\x12\x0b\n\x03pid\x18\x06 \x01(\t\x12\x18\n\x10publication_date\x18\x07 \x01(\t\x12\r\n\x05title\x18\t \x01(\t\x12\x0b\n\x03uri\x18\n \x01(\t\x12+\n\x07version\x18\x0b \x01(\x0b\x32\x1a.datalabamanitaapi.Version\x1a\x9b\x01\n\rGenresMessage\x12.\n\x0csecond_level\x18\x01 \x03(\x0b\x32\x18.datalabamanitaapi.Genre\x12-\n\x0bthird_level\x18\x02 \x03(\x0b\x32\x18.datalabamanitaapi.Genre\x12+\n\ttop_level\x18\x03 \x03(\x0b\x32\x18.datalabamanitaapi.Genre\",\n\x14MinimalItemMediaType\x12\t\n\x05VIDEO\x10\x00\x12\t\n\x05\x41UDIO\x10\x01\"<\n\tResultSet\x12/\n\x07results\x18\x01 \x03(\x0b\x32\x1e.datalabamanitaapi.MinimalItem\"(\n\x07Version\x12\x10\n\x08\x64uration\x18\x01 \x01(\x02\x12\x0b\n\x03pid\x18\x02 \x01(\t\"0\n\x05Genre\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05label\x18\x02 \x01(\t\x12\x0b\n\x03uri\x18\x03 \x01(\t\"\x14\n\x12HealthCheckRequest\"&\n\x13HealthCheckResponse\x12\x0f\n\x07message\x18\x01 \x01(\t*&\n\x0eMediaTypeParam\x12\t\n\x05VIDEO\x10\x00\x12\t\n\x05\x41UDIO\x10\x01*/\n\x0bRegionParam\x12\x06\n\x02UK\x10\x00\x12\t\n\x05\x45X_UK\x10\x01\x12\r\n\tWORLDWIDE\x10\x02*|\n\tSortParam\x12\x10\n\x0c\x44URATION_ASC\x10\x00\x12\x11\n\rDURATION_DESC\x10\x01\x12\x14\n\x10MASTER_BRAND_ASC\x10\x02\x12\x15\n\x11MASTER_BRAND_DESC\x10\x03\x12\r\n\tMEDIA_ASC\x10\x04\x12\x0e\n\nMEDIA_DESC\x10\x05\x32\xfa\x02\n\x18\x44\x61talabAmanitaAPIService\x12T\n\x0bListContent\x12%.datalabamanitaapi.ListContentRequest\x1a\x1c.datalabamanitaapi.ResultSet\"\x00\x12H\n\x04Item\x12\x1e.datalabamanitaapi.ItemRequest\x1a\x1e.datalabamanitaapi.MinimalItem\"\x00\x12^\n\x10ListSimilarItems\x12*.datalabamanitaapi.ListSimilarItemsRequest\x1a\x1c.datalabamanitaapi.ResultSet\"\x00\x12^\n\x0bHealthCheck\x12%.datalabamanitaapi.HealthCheckRequest\x1a&.datalabamanitaapi.HealthCheckResponse\"\x00\x62\x06proto3')
 )
 
 _MEDIATYPEPARAM = _descriptor.EnumDescriptor(
@@ -40,8 +40,8 @@ _MEDIATYPEPARAM = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1290,
-  serialized_end=1328,
+  serialized_start=1300,
+  serialized_end=1338,
 )
 _sym_db.RegisterEnumDescriptor(_MEDIATYPEPARAM)
 
@@ -67,8 +67,8 @@ _REGIONPARAM = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1330,
-  serialized_end=1377,
+  serialized_start=1340,
+  serialized_end=1387,
 )
 _sym_db.RegisterEnumDescriptor(_REGIONPARAM)
 
@@ -106,8 +106,8 @@ _SORTPARAM = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1379,
-  serialized_end=1503,
+  serialized_start=1389,
+  serialized_end=1513,
 )
 _sym_db.RegisterEnumDescriptor(_SORTPARAM)
 
@@ -142,8 +142,8 @@ _MINIMALITEM_MINIMALITEMMEDIATYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1028,
-  serialized_end=1072,
+  serialized_start=1038,
+  serialized_end=1082,
 )
 _sym_db.RegisterEnumDescriptor(_MINIMALITEM_MINIMALITEMMEDIATYPE)
 
@@ -229,7 +229,7 @@ _ITEMREQUEST = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='uri', full_name='datalabamanitaapi.ItemRequest.uri', index=0,
+      name='item_uri', full_name='datalabamanitaapi.ItemRequest.item_uri', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -248,7 +248,7 @@ _ITEMREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=289,
-  serialized_end=315,
+  serialized_end=320,
 )
 
 
@@ -295,7 +295,7 @@ _LISTSIMILARITEMSREQUEST = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='uri', full_name='datalabamanitaapi.ListSimilarItemsRequest.uri', index=5,
+      name='item_uri', full_name='datalabamanitaapi.ListSimilarItemsRequest.item_uri', index=5,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -313,8 +313,8 @@ _LISTSIMILARITEMSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=318,
-  serialized_end=550,
+  serialized_start=323,
+  serialized_end=560,
 )
 
 
@@ -358,8 +358,8 @@ _MINIMALITEM_GENRESMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=871,
-  serialized_end=1026,
+  serialized_start=881,
+  serialized_end=1036,
 )
 
 _MINIMALITEM = _descriptor.Descriptor(
@@ -452,8 +452,8 @@ _MINIMALITEM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=553,
-  serialized_end=1072,
+  serialized_start=563,
+  serialized_end=1082,
 )
 
 
@@ -483,8 +483,8 @@ _RESULTSET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1074,
-  serialized_end=1134,
+  serialized_start=1084,
+  serialized_end=1144,
 )
 
 
@@ -521,8 +521,8 @@ _VERSION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1136,
-  serialized_end=1176,
+  serialized_start=1146,
+  serialized_end=1186,
 )
 
 
@@ -566,8 +566,8 @@ _GENRE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1178,
-  serialized_end=1226,
+  serialized_start=1188,
+  serialized_end=1236,
 )
 
 
@@ -590,8 +590,8 @@ _HEALTHCHECKREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1228,
-  serialized_end=1248,
+  serialized_start=1238,
+  serialized_end=1258,
 )
 
 
@@ -621,8 +621,8 @@ _HEALTHCHECKRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1250,
-  serialized_end=1288,
+  serialized_start=1260,
+  serialized_end=1298,
 )
 
 _LISTCONTENTREQUEST.fields_by_name['media_type'].enum_type = _MEDIATYPEPARAM
@@ -733,8 +733,8 @@ _DATALABAMANITAAPISERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   options=None,
-  serialized_start=1506,
-  serialized_end=1884,
+  serialized_start=1516,
+  serialized_end=1894,
   methods=[
   _descriptor.MethodDescriptor(
     name='ListContent',

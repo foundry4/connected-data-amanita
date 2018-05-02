@@ -1,6 +1,9 @@
+from urllib.request import url2pathname
+
 from app.apiparams.mapping import map_param_values_to_given_definitions
 from app.clients.elastic.client import ESClient
-from app.clients.elastic.process_response import map_client_results_to_proto
+from app.clients.elastic.process_response import map_client_results_to_proto_resultset, \
+    map_client_item_to_proto_minimal_item
 from app.clients.sparql.client import SPARQLClient
 from app.utils import logging
 from concurrent import futures
@@ -53,7 +56,23 @@ class Amanita(amanita_pb2_grpc.DatalabAmanitaAPIServiceServicer):
         query_params = map_grpc_request_params_to_dict(request)
         mapped_params = map_param_values_to_given_definitions(client.get_parameter_definitions('rpc'), 'content', query_params)
         result = client.get_content(mapped_params)
-        mapped_result = map_client_results_to_proto(result)
+        mapped_result = map_client_results_to_proto_resultset(result)
+        return mapped_result
+
+    def ListSimilarItems(self, request, context):
+        client = get_client(DB_CLIENT)
+        query_params = map_grpc_request_params_to_dict(request)
+        mapped_params = map_param_values_to_given_definitions(client.get_parameter_definitions('rpc'), 'similar', query_params)
+        result = client.get_similar(mapped_params)
+        mapped_result = map_client_results_to_proto_resultset(result)
+        return mapped_result
+
+    def Item(self, request, context):
+        client = get_client(DB_CLIENT)
+        query_params = map_grpc_request_params_to_dict(request)
+        mapped_params = map_param_values_to_given_definitions(client.get_parameter_definitions('rpc'), 'item', query_params)
+        result = client.get_item(mapped_params)
+        mapped_result = map_client_item_to_proto_minimal_item(result)
         return mapped_result
 
     def HealthCheck(self, request, context):

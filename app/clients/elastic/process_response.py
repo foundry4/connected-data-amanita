@@ -36,43 +36,43 @@ def map_hits_to_api_spec(es_res):
     return hits
 
 
-def map_client_results_to_proto(client_res):
-    mapped_items = []
-    for item in client_res['results']:
-        mapped_item = amanita_pb2.MinimalItem(
-            master_brand=item['masterBrand'],
-            media_type=item['mediaType'].upper(),
-            genres={
-                {
-                    'topLevel': 'top_level',
-                    'secondLevel': 'second_level',
-                    'thirdLevel': 'third_level'
-                }
-                [level]:
-                    [
-                        amanita_pb2.Genre(
-                            uri=genre['uri'],
-                            label=genre['label'],
-                            key=genre['key']
-                        )
-                        for genre in genres
-                    ]
-                for level, genres in item['genres'].items()
-            },
-            pid=item['pid'],
-            title=item['title'],
-            version=amanita_pb2.Version(
-                duration=item['version']['duration'],
-                pid=item['version']['pid']
-            ),
-            duration=item['duration'],
-            uri=item['uri'],
-            publication_date=item['publicationDate'],
-            image=item['image']
-        )
-        mapped_items.append(mapped_item)
-
+def map_client_results_to_proto_resultset(client_res):
     mapped_result = amanita_pb2.ResultSet(
-        results=mapped_items
+        results=[map_client_item_to_proto_minimal_item(item) for item in client_res['results']]
     )
     return mapped_result
+
+
+def map_client_item_to_proto_minimal_item(item):
+    mapped_item = amanita_pb2.MinimalItem(
+        master_brand=item['masterBrand'],
+        media_type=item['mediaType'].upper(),
+        genres={
+            {
+                'topLevel': 'top_level',
+                'secondLevel': 'second_level',
+                'thirdLevel': 'third_level'
+            }
+            [level]:
+                [
+                    amanita_pb2.Genre(
+                        uri=genre['uri'],
+                        label=genre['label'],
+                        key=genre['key']
+                    )
+                    for genre in genres
+                ]
+            for level, genres in item['genres'].items()
+        },
+        pid=item['pid'],
+        title=item['title'],
+        version=amanita_pb2.Version(
+            duration=item['version']['duration'],
+            pid=item['version']['pid']
+        ),
+        duration=item['duration'],
+        uri=item['uri'],
+        publication_date=item['publicationDate'],
+        image=item['image']
+    )
+    return mapped_item

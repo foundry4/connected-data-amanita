@@ -33,7 +33,7 @@ message ListContentRequest {
 }
 
 message ItemRequest {
-    string uri = 1;
+    string item_uri = 1;
 }
 
 message ListSimilarItemsRequest {
@@ -42,7 +42,7 @@ message ListSimilarItemsRequest {
     string published_after = 3;
     RegionParam region = 4;
     SortParam sort = 6;
-    string uri = 7;
+    string item_uri = 7;
 }
 
 message MinimalItem {
