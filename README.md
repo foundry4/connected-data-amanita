@@ -15,7 +15,7 @@ docker-compose build
 docker-compose up
 ```
 
-NB the Dockerfile mentioned below has been renamed to Dockerfile.
+NB the Dockerfile mentioned below has been renamed to `Dockerfile.bbc`.
 
 ## Run Locally
 ### 1. Create a virtualenv, install dependencies:
