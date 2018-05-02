@@ -4,6 +4,18 @@ API for reading from the Content Graph/Store. Currently, the API is capable of i
 `Stardog` (may be generalised to any `SPARQL1.1` store), and `Elasticsearch`. Client specific code resides in the 
 `clients` directory and the clients are listed in `api.py`, all other code is/should be client-agnostic. 
 
+## Run with Docker Compose
+
+This fork has been modified to run a development setup using Docker Compose.
+
+You should be able to:
+```
+docker-compose build
+docker-compose up
+```
+
+NB the Dockerfile mentioned below has been renamed to Dockerfile.
+
 ## Run Locally
 ### 1. Create a virtualenv, install dependencies:
 ```
