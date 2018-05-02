@@ -10,8 +10,8 @@ python:
 script: pytest
 env:
 - PYTHONPATH=.:$PYTHONPATH
-before_deploy: "echo Deploying to Pypi.."
-after_deploy: "echo Deployed to Pypi."
+before_deploy: "echo Deploying to Docker Hub.."
+after_deploy: "echo Deployed to Docker Hub."
 deploy:
   provider: script
   script: bash docker_push
