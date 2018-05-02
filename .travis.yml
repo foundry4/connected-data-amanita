@@ -10,7 +10,11 @@ python:
 script: pytest
 env:
 - PYTHONPATH=.:$PYTHONPATH
-before_deploy: "echo Deploying to Docker Hub.."
+
+before_install:
+  - docker build -t notbinary/connected-data-amanita .
+
+before_deploy: "echo Deploying to Docker Hub..."
 after_deploy: "echo Deployed to Docker Hub."
 deploy:
   provider: script
