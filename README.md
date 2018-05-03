@@ -15,6 +15,16 @@ docker-compose build
 docker-compose up
 ```
 
+## Continuous integration
+
+A Travis CI job for this repository can be viewed at: 
+ * https://travis-ci.org/notbinary/connected-data-amanita
+ 
+## Docker Hub
+
+The above Travis job pushes the built Docker image to Docker hub here:
+ * https://hub.docker.com/r/notbinary/connected-data-amanita/
+
 NB the Dockerfile mentioned below has been renamed to `Dockerfile.bbc`.
 
 ## Run Locally
